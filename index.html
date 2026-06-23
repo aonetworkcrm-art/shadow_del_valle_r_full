@@ -74,7 +74,7 @@
             try {
                 const res = await fetch('/api/posts');
                 const data = await res.json();
-                const posts = data.posts || [];
+                const posts = Array.isArray(data) ? data : (data.posts || []);
 
                 const list = document.getElementById('postList');
                 const count = document.getElementById('postCount');
@@ -95,10 +95,12 @@
                 posts.forEach(p => {
                     totalCpc += p.cpc || 0;
                     if ((p.cpc || 0) > maxCpc) maxCpc = p.cpc || 0;
+                    const title = p.titulo || p.title || p.slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    const date = p.timestamp ? new Date(p.timestamp * 1000).toLocaleDateString('es-DO', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
                     html += '<a href="/posts/' + p.slug + '/" class="post-item">' +
                         '<div>' +
-                        '<div class="post-title">' + p.title + '</div>' +
-                        '<div class="post-meta">' + (p.niche || 'General') + ' &middot; ' + (p.date || '') + '</div>' +
+                        '<div class="post-title">' + title + '</div>' +
+                        '<div class="post-meta">CPC $' + (p.cpc || 0) + '</div>' +
                         '</div>' +
                         '<div class="post-cpc">$' + (p.cpc || 0) + '</div>' +
                         '</a>';
@@ -110,7 +112,7 @@
 
             } catch(e) {
                 document.getElementById('postList').innerHTML =
-                    '<div class="empty">Cargando contenido...</div>';
+                    '<div class="empty">Error al cargar contenido. Intenta de nuevo.</div>';
             }
         }
 
