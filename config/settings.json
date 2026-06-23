@@ -31,8 +31,8 @@
     "dominio": "shadow-del-valle-r.vercel.app"
   },
   "monetag": {
-    "site_id": "",
-    "habilitado": false,
+    "site_id": "11190083",
+    "habilitado": true,
     "delay_carga_ms": 2000,
     "posicion_anuncio": "despues_3er_parrafo",
     "formato": "popunder_smartlink"
