@@ -9,11 +9,11 @@
     },
     {
       "source": "/posts/:path/",
-      "destination": "/output/posts/:path.html"
+      "destination": "/output/posts/:path/"
     },
     {
       "source": "/posts/:path",
-      "destination": "/output/posts/:path.html"
+      "destination": "/output/posts/:path"
     },
     {
       "source": "/api/posts",
