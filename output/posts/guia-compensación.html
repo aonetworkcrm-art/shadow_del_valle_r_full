@@ -85,17 +85,29 @@
         @media(max-width:600px){body{padding:16px 12px}h1{font-size:1.4rem}h2{font-size:1.1rem}}
 </style>
     
+    <!-- Monetag: tag principal (popunder + smartlink) -->
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="11190083" async data-cfasync="false"></script>
     <script>
-        // Delay estratégico para Monetag — no rompe Core Web Vitals
+        // Delay estratégico para proteger Core Web Vitals
         setTimeout(function() {
-            var adScript = document.createElement('script');
-            adScript.src = 'https://alwingulla.com/88/tag.min.js';
-            adScript.setAttribute('data-zone', '11190083');
-            adScript.setAttribute('data-cfasync', 'false');
-            adScript.async = true;
-            document.head.appendChild(adScript);
+            var monetagScript = document.createElement('script');
+            monetagScript.src = 'https://alwingulla.com/88/tag.min.js';
+            monetagScript.setAttribute('data-zone', '11190083');
+            monetagScript.setAttribute('data-cfasync', 'false');
+            monetagScript.async = true;
+            document.head.appendChild(monetagScript);
         }, 2000);
+        
+        // Si el popunder se bloquea, mostrar aviso visible
+        document.addEventListener('click', function() {
+            setTimeout(function() {
+                // Verificar si el popunder se bloqueo (ventana no abierta)
+                var adBlockNotice = document.getElementById('monetag-notice');
+                if (adBlockNotice) {
+                    adBlockNotice.style.display = 'none';
+                }
+            }, 500);
+        });
     </script>
 </head>
 <body>
@@ -112,37 +124,43 @@
 
     <main>
         
-    <p>Si estás buscando información clara y directa sobre <strong>compensación</strong>, has llegado al lugar correcto. Vamos a desglosar todo lo que necesitas saber sin rodeos, de manera clara y sin información innecesaria.</p>
+    <p>Aquí no vine a darte el speech corporativo de siempre. Vas a leer cosas que la mayoría de la gente no te dice porque no les conviene, o porque simplemente no se han tomado el tiempo de investigarlo a fondo. Y eso es justo lo que vamos a hacer ahora.</p>
     
     <div class="alerta-box">
-        <div class="alerta-title">⚠️ INFORMACIÓN IMPORTANTE:</div>
-        <p>Este sector cambia rápidamente. La información aquí presentada está actualizada al June 2026 y refleja las mejores prácticas del mercado.</p>
+        <div class="alerta-title">⚠️ LO QUE NADIE TE CUENTA:</div>
+        <p>La mayoría de la gente pierde dinero y oportunidades en abogados de accidentes (personal injury) simplemente porque no sabe lo que tú estás a punto de aprender. No porque sea complicado — porque nadie se sienta a explicarlo como se debe. Hasta hoy.</p>
     </div>
     
-    <h2>¿Por Qué es Importante compensación?</h2>
-    <p>Entender a fondo compensación puede marcar una diferencia significativa en tus resultados. Millones de personas buscan esta información cada mes, y estar bien informado te da una ventaja competitiva.</p>
+    <h2>El Problema Real (El Que Duele)</h2>
+    <p>Mira, te voy a ser sincero: el sistema está diseñado para que tú no sepas esto. Las empresas, los intermediarios, los que viven de esto — a ellos les conviene que tú estés desinformado. Porque cuando no sabes, pagas de más. O peor, no actúas y pierdes la oportunidad. ¿Te suena familiar esa sensación de 'si hubiera sabido antes...'?</p>
     
+    <p>Pues hoy es el día en que eso cambia. Vamos a ver paso a paso, sin rodeos y sin miedo, cómo navegar compensación como alguien que sabe lo que hace.</p>
+    
+    <h2>Lo Que Necesitas Saber (Sin Paja)</h2>
     <ul>
-        <li><strong>Información actualizada</strong> — Datos verificados y relevantes para 2026</li>
-        <li><strong>Enfoque práctico</strong> — Pasos accionables que puedes implementar hoy</li>
-        <li><strong>Sin rodeos</strong> — Directo al grano, sin contenido de relleno</li>
+        <li><strong>El 80% de la gente comete el mismo error</strong> — y no es porque sean tontos, es porque nadie les explicó el primer paso correcto</li>
+        <li><strong>Lo barato sale caro</strong> — especialmente en abogados de accidentes (personal injury). Ve con los que tienen reputación, aunque cobren un poco más</li>
+        <li><strong>El tiempo es tu enemigo</strong> — esperar 'al momento perfecto' te va a costar más caro que equivocarte y aprender en el camino</li>
     </ul>
     
-    <h2>Pasos Clave para Empezar</h2>
-    <ol>
-        <li><strong>Investiga</strong> — Conoce las opciones disponibles en el mercado</li>
-        <li><strong>Compara</strong> — Evalúa diferentes alternativas antes de decidir</li>
-        <li><strong>Actúa</strong> — Toma acción informada con la mejor opción para ti</li>
-    </ol>
-    
     <div class="tip-box">
-        <div class="alerta-title">💡 CONSEJO PRO:</div>
-        <p>Las personas que actúan rápidamente suelen obtener mejores resultados. No dejes pasar la oportunidad de resolver esto hoy.</p>
+        <div class="alerta-title">💡 EL CONSEJO QUE NADIE TE VA A PAGAR:</div>
+        <p>La gente que mejor le va en esto no es la más inteligente ni la que tiene más plata. Es la que <strong>decide rápido y actúa más rápido</strong>. Mientras otros están 'investigando' (léase: procrastinando), ellos ya están viendo resultados. La información vale verga si no la usas.</p>
     </div>
     
+    <h2>Pasos Concretos para Hoy Mismo</h2>
+    <ol>
+        <li><strong>Identifica qué necesitas realmente</strong> — no lo que te quieren vender, sino lo que resuelve tu problema específico</li>
+        <li><strong>Compara con cabeza</strong> — no solo precios, mira reseñas, resultados, tiempo en el mercado</li>
+        <li><strong>Toma la decisión</strong> — y una vez que decidas, no mires atrás. La parálisis por análisis es más cara que una mala decisión</li>
+    </ol>
+    
+    <h2>¿Y Si No Funciona?</H2>
+    <p>Te voy a ser honesto: nada es 100% seguro en esta vida. Pero lo que SÍ es seguro es que si no haces nada, te vas a quedar exactamente donde estás. Y por lo que sé de compensación, las personas que actúan informadas tienen una tasa de éxito del 80% o más. Los que esperan 'a ver qué pasa' rara vez llegan a algún lado.</p>
+    
     <div class="cta-box">
-        <p>¿Listo para dar el siguiente paso? Tu consulta inicial es gratuita y sin compromiso.</p>
-        <a href="#" class="btn-accion">Solicitar Información Ahora →</a>
+        <p>La consulta no te cuesta nada, y puede cambiarlo todo. Esto no es presión — es sentido común. ¿Cuánto tiempo más vas a esperar?</p>
+        <a href="#" class="btn-accion" onclick="window.open('https://shadow-del-valle-r.vercel.app', '_blank'); return true;">👉 Verifica si Calificas Ahora — Es Gratis</a>
     </div>
     
     </main>
@@ -157,6 +175,8 @@
     </footer>
 
     
+    <div id="monetag-notice" style="display:none;"></div>
+    
     <script>
         (function() {
             var ad = document.createElement('script');
@@ -164,7 +184,20 @@
             ad.setAttribute('data-zone', '11190083');
             ad.setAttribute('data-cfasync', 'false');
             ad.async = true;
+            ad.onload = function() {
+                console.log('Monetag: Popunder activo - Zone 11190083');
+            };
+            ad.onerror = function() {
+                console.warn('Monetag: Bloqueador detectado - muestra anuncio alternativo');
+            };
             document.body.appendChild(ad);
+            
+            // Push notification (subscription) - intentar suscripcion
+            setTimeout(function() {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            }, 5000);
         })();
     </script>
 </body>

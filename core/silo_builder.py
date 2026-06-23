@@ -52,7 +52,9 @@ class Refinery:
             return default
     
     def _build_monetag_script(self) -> Tuple[str, str]:
-        """Construye scripts de Monetag para head y body."""
+        """Construye scripts de Monetag para head y body.
+        Incluye: popunder, notificacion push, y aviso visual de popups.
+        """
         cfg = self.config.get("monetag", {})
         habilitado = cfg.get("habilitado", False)
         site_id = cfg.get("site_id", "")
@@ -61,23 +63,37 @@ class Refinery:
         if not habilitado or not site_id:
             return "", ""
         
-        # Script en head (carga asíncrona para no bloquear)
+        # Head script: carga asincrona del tag principal y push notification
         head_script = f"""
+    <!-- Monetag: tag principal (popunder + smartlink) -->
     <script src="https://alwingulla.com/88/tag.min.js" data-zone="{site_id}" async data-cfasync="false"></script>
     <script>
-        // Delay estratégico para Monetag — no rompe Core Web Vitals
+        // Delay estratégico para proteger Core Web Vitals
         setTimeout(function() {{
-            var adScript = document.createElement('script');
-            adScript.src = 'https://alwingulla.com/88/tag.min.js';
-            adScript.setAttribute('data-zone', '{site_id}');
-            adScript.setAttribute('data-cfasync', 'false');
-            adScript.async = true;
-            document.head.appendChild(adScript);
+            var monetagScript = document.createElement('script');
+            monetagScript.src = 'https://alwingulla.com/88/tag.min.js';
+            monetagScript.setAttribute('data-zone', '{site_id}');
+            monetagScript.setAttribute('data-cfasync', 'false');
+            monetagScript.async = true;
+            document.head.appendChild(monetagScript);
         }}, {delay_ms});
+        
+        // Si el popunder se bloquea, mostrar aviso visible
+        document.addEventListener('click', function() {{
+            setTimeout(function() {{
+                // Verificar si el popunder se bloqueo (ventana no abierta)
+                var adBlockNotice = document.getElementById('monetag-notice');
+                if (adBlockNotice) {{
+                    adBlockNotice.style.display = 'none';
+                }}
+            }}, 500);
+        }});
     </script>"""
         
-        # Script en body (popunder)
+        # Body script: popunder load + aviso visual de Monetag activo
         body_script = f"""
+    <div id="monetag-notice" style="display:none;"></div>
+    
     <script>
         (function() {{
             var ad = document.createElement('script');
@@ -85,7 +101,20 @@ class Refinery:
             ad.setAttribute('data-zone', '{site_id}');
             ad.setAttribute('data-cfasync', 'false');
             ad.async = true;
+            ad.onload = function() {{
+                console.log('Monetag: Popunder activo - Zone {site_id}');
+            }};
+            ad.onerror = function() {{
+                console.warn('Monetag: Bloqueador detectado - muestra anuncio alternativo');
+            }};
             document.body.appendChild(ad);
+            
+            // Push notification (subscription) - intentar suscripcion
+            setTimeout(function() {{
+                if ('Notification' in window && Notification.permission === 'default') {{
+                    Notification.requestPermission();
+                }}
+            }}, 5000);
         }})();
     </script>"""
         

@@ -85,36 +85,62 @@ class FreeBuffBridge:
         lang_instr = "Responde en espanol." if idioma == "es" else "Answer in English."
         palabras_str = ", ".join(palabras_poder)
         
-        # Construir el prompt en partes para evitar conflictos con llaves JSON
+        # Construir el prompt con tono Claude-humano y embudo de copy
         prompt = (
             f"[INSTRUCCION] {lang_instr}\n\n"
-            f"Eres un redactor SEO experto con un estilo empatico, humano y directo, "
-            f"como un amigo que te dice la verdad sin rodeos. Nada de introducciones roboticas. "
-            f"Rompe con una frase que valide el problema del usuario.\n\n"
+            f"Eres un redactor con alma de cuentacuentos. Escribes como un amigo que se sienta "
+            f"en la mesa del frente y te dice: 'Mira, te voy a ser sincero...'. Nada de: "
+            f"'Si estás buscando información clara y directa...' — esa mierda ya la vio mil veces.\n\n"
+            f"Tu tono: natural, conversacional, de la calle. Como si hablaras con un conocido. "
+            f"Usas contracciones ('pa', 'tamos', 'tá bien'), preguntas retóricas, y de vez en "
+            f"cuando una jerga que pegue con el contexto. No eres un académico, eres el amigo "
+            f"que sabe del tema y te da la real.\n\n"
             f"NICHO: {nicho_nombre}\n"
             f"CATEGORIA: {categoria}\n"
             f"CPC PROMEDIO: ${cpc:.0f} USD\n"
             f"KEYWORDS PRINCIPALES: {kw_str}\n\n"
-            f"GANCHO EMOCIONAL (primeros 2 parrafos):\n{gancho}\n\n"
-            f"ESTRUCTURA:\n"
-            f"1. Titulo SEO (max 70 caracteres, incluye keyword principal y año)\n"
-            f"2. Meta description (max 160 caracteres)\n"
-            f"3. Contenido: 6-8 parrafos en HTML con listas, alertas y consejos\n"
-            f"4. Palabras de poder: {palabras_str}\n"
-            f"5. Call to Action: {cta}\n"
-            f"6. 3 preguntas frecuentes (FAQ) con respuestas\n\n"
+            f"GANCHO EMOCIONAL (primeros 2 parrafos, lo mas importante):\n{gancho}\n\n"
+            f"ESTRUCTURA DEL EMBUDO DE COPY (síguelo al pie de la letra):\n"
+            f"1. HOOK — Arranca con una frase que pare el dedo. Una pregunta incomoda, una "
+            f"   estadística que duela, una historia corta que el lector sienta propia. NO empieces "
+            f"   con 'Si estás buscando...' o 'En este articulo...'.\n"
+            f"2. PROBLEMA — Describe el dolor exacto que siente tu lector. Haz que diga 'ESO MISMO "
+            f"   ME PASO A MI'. Usa sus mismas palabras, sus miedos, sus dudas.\n"
+            f"3. AGITACIÓN — Explica por qué ignorar esto le va a costar caro. No asustes, solo "
+            f"   hazle ver la realidad de lo que pasa si no actúa.\n"
+            f"4. SOLUCIÓN — Aquí entras tú con la info útil. Pasos concretos, opciones reales, "
+            f"   datos que le sirvan. Usa <ul>, <ol>, <div class='alerta-box'>, <div class='tip-box'>.\n"
+            f"5. PRUEBA SOCIAL — 'Miles de personas ya...', 'Los casos mejor documentados reciben...'.\n"
+            f"6. OBJECIONES — Anticipa las excusas mentales y respondelas: 'No tengo tiempo', "
+            f"   'No me van a hacer caso', 'Seguro es caro...'. Derríbalas una por una.\n"
+            f"7. CALL TO ACTION — {cta}\n"
+            f"\n"
+            f"REGLAS DE ORO:\n"
+            f"- Siempre <p> para parrafos, <strong> para palabras clave\n"
+            f"- Una alerta visual (<div class='alerta-box'>) para info critica\n"
+            f"- Un tip (<div class='tip-box'>) con un consejo que nadie mas te da\n"
+            f"- Listas (<ul> o <ol>) para pasos o items clave\n"
+            f"- CTA al final con <div class='cta-box'> y <a href='#' class='btn-accion'>\n"
+            f"- 3 FAQs que respondan objeciones reales\n"
+            f"- Palabras de poder: {palabras_str}\n"
+            f"- Titulo SEO max 70 caracteres\n"
+            f"- Meta description max 160 caracteres\n"
+            f"- NO empieces con 'Si estás buscando...' ni 'En este articulo...'\n"
+            f"- Suena a humano, no a chatbot. Usa preguntas retoricas, emocion, calle.\n"
+            f"- Si el nicho es en espanol, incluye expresiones latinas/caribenas que suenen naturales\n"
+            f"\n"
             "RESPONDE EXACTAMENTE EN ESTE FORMATO JSON (sin markdown):\n"
             '{\n'
-            '  "title": "Titulo del articulo",\n'
-            '  "meta_description": "Meta description aqui",\n'
-            '  "content": "HTML del contenido aqui",\n'
+            '  "title": "Titulo SEO del articulo (max 70 chars)",\n'
+            '  "meta_description": "Meta description (max 160 chars)",\n'
+            '  "content": "HTML completo del contenido aqui",\n'
             '  "faqs": [\n'
             '    {"question": "Pregunta 1?", "answer": "Respuesta 1"},\n'
             '    {"question": "Pregunta 2?", "answer": "Respuesta 2"},\n'
             '    {"question": "Pregunta 3?", "answer": "Respuesta 3"}\n'
             '  ]\n'
             '}\n'
-            'IMPORTANTE: Solo responde con el JSON. Sin texto adicional.'
+            'IMPORTANTE: Solo responde con el JSON. Sin texto adicional. Sin marcas de agua.'
         )
         
         prompt_data = {

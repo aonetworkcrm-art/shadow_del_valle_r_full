@@ -30,54 +30,54 @@
   },
   "nichos": {
     "personal-injury-law": {
-      "gancho": "Sufriste un accidente que no fue tu culpa y las facturas médicas se acumulan. No estás solo en esto. Vamos a explicarte exactamente cómo proteger tus derechos y obtener la compensación que mereces.",
-      "cta": "Verifica si tu caso califica para compensación aquí",
-      "palabras_poder": ["compensación", "justicia", "derechos", "gratis", "inmediato"]
+      "gancho": "¿Sabías que las aseguradoras tienen equipos completos de ajustadores cuyo único trabajo es pagarte lo menos posible? Mientras tú estás en cama recuperándote, ellos ya están construyendo su caso para minimizar tu compensación. No es justo, pero así funciona el sistema. La buena noticia: cuando sabes cómo jugar sus propias reglas, les ganas.",
+      "cta": "Verifica si tu caso califica para compensación — Sin costo, sin compromiso",
+      "palabras_poder": ["compensación", "justicia", "derechos", "gratis", "inmediato", "indemnización", "victoria"]
     },
     "asset-recovery": {
-      "gancho": "Perdiste dinero en una estafa financiera y no sabes a quién recurrir. Es frustrante, lo sé. Pero hay esperanza: existen servicios profesionales que pueden recuperar tus fondos. Aquí te mostramos cómo.",
-      "cta": "Consulta si tus fondos son recuperables — Evaluación gratuita",
-      "palabras_poder": ["recuperación", "fondos", "estafa", "justicia", "devolución"]
+      "gancho": "Te prometieron rendimientos imposibles y ahora el dinero no aparece. Lo sé, duele más la vergüenza que la pérdida. '¿Cómo caí?', te preguntas. Pero escucha: no eres el primero al que le pasa, y hay profesionales que se dedican EXACTAMENTE a rastrear y recuperar fondos de este tipo de fraudes. No todo está perdido.",
+      "cta": "Consulta si tus fondos son recuperables — Evaluación gratuita y confidencial",
+      "palabras_poder": ["recuperación", "fondos", "estafa", "justicia", "devolución", "rastreo", "forense"]
     },
     "cybersecurity-compliance": {
-      "gancho": "Tu empresa necesita certificación de seguridad pero no sabes por dónde empezar. Es abrumador con tantas opciones. Vamos a desglosar los pasos críticos para que tu negocio cumpla con los estándares.",
-      "cta": "Obtén una cotización personalizada para tu empresa",
-      "palabras_poder": ["seguridad", "cumplimiento", "certificación", "protección", "empresarial"]
+      "gancho": "Un solo error de compliance y tu empresa puede enfrentar multas que la saquen del negocio. No es miedo lo que quiero meterte, es realidad. Las regulaciones cambian cada mes y los auditores no perdonan. Pero en lugar de verlo como un dolor de cabeza, míralo como lo que es: la puerta de entrada a clientes más grandes y contratos más jugosos.",
+      "cta": "Obtén un diagnóstico gratuito de cumplimiento normativo para tu empresa",
+      "palabras_poder": ["seguridad", "cumplimiento", "certificación", "protección", "empresarial", "auditoría", "normativo"]
     },
     "drug-rehab": {
-      "gancho": "Ver a un ser querido luchar contra la adicción es desgarrador. No sabes a dónde acudir ni qué opciones son reales. Estamos aquí para ayudarte a encontrar el camino correcto hacia la recuperación.",
-      "cta": "Habla con un especialista hoy — Confidencial y sin compromiso",
-      "palabras_poder": ["recuperación", "ayuda", "tratamiento", "rehabilitación", "esperanza"]
+      "gancho": "Esa llamada a las 3 de la mañana que ningún padre quiere recibir. Ese olor que reconoces pero no quieres aceptar. Esa sensación en el estómago cuando sabes que algo anda mal pero no sabes qué hacer. Te entiendo. No estás solo en esto y hay un camino que sí funciona, aunque ahora no lo parezca.",
+      "cta": "Habla con un especialista ahora — Llamada confidencial, sin compromiso, 24/7",
+      "palabras_poder": ["recuperación", "ayuda", "tratamiento", "rehabilitación", "esperanza", "familia", "apoyo"]
     },
     "life-insurance-seniors": {
-      "gancho": "Proteger a tu familia después de que te vayas es una preocupación que todos tenemos. Pero encontrar un seguro de vida que no arruine tu bolsillo siendo adulto mayor puede ser frustrante. Vamos a mostrarte las mejores opciones.",
-      "cta": "Compara las mejores pólizas para adultos mayores aquí",
-      "palabras_poder": ["protección", "familia", "seguro", "adulto mayor", "tranquilidad"]
+      "gancho": "Déjame adivinar: llamaste a tres aseguradoras y las tres te dijeron que 'para tu edad las primas son muy altas' o peor, ni te respondieron. Es frustrante cuando lo único que quieres es dejarle algo a los tuyos sin que te cueste un riñón. Hay opciones, solo que las compañías grandes no te las van a contar.",
+      "cta": "Compara las mejores pólizas para adultos mayores en 5 minutos sin compromiso",
+      "palabras_poder": ["protección", "familia", "seguro", "adulto mayor", "tranquilidad", "prima", "cobertura"]
     },
     "online-mba": {
-      "gancho": "Quieres avanzar en tu carrera pero no tienes tiempo para clases presenciales. Un MBA online puede ser la solución, pero elegir el programa correcto entre tantas opciones es confuso. Te ayudamos a decidir.",
-      "cta": "Descubre los mejores programas de MBA online acreditados",
-      "palabras_poder": ["carrera", "crecimiento", "educación", "online", "acreditado"]
+      "gancho": "Tienes el talento, tienes la experiencia, pero ese papelito te sigue cerrando puertas. Un MBA online suena perfecto en teoría, hasta que ves 50 programas diferentes y no sabes cuál es el que realmente vale la pena. No todos los MBA son iguales, y elegir mal te cuesta tiempo y plata que no tienes para perder.",
+      "cta": "Descubre los 5 mejores MBA online acreditados con alta empleabilidad",
+      "palabras_poder": ["carrera", "crecimiento", "educación", "online", "acreditado", "MBA", "empleabilidad"]
     },
     "high-risk-auto": {
-      "gancho": "Te rechazaron el seguro por tu historial de manejo y ya no sabes qué hacer. Es estresante, pero no estás solo. Existen aseguradoras especializadas en alto riesgo que te aceptarán. Te mostramos cómo encontrarlas.",
-      "cta": "Cotiza tu seguro de alto riesgo ahora — Sin penalización",
-      "palabras_poder": ["seguro", "alto riesgo", "auto", "cotización", "aceptación"]
+      "gancho": "Te rechazaron tres veces. 'Lo sentimos, no podemos asegurarlo'. Después de la tercera, ya ni llamas, solo manejas con el miedo de que un golpe te deje pagando años. No tiene que ser así. Existen aseguradoras especializadas en alto riesgo que te aceptan, y sus primas no son tan locas como crees.",
+      "cta": "Cotiza tu seguro de alto riesgo ahora en 2 minutos — Sin penalización por cotizar",
+      "palabras_poder": ["seguro", "alto riesgo", "auto", "cotización", "aceptación", "cobertura", "primas"]
     },
     "defi-investment": {
-      "gancho": "Quieres invertir en cripto pero el miedo a perder todo te paraliza. Es entendible con tanta volatilidad. Vamos a mostrarte estrategias DeFi probadas para hacer crecer tu capital con riesgo controlado.",
-      "cta": "Accede a las mejores plataformas de inversión DeFi",
-      "palabras_poder": ["inversión", "cripto", "DeFi", "rendimiento", "crecimiento"]
+      "gancho": "Todos los días ves a alguien en Instagram que se volvió millonario con cripto y piensas: '¿Y yo por qué no?'. Pero en el fondo sabes que si metes la pata, pierdes sleep. Las DeFi no son una estafa, pero son como el mar: hermosa si sabes dónde meterte, mortal si entras sin saber nadar. Aquí van las coordenadas.",
+      "cta": "Accede a las plataformas DeFi más seguras y rentables verificadas por expertos",
+      "palabras_poder": ["inversión", "cripto", "DeFi", "rendimiento", "crecimiento", "seguridad", "rentabilidad"]
     },
     "mesothelioma": {
-      "gancho": "A ti o a un ser querido le diagnosticaron mesotelioma y no saben qué derechos tienen. Es un momento abrumador, pero hay compensaciones disponibles para víctimas de asbesto. Te explicamos tus opciones legales.",
-      "cta": "Verifica si calificas para compensación — Proceso sin costo",
-      "palabras_poder": ["compensación", "mesotelioma", "asbesto", "legal", "justicia"]
+      "gancho": "Te diagnosticaron mesotelioma y ahora sientes que el tiempo se te acaba. Pero déjame decirte algo que probablemente no sabes: las empresas que fabricaban asbesto sabían de los riesgos desde los años 30 y lo ocultaron. Hay fondos de compensación millonarios esperando a personas como tú. No es caridad, es justicia.",
+      "cta": "Verifica si calificas para compensación por exposición a asbesto — Proceso sin costo",
+      "palabras_poder": ["compensación", "mesotelioma", "asbesto", "legal", "justicia", "indemnización", "demanda"]
     },
     "enterprise-cyber": {
-      "gancho": "Tu empresa está expuesta a ciberataques y no tienes la protección adecuada. Un solo breach puede costarte millones. Vamos a mostrarte las soluciones empresariales que realmente funcionan.",
-      "cta": "Solicita una auditoría de seguridad gratuita para tu empresa",
-      "palabras_poder": ["ciberseguridad", "protección", "empresa", "ransomware", "auditoría"]
+      "gancho": "El 60% de las empresas que sufren un ciberataque grave cierran en menos de 6 meses. No son datos para asustarte, son hechos. Y lo más triste es que el 90% de esos ataques se pudieron prevenir con medidas básicas. Tu firewall de hace 3 años no te va a salvar. Es hora de hablar en serio.",
+      "cta": "Solicita una auditoría de ciberseguridad gratuita para tu empresa — Sin compromiso",
+      "palabras_poder": ["ciberseguridad", "protección", "empresa", "ransomware", "auditoría", "prevención", "brecha"]
     }
   },
   "faq_genericas": [
