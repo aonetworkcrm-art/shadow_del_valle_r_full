@@ -159,7 +159,22 @@ git push
 
 ---
 
-## 🪜 PASO 8: Indexar en Google (para recibir tráfico)
+## 🪜 PASO 8: Conectar la Analítica Propia (opcional pero recomendado)
+
+Para medir visitas y clics en tiempo real sin Google Analytics:
+
+1. Ve a https://vercel.com/dashboard/stores
+2. Haz clic en **"Create Database"** → **"KV"** → **"Create"**
+3. Asígnale el nombre: `shadow-del-valle-r-kv`
+4. Haz clic en **"Connect to Project"** → selecciona tu proyecto
+5. ✅ **Listo** — Vercel añade las variables de entorno automáticamente
+
+Los endpoints `/api/track` y `/api/stats` empiezan a funcionar inmediatamente.
+Las visitas y clics se ven en la página principal en tiempo real.
+
+---
+
+## 🪜 PASO 9: Indexar en Google (para recibir tráfico)
 
 1. Ve a https://search.google.com/search-console
 2. Agrega tu dominio de Vercel como propiedad
@@ -171,7 +186,7 @@ Google puede indexar tus posts en **24-48 horas**.
 
 ---
 
-## 🪜 PASO 9: Iniciar el agente autónomo
+## 🪜 PASO 10: Iniciar el agente autónomo
 
 En tu PC (déjalo corriendo):
 

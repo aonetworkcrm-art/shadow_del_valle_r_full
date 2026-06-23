@@ -67,6 +67,10 @@ shadow_del_valle_r/
 │   ├── copy_prompts.json       # Prompts para FreeBuff
 │   └── layout.html             # Template HTML base
 │
+├── api/
+│   ├── track.js                # ★ Analytics: endpoint de tracking (pageviews + clics)
+│   └── stats.js                # ★ Analytics: endpoint de estadísticas agregadas
+│
 ├── output/
 │   ├── posts/                  # ★ Posts generados (HTML listo para deploy)
 │   ├── ledger/                 # Base de datos de contabilidad

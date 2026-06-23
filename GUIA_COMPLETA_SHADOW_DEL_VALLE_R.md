@@ -153,14 +153,18 @@ La conversación comienza con Romny compartiendo su visión con Gemini (IA de Go
 2. EVALUAR ─────> Aplica fórmula FRR, selecciona mejor nicho
     │
     ▼
-3. FORJAR ──────> FreeBuff Bridge genera prompt
-    │              → Refinery compila HTML ultra-ligero
+3. FORJAR ──────> FreeBuff Bridge genera prompt (tono humano Claude)
+    │              → Refinery compila HTML ultra-ligero + Monetag
+    │              → Tracking analytics inyectado en cada post
     │              → Silo Connector enlaza con otros posts
     ▼
 4. REGISTRAR ───> Ledger guarda transacción
     │
     ▼
-5. DESPLEGAR ───> GitHub push → Vercel build → Google indexa
+5. MEDIR ───────> Analytics: pageviews y clics en Vercel KV
+    │
+    ▼
+6. DESPLEGAR ───> GitHub push → Vercel build → Google indexa
     │
     ▼
 [REPETIR en X horas]
@@ -635,6 +639,37 @@ Componentes disponibles:
 - `cta_box()` → Call-to-action boxes
 - `tabla_comparativa()` → Tablas estilizadas
 - `seccion_contenido_relacionado()` → Enlaces internos
+
+---
+
+### 📊 Motor 7: ANALYTICS (`api/track.js` + `api/stats.js`)
+
+**Propósito:** Medir en tiempo real las visitas y clics que recibe cada post.
+
+**Arquitectura:**
+- `/api/track.js` — Endpoint POST de Vercel serverless que recibe pageviews y clics
+- `/api/stats.js` — Endpoint GET que devuelve estadísticas agregadas
+- `@vercel/kv` — Almacenamiento Redis (gratis en Vercel) para persistencia
+- Script de tracking inyectado automáticamente en cada post por el Refinery
+
+**Datos que mide:**
+- **Pageviews por post** — Cuántas veces se carga cada artículo
+- **Clics en CTAs** — Cuántos usuarios hacen clic en los botones de acción
+- **CTR** — Tasa de clics respecto a visitas (por post y global)
+- **Distribución por hora** — A qué hora del día hay más tráfico
+- **Referrers** — De dónde vienen los visitantes
+- **Comparativa día anterior** — Crecimiento día a día
+- **Totales históricos** — Desde que se lanzó el sitio
+
+**Visualización:**
+- Dashboard en la página principal (`/`) con 3 métricas visibles: Visitas Hoy, Clics Hoy, Total Visitas
+- Se actualiza automáticamente cada 60 segundos
+- Endpoint `/api/stats` devuelve JSON completo para integraciones
+
+**Setup (1 minuto):**
+1. Ve a https://vercel.com/dashboard/stores
+2. Crea una base de datos KV → Conéctala al proyecto
+3. ✅ Listo — Vercel añade las variables de entorno automáticamente
 
 ---
 
