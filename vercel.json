@@ -20,12 +20,28 @@
       "destination": "/output/posts.json"
     },
     {
+      "source": "/api/notify",
+      "destination": "/api/notify.js"
+    },
+    {
+      "source": "/api/notify/:action",
+      "destination": "/api/notify.js"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/output/sitemap.xml"
     },
     {
       "source": "/robots.txt",
       "destination": "/output/robots.txt"
+    },
+    {
+      "source": "/:key.txt",
+      "destination": "/output/:key.txt"
+    },
+    {
+      "source": "/:file.html",
+      "destination": "/output/:file.html"
     }
   ],
   "headers": [

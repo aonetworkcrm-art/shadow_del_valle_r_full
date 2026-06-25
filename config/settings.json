@@ -28,10 +28,10 @@
     "incluir_article_schema": true,
     "incluir_open_graph": true,
     "incluir_twitter_card": true,
-    "dominio": "shadow-del-valle-r.vercel.app"
+    "dominio": "shadow-del-valle-r.pages.dev"
   },
   "monetag": {
-    "site_id": "11190083",
+    "site_id": "253508",
     "habilitado": true,
     "delay_carga_ms": 2000,
     "posicion_anuncio": "despues_3er_parrafo",
@@ -58,7 +58,7 @@
   },
   "vercel": {
     "auto_deploy": false,
-    "dominio": "shadow-del-valle-r.vercel.app",
+    "dominio": "shadow-del-valle-r.pages.dev",
     "framework": "static"
   },
   "telegram": {

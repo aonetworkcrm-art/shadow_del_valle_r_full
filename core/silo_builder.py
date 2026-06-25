@@ -52,60 +52,52 @@ class Refinery:
             return default
     
     def _build_monetag_script(self) -> Tuple[str, str]:
-        """Construye scripts de Monetag para head y body.
-        Incluye: popunder, notificacion push, y aviso visual de popups.
+        """Construye scripts de Monetag optimizados.
+        Estrategia: carga diferida + trigger en interacción del usuario.
         """
         cfg = self.config.get("monetag", {})
         habilitado = cfg.get("habilitado", False)
         site_id = cfg.get("site_id", "")
-        delay_ms = cfg.get("delay_carga_ms", 2000)
         
         if not habilitado or not site_id:
             return "", ""
         
-        # Head script: carga asincrona del tag principal y push notification
         head_script = f"""
-    <!-- Monetag: tag principal (popunder + smartlink) -->
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="{site_id}" async data-cfasync="false"></script>
     <script>
-        // Delay estratégico para proteger Core Web Vitals
-        setTimeout(function() {{
-            var monetagScript = document.createElement('script');
-            monetagScript.src = 'https://alwingulla.com/88/tag.min.js';
-            monetagScript.setAttribute('data-zone', '{site_id}');
-            monetagScript.setAttribute('data-cfasync', 'false');
-            monetagScript.async = true;
-            document.head.appendChild(monetagScript);
-        }}, {delay_ms});
-        
-        // Solicitar notificacion push SOLO cuando el usuario hace clic
-        document.addEventListener('click', function() {{
-            if ('Notification' in window && Notification.permission === 'default') {{
-                setTimeout(function() {{ Notification.requestPermission(); }}, 1000);
-            }}
-        }}, {{ once: true }});
-    </script>"""
-        
-        # Body script: popunder load + aviso visual de Monetag activo
-        body_script = f"""
-    <script>
+        // 🌑 Shadow Monetag — Carga inteligente
         (function() {{
-            // Cargar tag de Monetag (popunder + smartlink)
-            var ad = document.createElement('script');
-            ad.src = 'https://alwingulla.com/88/tag.min.js';
-            ad.setAttribute('data-zone', '{site_id}');
-            ad.setAttribute('data-cfasync', 'false');
-            ad.async = true;
-            ad.onload = function() {{
-                console.log('🌑 Monetag activo - Zone {site_id}');
-            }};
-            ad.onerror = function() {{
-                console.warn('🌑 Monetag: Bloqueador de anuncios detectado');
-            }};
-            document.body.appendChild(ad);
+            var zone = '{site_id}';
+            var loaded = false;
+            var pendingPop = null;
+            
+            function loadMonetag() {{
+                if (loaded) return;
+                loaded = true;
+                var s = document.createElement('script');
+                s.src = 'https://quge5.com/88/tag.min.js';
+                s.setAttribute('data-zone', zone);
+                s.setAttribute('data-cfasync', 'false');
+                s.async = true;
+                document.head.appendChild(s);
+            }}
+            
+            // Cargar después de 3s o al primer clic
+            setTimeout(loadMonetag, 3000);
+            document.addEventListener('click', loadMonetag, {{once: true}});
+            document.addEventListener('scroll', function() {{
+                if (window.scrollY > 200) loadMonetag();
+            }}, {{once: true}});
+            
+            // Solicitar notificación push al hacer clic
+            document.addEventListener('click', function() {{
+                if ('Notification' in window && Notification.permission === 'default') {{
+                    setTimeout(function() {{ Notification.requestPermission(); }}, 500);
+                }}
+            }}, {{once: true}});
         }})();
     </script>"""
         
+        body_script = ""  # Todo viaja en head ahora
         return head_script, body_script
     
     def _build_css(self) -> str:
@@ -162,18 +154,30 @@ class Refinery:
         schema = '{\n  "@context":"https://schema.org",\n  "@type":"FAQPage",\n  "mainEntity":[\n    ' + ',\n    '.join(items) + '\n  ]\n}'
         return schema
     
-    def _build_article_schema(self, titulo: str, desc: str, niche: str, fecha: str, dominio: str = "TU_DOMINIO.vercel.app") -> str:
-        """Genera JSON-LD de Article Schema."""
+    def _build_article_schema(self, titulo: str, desc: str, niche: str, fecha: str, dominio: str = "TU_DOMINIO.vercel.app", slug: str = "") -> str:
+        """Genera JSON-LD con Article Schema + BreadcrumbList en @graph."""
+        slug_path = f"/posts/{slug}/" if slug else "/"
         schema = f"""{{
   "@context":"https://schema.org",
-  "@type":"Article",
-  "headline":{json.dumps(titulo, ensure_ascii=False)},
-  "description":{json.dumps(desc, ensure_ascii=False)},
-  "datePublished":"{fecha}",
-  "dateModified":"{datetime.now().strftime('%Y-%m-%d')}",
-  "author":{{"@type":"Person","name":"Shadow Del Valle R"}},
-  "publisher":{{"@type":"Organization","name":"Shadow Del Valle R"}},
-  "mainEntityOfPage":{{"@type":"WebPage","@id":"https://{dominio}"}}
+  "@graph":[
+    {{
+      "@type":"Article",
+      "headline":{json.dumps(titulo, ensure_ascii=False)},
+      "description":{json.dumps(desc, ensure_ascii=False)},
+      "datePublished":"{fecha}",
+      "dateModified":"{datetime.now().strftime('%Y-%m-%d')}",
+      "author":{{"@type":"Person","name":"Shadow Del Valle R"}},
+      "publisher":{{"@type":"Organization","name":"Shadow Del Valle R"}},
+      "mainEntityOfPage":{{"@type":"WebPage","@id":"https://{dominio}{slug_path}"}}
+    }},
+    {{
+      "@type":"BreadcrumbList",
+      "itemListElement":[
+        {{"@type":"ListItem","position":1,"name":"Inicio","item":"https://{dominio}/"}},
+        {{"@type":"ListItem","position":2,"name":"Posts","item":"https://{dominio}{slug_path}"}}
+      ]
+    }}
+  ]
 }}"""
         return schema
     
@@ -224,7 +228,7 @@ class Refinery:
                 for f in faqs
             ])
         
-        article_schema = self._build_article_schema(titulo, meta, nicho, fecha, dominio)
+        article_schema = self._build_article_schema(titulo, meta, nicho, fecha, dominio, slug)
         
         # Construir el HTML completo
         html = f"""<!DOCTYPE html>
@@ -319,7 +323,8 @@ class Refinery:
     
     def guardar_post(self, html: str, slug: str, output_dir: str = "output/posts") -> str:
         """
-        Guarda el HTML en el directorio de salida.
+        Guarda el HTML como output/posts/slug/index.html
+        (formato nativo de Cloudflare Pages para clean URLs).
         
         Args:
             html: Contenido HTML completo
@@ -329,9 +334,9 @@ class Refinery:
         Returns:
             str: Ruta completa del archivo guardado
         """
-        os.makedirs(output_dir, exist_ok=True)
-        filename = f"{slug}.html"
-        filepath = os.path.join(output_dir, filename)
+        post_dir = os.path.join(output_dir, slug)
+        os.makedirs(post_dir, exist_ok=True)
+        filepath = os.path.join(post_dir, "index.html")
         
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(html)

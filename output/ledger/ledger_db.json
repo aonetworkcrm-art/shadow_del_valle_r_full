@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "ultima_actualizacion": 1782205936.978101,
-  "fecha_actualizacion": "2026-06-23 05:12:16",
-  "total_entries": 9,
+  "ultima_actualizacion": 1782294921.815015,
+  "fecha_actualizacion": "2026-06-24 05:55:21",
+  "total_entries": 10,
   "entries": [
     {
       "id": "TXN-1782199269043",
@@ -77,68 +77,84 @@
       "fecha_simple": "2026-06-23"
     },
     {
-      "id": "TXN-1782202679453",
+      "id": "TXN-1782215688188",
       "tipo": "post",
-      "concepto": "Post: Guía Completa sobre lesiones: Todo lo que Necesitas Saber [2026]",
-      "monto": 24200.0,
+      "concepto": "Post: Guía Completa sobre funerarios: Todo lo que Necesitas Saber [2026]",
+      "monto": 4465.0,
       "fuente": "seo_content",
-      "nicho": "Abogados de Accidentes (Personal Injury)",
+      "nicho": "Seguros de Vida para Adultos Mayores",
       "metadata": {
-        "cpc": 220.0,
-        "clicks_estimados_diarios": 110,
-        "ingreso_diario_proyectado": 24200.0
+        "cpc": 95.0,
+        "clicks_estimados_diarios": 47,
+        "ingreso_diario_proyectado": 4465.0
       },
-      "timestamp": 1782202679.4539857,
-      "fecha": "2026-06-23 04:17:59",
+      "timestamp": 1782215688.18832,
+      "fecha": "2026-06-23 07:54:48",
       "fecha_simple": "2026-06-23"
     },
     {
-      "id": "TXN-1782203290056",
+      "id": "TXN-1782230260514",
       "tipo": "post",
-      "concepto": "Post: Guía Completa sobre compensación: Todo lo que Necesitas Saber [2026]",
-      "monto": 24200.0,
+      "concepto": "Post: Guía Completa sobre posgrado: Todo lo que Necesitas Saber [2026]",
+      "monto": 5000.0,
       "fuente": "seo_content",
-      "nicho": "Abogados de Accidentes (Personal Injury)",
+      "nicho": "MBA y Posgrados Online",
       "metadata": {
-        "cpc": 220.0,
-        "clicks_estimados_diarios": 110,
-        "ingreso_diario_proyectado": 24200.0
+        "cpc": 100.0,
+        "clicks_estimados_diarios": 50,
+        "ingreso_diario_proyectado": 5000.0
       },
-      "timestamp": 1782203290.0562334,
-      "fecha": "2026-06-23 04:28:10",
+      "timestamp": 1782230260.5262706,
+      "fecha": "2026-06-23 11:57:40",
       "fecha_simple": "2026-06-23"
     },
     {
-      "id": "TXN-1782205697376",
+      "id": "TXN-1782244683709",
       "tipo": "post",
-      "concepto": "Post: Guía Completa sobre compensación: Todo lo que Necesitas Saber [2026]",
-      "monto": 24200.0,
+      "concepto": "Post: Guía Completa sobre auto: Todo lo que Necesitas Saber [2026]",
+      "monto": 5460.0,
       "fuente": "seo_content",
-      "nicho": "Abogados de Accidentes (Personal Injury)",
+      "nicho": "Seguros de Auto Alto Riesgo",
       "metadata": {
-        "cpc": 220.0,
-        "clicks_estimados_diarios": 110,
-        "ingreso_diario_proyectado": 24200.0
+        "cpc": 105.0,
+        "clicks_estimados_diarios": 52,
+        "ingreso_diario_proyectado": 5460.0
       },
-      "timestamp": 1782205697.3766556,
-      "fecha": "2026-06-23 05:08:17",
+      "timestamp": 1782244683.710989,
+      "fecha": "2026-06-23 15:58:03",
       "fecha_simple": "2026-06-23"
     },
     {
-      "id": "TXN-1782205936977",
+      "id": "TXN-1782273610092",
       "tipo": "post",
-      "concepto": "Post: Guía Completa sobre abogados: Todo lo que Necesitas Saber [2026]",
-      "monto": 24200.0,
+      "concepto": "Post: Guía Completa sobre adicción: Todo lo que Necesitas Saber [2026]",
+      "monto": 7200.0,
       "fuente": "seo_content",
-      "nicho": "Abogados de Accidentes (Personal Injury)",
+      "nicho": "Centros de Rehabilitación",
       "metadata": {
-        "cpc": 220.0,
-        "clicks_estimados_diarios": 110,
-        "ingreso_diario_proyectado": 24200.0
+        "cpc": 120.0,
+        "clicks_estimados_diarios": 60,
+        "ingreso_diario_proyectado": 7200.0
       },
-      "timestamp": 1782205936.977101,
-      "fecha": "2026-06-23 05:12:16",
-      "fecha_simple": "2026-06-23"
+      "timestamp": 1782273610.0921977,
+      "fecha": "2026-06-24 00:00:10",
+      "fecha_simple": "2026-06-24"
+    },
+    {
+      "id": "TXN-1782294921815",
+      "tipo": "post",
+      "concepto": "Post: Guía Completa sobre protección: Todo lo que Necesitas Saber [2026]",
+      "monto": 7200.0,
+      "fuente": "seo_content",
+      "nicho": "Ciberseguridad Empresarial",
+      "metadata": {
+        "cpc": 120.0,
+        "clicks_estimados_diarios": 60,
+        "ingreso_diario_proyectado": 7200.0
+      },
+      "timestamp": 1782294921.815015,
+      "fecha": "2026-06-24 05:55:21",
+      "fecha_simple": "2026-06-24"
     }
   ]
 }
