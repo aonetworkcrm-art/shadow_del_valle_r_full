@@ -26,19 +26,19 @@ from datetime import datetime
 
 # ─── Colores ───
 class C:
-    R = '\033[0m'
-    B = '\033[1m'
-    D = '\033[2m'
-    G = '\033[92m'
-    C = '\033[96m'
-    Y = '\033[93m'
-    R = '\033[91m'
-    M = '\033[95m'
+    N = '\033[0m'   # reset/none
+    B = '\033[1m'   # bold
+    D = '\033[2m'   # dim
+    G = '\033[92m'  # green
+    C = '\033[96m'  # cyan
+    Y = '\033[93m'  # yellow
+    R = '\033[91m'  # red
+    M = '\033[95m'  # magenta
 
 
 def c(text, color, bold=False):
     prefix = C.B if bold else ''
-    return prefix + color + str(text) + C.R
+    return prefix + color + str(text) + C.N
 
 
 def header():

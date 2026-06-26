@@ -1,0 +1,84 @@
+# 🌑 Shadow Del Valle R — Auto Generate & Deploy
+# Triggered by: /api/generate endpoint OR manual dispatch
+# Actions: all | generate | deploy | notify
+
+name: Generate & Deploy
+
+on:
+  repository_dispatch:
+    types: [generate-posts]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Acción a ejecutar (all|generate|deploy|notify)'
+        required: false
+        default: 'all'
+
+jobs:
+  generate:
+    if: ${{ github.event.client_payload.action == 'all' || github.event.client_payload.action == 'generate' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 📦 Install Python deps
+        run: |
+          cd shadow_del_valle_r
+          pip install -r requirements.txt
+
+      - name: 🏗️ Generate all posts
+        run: |
+          cd shadow_del_valle_r
+          python generate_all.py
+        env:
+          PYTHONUNBUFFERED: 1
+
+      - name: 📤 Commit and push generated files
+        run: |
+          cd shadow_del_valle_r
+          git config user.name "Shadow Bot"
+          git config user.email "bot@shadowdelvalle.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "🌑 Auto-generate posts [$(date +'%Y-%m-%d %H:%M')]"
+          git push
+
+  deploy:
+    if: ${{ always() && (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'deploy' || github.event_name == 'workflow_dispatch') }}
+    needs: [generate]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install deps
+        run: |
+          cd shadow_del_valle_r
+          npm install
+
+      - name: ▲ Deploy to Vercel
+        run: |
+          cd shadow_del_valle_r
+          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+  notify:
+    if: ${{ always() && (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'notify' || github.event_name == 'workflow_dispatch') }}
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚡ IndexNow notification
+        run: |
+          curl -s "https://shadow-del-valle-r.vercel.app/api/notify?action=all" | echo "📋 IndexNow result: $(cat)"

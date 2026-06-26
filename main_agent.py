@@ -34,6 +34,7 @@ from core.silo_connector import SiloConnector
 from core.freebuff_bridge import FreeBuffBridge
 from core.deployer import Deployer
 from core.ledger import Ledger
+from generar_contenido import ContentGenerator
 
 
 # ─── Colores para consola ───
@@ -104,6 +105,7 @@ class ShadowDelValleAgent:
         self.bridge = FreeBuffBridge()
         self.deployer = Deployer()
         self.ledger = Ledger()
+        self.content_generator = ContentGenerator()
         
         # Config del scheduler
         scheduler = self.config.get("scheduler", {})
@@ -211,9 +213,10 @@ class ShadowDelValleAgent:
     def _generar_post(self, nicho: Dict) -> bool:
         """
         Genera un post para el nicho seleccionado.
+        Usa OpenRouter (IA real) con fallback a template.
         
         Args:
-            nicho: Dict con datos del nicho
+            nicho: Dict con datos del nicho (de NICHOS_DB o Radar)
         
         Returns:
             bool: True si se generó exitosamente
@@ -221,82 +224,35 @@ class ShadowDelValleAgent:
         try:
             self._log(f"Generando post para: {c(nicho['name'], Colors.YELLOW)}")
             
-            # 1. Obtener tópicos del nicho para el título
-            import random
-            topics = nicho.get("tags", [nicho["name"]])
-            topic = random.choice(topics)
+            # 1. Generar contenido con IA (o template fallback)
+            resultado = self.content_generator.generate_for_niche(nicho)
             
-            # 2. Construir título SEO
-            titulo = f"Guía Completa sobre {topic}: Todo lo que Necesitas Saber [2026]"
+            # 2. Extraer datos del resultado
+            titulo = resultado["titulo"]
+            contenido = resultado["contenido_html"]
+            meta_desc = resultado.get("meta_desc", "")
+            faqs = resultado.get("faqs", [])
+            slug = resultado["slug"]
+            keywords = resultado.get("keywords", ", ".join(nicho.get("tags", [])))
+            cpc = resultado.get("cpc", nicho.get("cpc_avg", 0))
             
-            # 3. Generar contenido simulado con tono humano (FreeBuffBridge genera prompts reales)
-            cpc = nicho["cpc_avg"]
-            contenido = f"""
-    <p>Aquí no vine a darte el speech corporativo de siempre. Vas a leer cosas que la mayoría de la gente no te dice porque no les conviene, o porque simplemente no se han tomado el tiempo de investigarlo a fondo. Y eso es justo lo que vamos a hacer ahora. {topic} no tiene por qué ser complicado — lo complicado es no saber por dónde empezar.</p>
-    
-    <div class="alerta-box">
-        <div class="alerta-title">⚠️ LO QUE NADIE TE CUENTA:</div>
-        <p>La mayoría de la gente pierde dinero y oportunidades en {nicho['name'].lower()} simplemente porque no sabe lo que tú estás a punto de aprender. No porque sea complicado — porque nadie se sienta a explicarlo como se debe. Hasta hoy.</p>
-    </div>
-    
-    <h2>El Problema Real (El Que Duele)</h2>
-    <p>Mira, te voy a ser sincero: el sistema está diseñado para que tú no sepas esto. Las empresas, los intermediarios, los que viven de esto — a ellos les conviene que tú estés desinformado. Porque cuando no sabes, pagas de más. O peor, no actúas y pierdes la oportunidad. ¿Te suena familiar esa sensación de 'si hubiera sabido antes...'?</p>
-    
-    <p>Pues hoy es el día en que eso cambia. Vamos a ver paso a paso, sin rodeos y sin miedo, cómo navegar {topic} como alguien que sabe lo que hace.</p>
-    
-    <h2>Lo Que Necesitas Saber (Sin Paja)</h2>
-    <ul>
-        <li><strong>El 80% de la gente comete el mismo error</strong> — y no es porque sean tontos, es porque nadie les explicó el primer paso correcto</li>
-        <li><strong>Lo barato sale caro</strong> — especialmente en {nicho['name'].lower()}. Ve con los que tienen reputación, aunque cobren un poco más</li>
-        <li><strong>El tiempo es tu enemigo</strong> — esperar 'al momento perfecto' te va a costar más caro que equivocarte y aprender en el camino</li>
-    </ul>
-    
-    <div class="tip-box">
-        <div class="alerta-title">💡 EL CONSEJO QUE NADIE TE VA A PAGAR:</div>
-        <p>La gente que mejor le va en esto no es la más inteligente ni la que tiene más plata. Es la que <strong>decide rápido y actúa más rápido</strong>. Mientras otros están 'investigando' (léase: procrastinando), ellos ya están viendo resultados. La información vale verga si no la usas.</p>
-    </div>
-    
-    <h2>Pasos Concretos para Hoy Mismo</h2>
-    <ol>
-        <li><strong>Identifica qué necesitas realmente</strong> — no lo que te quieren vender, sino lo que resuelve tu problema específico</li>
-        <li><strong>Compara con cabeza</strong> — no solo precios, mira reseñas, resultados, tiempo en el mercado</li>
-        <li><strong>Toma la decisión</strong> — y una vez que decidas, no mires atrás. La parálisis por análisis es más cara que una mala decisión</li>
-    </ol>
-    
-    <h2>¿Y Si No Funciona?</h2>
-    <p>Te voy a ser honesto: nada es 100% seguro en esta vida. Pero lo que SÍ es seguro es que si no haces nada, te vas a quedar exactamente donde estás. Y por lo que sé de {topic}, las personas que actúan informadas tienen una tasa de éxito del 80% o más. Los que esperan 'a ver qué pasa' rara vez llegan a algún lado.</p>
-    
-    <div class="cta-box">
-        <p>💡 <strong>IMPORTANTE:</strong> Para que los enlaces funcionen correctamente, permite ventanas emergentes (popups) para este sitio en tu navegador. Es rápido y seguro.</p>
-        <a href="javascript:void(0)" class="btn-accion" onclick="window.open('https://shadow-del-valle-r.vercel.app', '_blank'); return false;">👉 Verifica si Calificas Ahora — Es Gratis</a>
-    </div>
-    """
-            
-            # 4. Generar FAQs
-            faqs = [
-                {"question": f"¿Cuánto cuesta {topic}?", "answer": f"Los costos varían según el proveedor y la ubicación. Te recomendamos solicitar cotizaciones personalizadas para obtener precios exactos."},
-                {"question": f"¿Cuánto tiempo toma ver resultados con {topic}?", "answer": "Los resultados pueden verse en cuestión de días o semanas, dependiendo de la complejidad del caso y la rapidez de la gestión."},
-                {"question": "¿Es seguro y confiable?", "answer": "Absolutamente. Todos nuestros procesos siguen los más altos estándares de calidad y transparencia del mercado."}
-            ]
-            
-            # 5. Construir el HTML
-            slug = f"guia-{topic.lower().replace(' ', '-').replace(':', '')[:50]}"
+            # 3. Construir el HTML con el Refinery
             html = self.refinery.convertir_a_html(
                 titulo=titulo,
                 nicho=nicho["name"],
-                categoria=nicho["category"],
+                categoria=nicho.get("category", "General"),
                 cpc=cpc,
                 contenido_html=contenido,
-                meta_desc=f"Guía completa sobre {topic}. Información actualizada, pasos prácticos y recursos útiles para tomar la mejor decisión.",
-                keywords=f"{', '.join(nicho.get('tags', []))}, guía, {datetime.now().strftime('%Y')}",
+                meta_desc=meta_desc or f"Guia completa sobre {nicho.get('name', '')}. Informacion actualizada y verificada.",
+                keywords=keywords,
                 faqs=faqs,
                 slug=slug
             )
             
-            # 6. Guardar el post
+            # 4. Guardar el post
             ruta = self.refinery.guardar_post(html, slug)
             
-            # 7. Registrar en el ledger
+            # 5. Registrar en el ledger
             clicks_estimados = int(cpc * 0.5)  # Estimación conservadora
             entry = self.ledger.registrar_post(
                 titulo=titulo,
@@ -305,18 +261,18 @@ class ShadowDelValleAgent:
                 clicks_estimados=clicks_estimados
             )
             
-            # 8. Registrar en el conector de silos
+            # 6. Registrar en el conector de silos
             self.connector.registrar_post({
                 "slug": slug,
                 "titulo": titulo,
                 "nicho_id": nicho["id"],
                 "nicho": nicho["name"],
-                "categoria": nicho["category"],
+                "categoria": nicho.get("category", "General"),
                 "timestamp": time.time(),
                 "frr": self.radar.frr_por_nicho(nicho["id"]) or 0
             })
             
-            # 9. Actualizar contadores
+            # 7. Actualizar contadores
             state.total_posts_generated += 1
             state.rounds_completed += 1
             state.last_round_time = time.time()
@@ -324,16 +280,17 @@ class ShadowDelValleAgent:
             # Estadísticas del post
             tamano_kb = round(len(html.encode('utf-8')) / 1024, 2)
             frr = self.radar.frr_por_nicho(nicho["id"])
+            fuente = resultado.get("source", "template")
             
             self._log_success(f"Post generado: {c(titulo[:50], Colors.GREEN)}")
-            self._log_success(f"  📁 {ruta} ({tamano_kb} KB)")
+            self._log_success(f"  📁 {ruta} ({tamano_kb} KB)  🧠 Fuente: {fuente}")
             self._log_success(f"  💰 CPC: ${cpc:.0f} | FRR: {frr:.2f}")
             self._log_success(f"  📈 Proyección diaria: ${cpc * clicks_estimados:.2f}")
             
-            # 10. Si es auto-deploy, empujar a producción
+            # 8. Auto-deploy si está configurado
             if self.config.get("github", {}).get("auto_push", False):
                 deploy_result = self.deployer.deploy_completo(
-                    f"🌑 Auto: {topic} (${cpc:.0f} CPC)"
+                    f"🌑 Auto: {titulo[:40]} (${cpc:.0f} CPC)"
                 )
                 if deploy_result.get("success"):
                     self._log_success("Deploy a producción exitoso")

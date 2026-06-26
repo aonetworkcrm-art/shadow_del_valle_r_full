@@ -22,7 +22,101 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 # 🌐 Dominio activo (cambiar cuando tengas dominio personalizado)
 SITE_DOMAIN = "shadow-del-valle-r.pages.dev"
 
+STATE_FILE = "output/.generation_state.json"
+CONFIG_FILE = "config/settings.json"
+
 refinery = Refinery()
+
+
+def load_config():
+    """Carga la configuración desde settings.json."""
+    try:
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"  ⚠️ Error leyendo {CONFIG_FILE}: {e}")
+    return {}
+
+
+def get_max_posts_per_day(config=None):
+    """Obtiene max_posts_por_dia desde la configuración."""
+    if config is None:
+        config = load_config()
+    return config.get("scheduler", {}).get("max_posts_por_dia", 6)
+
+
+def load_state():
+    """Carga el estado de generación (daily counter + rotation index)."""
+    if os.path.exists(STATE_FILE):
+        try:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            pass
+    return {"date": "", "count_today": 0, "last_index": 0, "generated_slugs": []}
+
+
+def save_state(state):
+    """Guarda el estado de generación."""
+    os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
+    with open(STATE_FILE, "w", encoding="utf-8") as f:
+        json.dump(state, f, indent=2)
+
+
+def select_posts_for_today(posts_data, max_per_day):
+    """
+    Selecciona qué posts generar hoy respetando el límite diario.
+    
+    Usa rotación circular: cada día se genera un subconjunto diferente
+    del pool total de posts, avanzando el índice para la próxima vez.
+    
+    Retorna: (lista_de_posts_a_generar, estado_actualizado)
+    """
+    today = datetime.now().strftime("%Y-%m-%d")
+    state = load_state()
+    
+    # Si es un día nuevo, reiniciar contador pero mantener índice de rotación
+    if state.get("date") != today:
+        state["date"] = today
+        state["count_today"] = 0
+    
+    # Verificar límite diario
+    if state["count_today"] >= max_per_day:
+        print(f"  ⏰ Límite diario alcanzado: {state['count_today']}/{max_per_day} posts")
+        print(f"  Vuelve mañana o aumenta 'max_posts_por_dia' en config/settings.json")
+        return [], state
+    
+    # Calcular cuántos posts podemos generar hoy
+    remaining = max_per_day - state["count_today"]
+    total_pool = len(posts_data)
+    
+    # Seleccionar posts empezando desde last_index, con rotación circular
+    start = state["last_index"]
+    selected = []
+    selected_indices = []
+    
+    for i in range(min(remaining, total_pool)):
+        idx = (start + i) % total_pool
+        # Evitar duplicados si el pool es más chico que remaining
+        if idx in selected_indices:
+            break
+        selected_indices.append(idx)
+        selected.append(posts_data[idx])
+    
+    # Actualizar estado
+    if selected_indices:
+        # Avanzar el índice al siguiente post después del último generado
+        state["last_index"] = (selected_indices[-1] + 1) % total_pool
+        state["count_today"] += len(selected)
+        # Registrar slugs generados
+        for post in selected:
+            slug = post.get("slug", "")
+            if slug and slug not in state["generated_slugs"]:
+                state["generated_slugs"].append(slug)
+    
+    save_state(state)
+    return selected, state
 
 # ─── Contenido por nicho ───
 POSTS_DATA = [
@@ -594,12 +688,24 @@ POSTS_DATA = [
     },
 ]
 
-def generar_posts():
-    """Genera todos los posts y actualiza el registro."""
+def generar_posts(posts_a_generar=None):
+    """
+    Genera los posts especificados y actualiza el registro.
+    
+    Si posts_a_generar es None, genera todos los POSTS_DATA.
+    Si es una lista, genera solo esos posts.
+    """
+    if posts_a_generar is None:
+        posts_a_generar = POSTS_DATA
+    
+    pool_size = len(POSTS_DATA)
+    batch_size = len(posts_a_generar)
     todos_los_posts = []
     
-    for i, data in enumerate(POSTS_DATA, 1):
-        print(f"  [{i}/{len(POSTS_DATA)}] Generando: {data['slug']}...")
+    for i, data in enumerate(posts_a_generar, 1):
+        # Buscar el índice real en POSTS_DATA para el contador
+        real_idx = next((j for j, p in enumerate(POSTS_DATA) if p["slug"] == data["slug"]), -1) + 1
+        print(f"  [{real_idx}/{pool_size}] Generando: {data['slug']}...")
         faqs = data.get("faqs", [])
         
         html = refinery.convertir_a_html(
@@ -628,30 +734,51 @@ def generar_posts():
             "tamano_kb": tamano_kb
         })
     
-    # Guardar posts.json
-    posts_json = []
-    for p in todos_los_posts:
-        posts_json.append({
-            "slug": p["slug"],
-            "titulo": p["titulo"],
-            "timestamp": p["timestamp"],
-            "cpc": p["cpc"],
-            "nicho": p["nicho"],
-            "categoria": p["categoria"]
-        })
+    # ─── posts.json: fusionar posts nuevos + existentes ───
+    # Cargar posts existentes para no perder los de días anteriores
+    existing_posts = []
+    if os.path.exists("output/posts.json"):
+        try:
+            with open("output/posts.json", "r", encoding="utf-8") as f:
+                existing_posts = json.load(f)
+        except:
+            pass
+    
+    # Fusionar: los nuevos reemplazan a los existentes con el mismo slug
+    nuevos_slugs = {p["slug"] for p in todos_los_posts}
+    
+    # Mantener posts de días anteriores que no se regeneraron hoy
+    merged_posts = [p for p in existing_posts if p["slug"] not in nuevos_slugs]
+    merged_posts.extend([{
+        "slug": p["slug"],
+        "titulo": p["titulo"],
+        "timestamp": p["timestamp"],
+        "cpc": p["cpc"],
+        "nicho": p["nicho"],
+        "categoria": p["categoria"]
+    } for p in todos_los_posts])
+    
+    # Ordenar por timestamp (más reciente primero)
+    merged_posts.sort(key=lambda x: x.get("timestamp", 0), reverse=True)
     
     with open("output/posts.json", "w", encoding="utf-8") as f:
-        json.dump(posts_json, f, indent=2, ensure_ascii=False)
+        json.dump(merged_posts, f, indent=2, ensure_ascii=False)
     
-    # Generar sitemap
-    sitemap = refinery.generar_sitemap(todos_los_posts)
+    # Usar merged_posts para el sitemap
+    todos_los_posts_para_sitemap = todos_los_posts + [{
+        "slug": p["slug"],
+        "timestamp": p.get("timestamp", time.time())
+    } for p in existing_posts if p["slug"] not in nuevos_slugs]
+    
+    # Generar sitemap con TODOS los posts (nuevos + existentes)
+    sitemap = refinery.generar_sitemap(todos_los_posts_para_sitemap)
     
     # Actualizar robots.txt
     with open("output/robots.txt", "w", encoding="utf-8") as f:
         f.write(f"User-agent: *\nAllow: /\nSitemap: https://{SITE_DOMAIN}/sitemap.xml\n")
     
     # Agregar internal linking entre posts del mismo silo (post-processing)
-    for post_data in POSTS_DATA:
+    for post_data in posts_a_generar:
         mismo_silo = [p for p in POSTS_DATA if p["categoria"] == post_data["categoria"] and p["slug"] != post_data["slug"]]
         if mismo_silo:
             cat = post_data["categoria"]
@@ -671,7 +798,7 @@ def generar_posts():
                 with open(post_path, "w", encoding="utf-8") as f:
                     f.write(content)
     
-    return todos_los_posts
+    return todos_los_posts  # solo los generados en esta ejecución
 
 
 def notify_indexnow():
@@ -724,19 +851,60 @@ if __name__ == "__main__":
     print("  🌑 SHADOW DEL VALLE R — GENERACIÓN MASIVA")
     print("=" * 60 + "\n")
     
-    posts = generar_posts()
+    # ─── Respetar límite diario ───
+    config = load_config()
+    max_per_day = get_max_posts_per_day(config)
+    
+    print(f"  📋 Pool total: {len(POSTS_DATA)} posts · Límite diario: {max_per_day}")
+    print()
+    
+    # Forzar regeneración completa: ignorar el límite (check ANTES del límite)
+    force_mode = '--force' in sys.argv or '-f' in sys.argv
+    
+    if force_mode:
+        print(f"  🚨 Modo FORCE: generando TODOS los posts (ignorando límite)\n")
+        posts = generar_posts()
+        # Reiniciar contador diario
+        state = load_state()
+        state["count_today"] = 0
+        state["date"] = datetime.now().strftime("%Y-%m-%d")
+        save_state(state)
+        # Saltar verificación de límite, ir directo a resultados
+    else:
+        posts_hoy, state = select_posts_for_today(POSTS_DATA, max_per_day)
+        
+        if not posts_hoy:
+            print(f"  ✅ No hay posts pendientes para hoy. El límite de {max_per_day} ya fue alcanzado.")
+            print(f"  🔄 Próximo batch mañana o cambia 'max_posts_por_dia' en settings.json")
+            print(f"{'=' * 60}")
+            sys.exit(0)
+        
+        print(f"  🎯 Generando {len(posts_hoy)}/{max_per_day} posts del día (rotación {state['last_index']}/{len(POSTS_DATA)})")
+        print()
+        posts = generar_posts(posts_a_generar=posts_hoy)
     
     # Notificar a IndexNow para indexación instantánea
     indexed = notify_indexnow()
     if indexed > 0:
         print(f"  ⚡ {indexed} URLs enviadas a IndexNow (Bing/Yandex)")
     
+    # Verificar si se generaron todos los posts del pool
+    all_generated = set(state.get("generated_slugs", []))
+    total_pool_slugs = {p["slug"] for p in POSTS_DATA}
+    ciclo_completo = all_generated >= total_pool_slugs
+    
     print(f"\n{'=' * 60}")
-    print(f"  ✅ {len(posts)} posts generados exitosamente")
-    print(f"  📁 output/posts/ — {len(posts)} archivos HTML")
-    print(f"  📄 output/posts.json — registro actualizado")
-    print(f"  🗺️  output/sitemap.xml — sitemap generado")
+    print(f"  ✅ {len(posts)} posts generados hoy ({state['count_today']}/{max_per_day} del límite diario)")
+    print(f"  📁 output/posts/ — {len(posts)} archivos HTML nuevos")
+    print(f"  📄 output/posts.json — fusionado con posts anteriores")
+    print(f"  🗺️  output/sitemap.xml — sitemap actualizado")
     print(f"  🤖 output/robots.txt — actualizado")
+    
+    if ciclo_completo:
+        print(f"  🔄 Pool completo generado — el ciclo se reiniciará mañana")
+        # Resetear generated_slugs para el próximo ciclo
+        state["generated_slugs"] = []
+        save_state(state)
     
     cpc_promedio = sum(p["cpc"] for p in posts) / len(posts) if posts else 0
     print(f"\n  📊 CPC Promedio: ${cpc_promedio:.0f}")

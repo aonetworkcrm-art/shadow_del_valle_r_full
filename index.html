@@ -56,7 +56,41 @@
         footer{margin-top:40px;padding:24px 0;border-top:1px solid var(--border);text-align:center;font-size:9px;color:var(--dim);letter-spacing:1px}
         footer strong{color:var(--accent2)}
         .loading{text-align:center;padding:48px 0;color:var(--dim);font-size:11px;animation:pulse 1.5s ease-in-out infinite}
-        @media(max-width:600px){.container{padding:0 12px}h1{font-size:24px}.hero{padding:32px 0 24px}.post-card{padding:14px 16px}.post-card .arrow{display:none}}
+        /* === Admin Panel === */
+        .admin-panel{background:var(--card);border:1px solid var(--border);margin:16px 0;overflow:hidden}
+        .admin-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;user-select:none;border-bottom:1px solid transparent;transition:border-color 0.3s}
+        .admin-header:hover{background:rgba(211,47,47,0.05)}
+        .admin-panel.open .admin-header{border-bottom-color:var(--border)}
+        .admin-toggle{font-size:10px;color:var(--dim);transition:transform 0.3s}
+        .admin-panel.open .admin-toggle{transform:rotate(180deg)}
+        .admin-body{display:none;padding:16px;animation:fadeIn 0.3s ease}
+        .admin-panel.open .admin-body{display:block}
+        .admin-desc{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.5}
+        .admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+        .admin-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:10px 18px;font-size:11px;cursor:pointer;transition:all 0.3s;letter-spacing:0.5px;display:inline-flex;align-items:center;gap:6px}
+        .admin-btn:hover{transform:translateY(-1px)}
+        .admin-btn.primary{background:var(--grad);color:#fff;border:none;font-weight:600}
+        .admin-btn.primary:hover{box-shadow:0 4px 16px rgba(211,47,47,0.3)}
+        .admin-btn.secondary:hover{border-color:var(--accent2);color:var(--accent2)}
+        .admin-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none!important}
+        .admin-log{border:1px solid var(--border);background:var(--card2);max-height:240px;overflow-y:auto;font-family:'Courier New',monospace}
+        .admin-log-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);font-size:10px;color:var(--dim);position:sticky;top:0;z-index:1}
+        .admin-log-clear{background:none;border:none;color:var(--accent2);cursor:pointer;font-size:9px;text-transform:uppercase;letter-spacing:1px}
+        .admin-log-content{padding:8px 12px;font-size:10px;line-height:1.8}
+        .log-line{display:flex;gap:8px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+        .log-time{color:var(--dim);white-space:nowrap;min-width:60px}
+        .log-ok{color:#4ade80}
+        .log-warn{color:#fbbf24}
+        .log-fail{color:#f87171}
+        .log-info{color:var(--dim)}
+        .progress-bar{width:100%;height:4px;background:var(--card2);border-radius:2px;overflow:hidden;margin-bottom:6px}
+        .progress-fill{height:100%;background:var(--grad);transition:width 0.5s ease;border-radius:2px}
+        .progress-text{font-size:10px;color:var(--dim)}
+        .footer-admin-link{color:var(--dim);text-decoration:none;font-size:9px;letter-spacing:1px;margin-top:4px;display:inline-block;transition:color 0.3s}
+        .footer-admin-link:hover{color:var(--accent2)}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideIn{from{opacity:0;max-height:0}to{opacity:1;max-height:300px}}
+        @media(max-width:600px){.container{padding:0 12px}h1{font-size:24px}.hero{padding:32px 0 24px}.post-card{padding:14px 16px}.post-card .arrow{display:none}.admin-actions{flex-direction:column}.admin-btn{justify-content:center}}
     </style>
 </head>
 <body>
@@ -79,6 +113,42 @@
     <div class="monetag-notice">
         <span>💡 <strong>Este sitio se mantiene con publicidad:</strong> al hacer clic en cualquier enlace o botón, puedes ver anuncios que nos ayudan a seguir creando contenido gratuito.</span>
         <a href="#posts" class="monetag-btn">📖 Ver Guías Gratis</a>
+    </div>
+
+    <!-- 🌑 Panel de Administración — Generar y Desplegar -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header" onclick="toggleAdmin()">
+            <span>⚙️ Panel de Control</span>
+            <span class="admin-toggle" id="adminToggle">▼</span>
+        </div>
+        <div class="admin-body" id="adminBody">
+            <p class="admin-desc">Genera nuevos posts desde la IA, despliega el sitio y notifica a los buscadores en un solo clic.</p>
+            <div class="admin-actions">
+                <button type="button" class="admin-btn primary" onclick="runPipeline()" id="pipelineBtn">
+                    🚀 Generar y Desplegar
+                </button>
+                <button type="button" class="admin-btn secondary" onclick="runAction('generate')" id="genBtn">
+                    📝 Solo Generar
+                </button>
+                <button type="button" class="admin-btn secondary" onclick="runAction('deploy')" id="depBtn">
+                    ▲ Solo Desplegar
+                </button>
+                <button type="button" class="admin-btn secondary" onclick="runAction('notify')" id="notBtn">
+                    ⚡ Solo IndexNow
+                </button>
+            </div>
+            <div class="admin-log" id="adminLog" style="display:none">
+                <div class="admin-log-header">
+                    <span>📋 Registro de actividad</span>
+                    <button class="admin-log-clear" onclick="clearLog()">Limpiar</button>
+                </div>
+                <div class="admin-log-content" id="logContent"></div>
+            </div>
+            <div id="adminProgress" style="display:none">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <span class="progress-text" id="progressText">Iniciando...</span>
+            </div>
+        </div>
     </div>
 
     <div class="search-bar">
@@ -108,7 +178,8 @@
 
     <footer>
         <strong>🌑 Shadow Del Valle R</strong> &mdash; Información sobre el Terremoto Venezuela 2026<br>
-        Guías actualizadas al 25 de Junio 2026 &middot; <span id="year"></span>
+        Guías actualizadas al 25 de Junio 2026 &middot; <span id="year"></span><br>
+        <a href="#adminPanel" class="footer-admin-link">⚙️ Admin</a>
     </footer>
 </div>
 
@@ -184,9 +255,107 @@ function filterByCategory(cat, btn) {
 
 document.getElementById('year').textContent = new Date().getFullYear();
 loadPosts();
+
+// Keep warm
 setInterval(function() {
-    fetch('/api/stats').catch(function(){}); // keep warm
+    fetch('/api/stats').catch(function(){});
 }, 60000);
+
+// ════════════════════════════════════════════
+// 🌑 ADMIN PANEL — Generate & Deploy
+// ════════════════════════════════════════════
+
+var adminBusy = false;
+
+function toggleAdmin() {
+    document.getElementById('adminPanel').classList.toggle('open');
+}
+
+function addLog(msg, type) {
+    type = type || 'info';
+    var log = document.getElementById('adminLog');
+    var content = document.getElementById('logContent');
+    log.style.display = 'block';
+    var time = new Date().toLocaleTimeString('es-DO', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    var cls = 'log-' + type;
+    var icons = {ok:'✅', warn:'⚠️', fail:'❌', info:'ℹ️'};
+    content.innerHTML += '<div class="log-line"><span class="log-time">' + time + '</span><span class="' + cls + '">' + (icons[type] || '') + ' ' + msg + '</span></div>';
+    content.scrollTop = content.scrollHeight;
+}
+
+function clearLog() {
+    document.getElementById('logContent').innerHTML = '';
+    document.getElementById('adminLog').style.display = 'none';
+}
+
+function setBusy(busy) {
+    adminBusy = busy;
+    document.getElementById('pipelineBtn').disabled = busy;
+    document.getElementById('genBtn').disabled = busy;
+    document.getElementById('depBtn').disabled = busy;
+    document.getElementById('notBtn').disabled = busy;
+    document.getElementById('adminProgress').style.display = busy ? 'block' : 'none';
+}
+
+function setProgress(pct, text) {
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = text;
+}
+
+function runAction(action) {
+    if (adminBusy) return;
+    setBusy(true);
+    addLog('Iniciando: ' + action, 'info');
+    setProgress(10, action === 'generate' ? 'Generando posts...' : action === 'deploy' ? 'Desplegando...' : 'Notificando IndexNow...');
+    
+    fetch('/api/generate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({action: action})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            addLog(data.message, 'ok');
+            addLog('⏳ Pipeline iniciado en GitHub Actions...', 'warn');
+            addLog('El proceso completo toma ~2-3 minutos.', 'info');
+            addLog('Puedes ver el progreso en vivo en GitHub.', 'info');
+            setProgress(100, '⏳ Pipeline en progreso (~2-3 min)');
+            if (data.runUrl) {
+                addLog('🔗 Seguimiento: ' + data.runUrl, 'info');
+            }
+            if (action === 'generate' || action === 'all') {
+                addLog('💡 Los posts nuevos aparecerán cuando el deploy termine.', 'info');
+                addLog('🔄 Refresca la página manualmente en 2-3 minutos.', 'info');
+            }
+        } else if (data.offline) {
+            addLog('No hay token GITHUB_PAT configurado', 'warn');
+            addLog('Ejecuta LOCALMENTE: python control.py --' + action, 'info');
+            addLog('O configura GITHUB_PAT en las variables de entorno de Vercel.', 'info');
+            setProgress(100, 'Offline — usa control.py local');
+        } else {
+            addLog(data.error || 'Error desconocido', 'fail');
+            setProgress(100, 'Error');
+        }
+    })
+    .catch(function(err) {
+        addLog('Error de conexión: ' + err.message, 'fail');
+        addLog('Ejecuta LOCALMENTE: python control.py --' + action, 'info');
+        setProgress(100, 'Error de conexión');
+    })
+    .finally(function() {
+        setTimeout(function() { setBusy(false); }, 1000);
+    });
+}
+
+function runPipeline() {
+    runAction('all');
+}
+
+// Auto-abrir panel si viene de footer link
+if (window.location.hash === '#adminPanel') {
+    toggleAdmin();
+}
 </script>
 </body>
 </html>
