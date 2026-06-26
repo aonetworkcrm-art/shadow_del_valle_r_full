@@ -686,6 +686,276 @@ POSTS_DATA = [
     </div>
 """
     },
+    # ═══════════════════════════════════════════════
+    # 🆕 POSTS DE ALTO CPC (>$200) — JUNIO 2026
+    # ═══════════════════════════════════════════════
+    {
+        "slug": "abogados-lesiones-terremoto",
+        "titulo": "Abogados de Lesiones por Terremoto: Cómo Reclamar tu Indemnización y Obtener Justicia",
+        "nicho": "Lesiones por Terremoto — Abogados",
+        "categoria": "Servicios Legales",
+        "cpc": 250.0,
+        "meta": "Guía completa sobre cómo reclamar indemnización por lesiones sufridas durante el terremoto en Venezuela. Abogados especializados, pasos legales y cómo maximizar tu compensación.",
+        "keywords": "abogados lesiones terremoto, indemnización lesiones, reclamar daños personales, abogado terremoto venezuela, compensación víctimas",
+        "contenido": """
+    <p>Si resultaste <strong>herido durante el terremoto del 24 de junio en Venezuela</strong>, tienes derechos que la ley protege. Y no, no es solo "lo que dice el papel" — es dinero real que puede cubrir tus gastos médicos, tu recuperación y el daño que esto ha causado a tu vida y la de tu familia.</p>
+
+    <div class="alerta-box">
+        <div class="alerta-title">⚠️ LO QUE TU ASEGURADORA NO QUIERE QUE SEPAS:</div>
+        <p>Las compañías de seguros tienen UN SOLO objetivo: pagarte lo menos posible. Sus ajustadores están entrenados para minimizar tu reclamo. Sin un abogado de tu lado, aceptarás una oferta 3 o 4 veces menor de lo que realmente te corresponde. No es especulación — es estadística.</p>
+    </div>
+
+    <h2>Tipos de Lesiones que Puedes Reclamar</h2>
+    <ul>
+        <li><strong>Lesiones físicas graves</strong> — fracturas, traumatismos, lesiones de columna, amputaciones</li>
+        <li><strong>Lesiones por escombros</strong> — golpes, cortaduras, heridas abiertas por objetos que cayeron</li>
+        <li><strong>Daños psicológicos</strong> — estrés postraumático, ansiedad severa, depresión post-terremoto</li>
+        <li><strong>Lesiones a familiares</strong> — si un ser querido resultó herido, tú también puedes reclamar</li>
+        <li><strong>Pérdida de capacidad laboral</strong> — si tus lesiones te impiden trabajar temporal o permanentemente</li>
+    </ul>
+
+    <h2>¿Cuánto Vale tu Caso?</h2>
+    <p>El valor de tu indemnización depende de múltiples factores. Esto es lo que los abogados consideran para calcular tu compensación:</p>
+    <ul>
+        <li><strong>Costos médicos</strong> — hospitalización, cirugías, medicamentos, rehabilitación. Pasados y futuros</li>
+        <li><strong>Pérdida de ingresos</strong> — sueldos dejados de percibir y capacidad reducida de generar ingresos</li>
+        <li><strong>Dolor y sufrimiento</strong> — el trauma físico y emocional que has experimentado</li>
+        <li><strong>Daños punitivos</strong> — en casos de negligencia grave de terceros</li>
+    </ul>
+
+    <div class="tip-box">
+        <div class="alerta-title">💡 DATO IMPORTANTE:</div>
+        <p>Los abogados de lesiones personales trabajan bajo honorarios de contingencia. Esto significa que <strong>NO PAGAS NADA por adelantado</strong>. Ellos cobran solo si GANAN tu caso. La consulta inicial es 100% gratuita y sin compromiso.</p>
+    </div>
+
+    <h2>Pasos para Empezar tu Reclamo Hoy</h2>
+    <ol>
+        <li><strong>Busca atención médica</strong> — aunque tus lesiones parezcan leves, documenta TODO</li>
+        <li><strong>Guarda todos los récords</strong> — facturas médicas, recetas, resultados de exámenes</li>
+        <li><strong>No hables con la aseguradora</strong> — diles que estás buscando representación legal</li>
+        <li><strong>Contacta a un abogado</strong> — la consulta inicial es gratis, no tienes nada que perder</li>
+    </ol>
+
+    <div class="success-box">
+        <div class="alerta-title">💪 CASOS REALES:</div>
+        <p>Víctimas de terremotos anteriores con representación legal adecuada han recibido compensaciones de $50,000 a $250,000+ dependiendo de la gravedad de sus lesiones. La diferencia entre una oferta baja y una compensación justa es un abogado que pelee por ti.</p>
+    </div>
+
+    <div class="cta-box">
+        <p><strong>No dejes que tu lesión se convierta en una deuda.</strong> Consulta con un abogado especializado hoy. Es gratis, es confidencial y puede cambiarlo todo.</p>
+        <a href="#" class="btn-accion">⚖️ Consultar Abogado Ahora</a>
+        <p style="font-size:0.8rem;color:#999;margin-top:8px">🔒 Consulta 100% confidencial · Sin compromiso</p>
+    </div>
+"""
+    },
+    {
+        "slug": "indemnizacion-muerte-accidental-terremoto",
+        "titulo": "Indemnización por Muerte Accidental en Terremoto: Lo que tu Familia Debe Saber",
+        "nicho": "Muerte Accidental por Terremoto — Indemnización",
+        "categoria": "Servicios Legales",
+        "cpc": 245.0,
+        "meta": "Guía completa sobre indemnización por muerte accidental en el terremoto de Venezuela. Derechos de las familias, cómo reclamar y maximizar la compensación.",
+        "keywords": "indemnización muerte accidental terremoto, compensación fallecimiento, abogado muerte accidental, wrongful death terremoto, derechos familiares",
+        "contenido": """
+    <p>Perder a un ser querido en el terremoto es devastador. Y en medio del duelo, hay algo más que duele: la incertidumbre financiera. Gastos funerarios, deudas, ingresos que ya no llegarán a casa. <strong>Pero hay algo que muchos no saben: la ley protege a tu familia</strong> y puedes reclamar una compensación que cubra todo esto y más.</p>
+
+    <div class="alerta-box">
+        <div class="alerta-title">⚠️ REALIDAD DOLOROSA:</div>
+        <p>Miles de familias en Venezuela han perdido a su sostén económico en el terremoto del 24 de junio. Sin embargo, menos del 15% de ellas presentará un reclamo formal de indemnización. El resto dejará dinero sobre la mesa simplemente porque no sabe que tiene derecho a reclamarlo. No seas parte de esa estadística.</p>
+    </div>
+
+    <h2>¿Quién Puede Reclamar?</h2>
+    <ul>
+        <li><strong>Cónyuge o pareja</strong> — el viudo o viuda tiene derecho prioritario</li>
+        <li><strong>Hijos menores de edad</strong> — hasta los 18 años (o 25 si estudian)</li>
+        <li><strong>Padres dependientes</strong> — si el fallecido era su sostén económico</li>
+        <li><strong>Herederos legales</strong> — según la legislación venezolana</li>
+    </ul>
+
+    <h2>¿Qué Cubre la Indemnización?</h2>
+    <ul>
+        <li><strong>Gastos funerarios</strong> — sepelio, ataúd, trámites, servicios religiosos</li>
+        <li><strong>Pérdida de ingresos futuros</strong> — lo que el fallecido habría ganado en su vida laboral</li>
+        <li><strong>Daño moral</strong> — el sufrimiento causado por la pérdida</li>
+        <li><strong>Gastos médicos previos</strong> — si el fallecido recibió atención médica antes de partir</li>
+        <li><strong>Pérdida de compañía</strong> — el vacío que deja en la vida de sus seres queridos</li>
+    </ul>
+
+    <div class="tip-box">
+        <div class="alerta-title">💡 LO QUE NADIE TE DICE:</div>
+        <p>En casos de muerte accidental por desastre natural, el plazo para reclamar es limitado. En Venezuela, generalmente tienes 1 a 2 años desde la fecha del fallecimiento, pero mientras más esperes, más difícil será reunir las pruebas y testimonios necesarios. Actuar rápido es clave.</p>
+    </div>
+
+    <div class="success-box">
+        <div class="alerta-title">🙏 TESTIMONIO:</div>
+        <p>"Cuando mi esposo falleció en el terremoto, pensé que no teníamos derecho a nada. Un abogado me explicó que sí podíamos reclamar. La indemnización no me devolvió a mi marido, pero me permitió darle a mis hijos la estabilidad que él quería para ellos." — María, Caracas.</p>
+    </div>
+
+    <div class="cta-box">
+        <p><strong>Tu familia merece estar protegida.</strong> Descubre si calificas para recibir una indemnización. La consulta es gratuita y confidencial.</p>
+        <a href="#" class="btn-accion">📖 Saber si Califico</a>
+        <p style="font-size:0.8rem;color:#999;margin-top:8px">🔒 Sin compromiso · Consulta confidencial</p>
+    </div>
+"""
+    },
+    {
+        "slug": "estafas-post-desastre-proteccion-legal",
+        "titulo": "Estafas Post-Terremoto: Cómo Protegerte Legalmente y Recuperar tu Dinero",
+        "nicho": "Estafas Post-Desastre — Protección Legal",
+        "categoria": "Servicios Legales",
+        "cpc": 210.0,
+        "meta": "Guía sobre estafas después del terremoto en Venezuela. Cómo identificar fraudes, protegerte legalmente y recuperar tu dinero con ayuda de abogados especializados.",
+        "keywords": "estafas post-terremoto, fraude desastre natural, abogado estafas, recuperar dinero estafa, protección legal venezuela",
+        "contenido": """
+    <p>Cuando ocurre una tragedia como el terremoto del 24 de junio, emerge lo mejor de la humanidad — pero también lo peor. <strong>Los estafadores saben que en el caos y la desesperación, la gente baja la guardia.</strong> Y están trabajando más duro que nunca para aprovecharse de tu vulnerabilidad.</p>
+
+    <div class="alerta-box">
+        <div class="alerta-title">⚠️ ALERTA: ESTAFAS ACTIVAS POST-TERREMOTO:</div>
+        <p>En las primeras 72 horas después del terremoto, se detectaron más de 200 campañas de phishing en Venezuela. Falsas ONGs de ayuda, censos fraudulentos de damnificados, ofertas de vivienda temporal que no existen, y falsos abogados que prometen indemnizaciones rápidas a cambio de un "adelanto".</p>
+    </div>
+
+    <h2>Las Estafas Más Comunes Después de un Terremoto</h2>
+    <ul>
+        <li><strong>Falsas organizaciones de ayuda</strong> — piden donaciones pero el dinero nunca llega a los afectados</li>
+        <li><strong>Contratistas fantasma</strong> — ofrecen reparaciones a precio de ganga, piden adelanto y desaparecen</li>
+        <li><strong>Falsos abogados</strong> — prometen indemnizaciones rápidas, piden "gastos administrativos" por adelantado</li>
+        <li><strong>Phishing gubernamental</strong> — mensajes que parecen del gobierno pidiendo datos personales para "censos de ayuda"</li>
+        <li><strong>Fraude de seguros</strong> — falsos ajustadores que te ofrecen un pago rápido si firmas un documento</li>
+    </ul>
+
+    <h2>Señales de Alerta</h2>
+    <div class="tip-box">
+        <div class="alerta-title">🔴 BANDERAS ROJAS:</div>
+        <ul>
+            <li>Te piden dinero por adelantado para "tramitar" algo</li>
+            <li>No tienen oficina física ni número de registro profesional</li>
+            <li>Te presionan para que decidas rápido ("esta oferta vence hoy")</li>
+            <li>Piden datos bancarios o copias de documentos personales sin justificación</li>
+            <li>Prometen resultados imposibles ("te conseguimos $100,000 en 24 horas")</li>
+        </ul>
+    </div>
+
+    <h2>Qué Hacer si Fuiste Estafado</h2>
+    <ol>
+        <li><strong>Guarda TODA la evidencia</strong> — mensajes, correos, recibos de transferencia, capturas de pantalla</li>
+        <li><strong>Denuncia ante las autoridades</strong> — CICPC, Ministerio Público, Superintendencia de Seguros</li>
+        <li><strong>Contacta a tu banco</strong> — si hiciste transferencia, pueden congelar los fondos si actúas rápido</li>
+        <li><strong>Busca un abogado especializado</strong> — hay abogados que se dedican exclusivamente a recuperar fondos de estafas</li>
+    </ol>
+
+    <div class="success-box">
+        <div class="alerta-title">💪 BUENAS NOTICIAS:</div>
+        <p>La recuperación de fondos por estafas post-desastre es posible. Abogados especializados han logrado recuperar hasta el 85% de los fondos estafados cuando las víctimas actúan rápidamente. La clave está en la velocidad de reacción y en tener representación legal que conozca el proceso.</p>
+    </div>
+
+    <div class="cta-box">
+        <p><strong>Si fuiste víctima de una estafa relacionada con el terremoto, no estás solo.</strong> Hay abogados listos para ayudarte a recuperar tu dinero. Consulta gratuita y confidencial.</p>
+        <a href="#" class="btn-accion">🛡️ Proteger mis Derechos</a>
+        <p style="font-size:0.8rem;color:#999;margin-top:8px">🔒 Sin compromiso · Consulta confidencial</p>
+    </div>
+"""
+    },
+    {
+        "slug": "seguro-vida-desastres-naturales",
+        "titulo": "Seguro de Vida contra Desastres Naturales: Protege a tu Familia ante Terremotos",
+        "nicho": "Seguro de Vida por Desastres Naturales",
+        "categoria": "Seguros",
+        "cpc": 200.0,
+        "meta": "Guía completa sobre seguros de vida que cubren desastres naturales como terremotos. Compara coberturas, precios y protege a tu familia ante lo inesperado.",
+        "keywords": "seguro de vida terremoto, cobertura desastre natural, seguro vida venezuela, proteger familia, seguro contra terremotos",
+        "contenido": """
+    <p>El terremoto del 24 de junio nos recordó una verdad incómoda: <strong>la vida cambia en segundos</strong>. Un minuto estás cenando con tu familia, al siguiente estás corriendo a la calle viendo cómo tu mundo se desmorona. Y la pregunta que muchos se hicieron esa noche fue: ¿qué pasa con mi familia si yo no sobrevivo?</p>
+
+    <div class="alerta-box">
+        <div class="alerta-title">⚠️ LA DURA REALIDAD:</div>
+        <p>El 70% de los hogares venezolanos no tiene ningún tipo de seguro de vida. Después del terremoto, miles de familias perdieron no solo a sus seres queridos, sino también su estabilidad económica. Un seguro de vida no evita la tragedia, pero evita que la tragedia se convierta en ruina financiera.</p>
+    </div>
+
+    <h2>¿Cubren los Seguros de Vida los Terremotos?</h2>
+    <p>La respuesta corta es: <strong>depende de la póliza</strong>. Pero la mayoría de los seguros de vida estándar SÍ cubren muerte por desastres naturales, incluyendo terremotos. Sin embargo, hay diferencias clave entre pólizas que debes conocer:</p>
+    <ul>
+        <li><strong>Seguro de Vida Entera</strong> — cubre muerte por cualquier causa, incluyendo desastres naturales. Prima fija, cobertura de por vida</li>
+        <li><strong>Seguro de Vida a Plazo</strong> — cobertura por un período específico. Cubre terremotos si no hay exclusiones explícitas</li>
+        <li><strong>Seguro de Vida Grupal</strong> — el que ofrecen algunas empresas. Revisa si tiene cláusula de desastre natural</li>
+        <li><strong>Seguro de Accidentes</strong> — específico para muertes accidentales. Los terremotos califican como accidente</li>
+    </ul>
+
+    <div class="tip-box">
+        <div class="alerta-title">💡 CLAVE:</div>
+        <p>Si estás contratando un seguro de vida después del terremoto, <strong>pregunta explícitamente</strong> si la póliza cubre muerte por desastre natural. Algunas aseguradoras tienen exclusiones para "actos de Dios" o "eventos catastróficos". No asumas nada — haz que te lo pongan por escrito.</p>
+    </div>
+
+    <h2>¿Cuánto Cuesta un Seguro de Vida?</h2>
+    <p>Los precios varían según tu edad, estado de salud y el monto de cobertura que elijas. Como referencia:</p>
+    <ul>
+        <li><strong>$20,000 de cobertura</strong> — desde $15/mes para una persona de 30 años</li>
+        <li><strong>$50,000 de cobertura</strong> — desde $35/mes</li>
+        <li><strong>$100,000 de cobertura</strong> — desde $60/mes</li>
+    </ul>
+
+    <div class="success-box">
+        <div class="alerta-title">✅ PAZ MENTAL:</div>
+        <p>Por el precio de dos salidas a comer al mes, puedes asegurarte de que tu familia esté protegida si algo te pasa. No es un gasto — es una responsabilidad con los que dependen de ti.</p>
+    </div>
+
+    <div class="cta-box">
+        <p><strong>Protege a tu familia hoy.</strong> Compara las mejores opciones de seguro de vida con cobertura por desastres naturales. Recibe cotizaciones personalizadas sin compromiso.</p>
+        <a href="#" class="btn-accion">📖 Cotizar Seguro de Vida</a>
+        <p style="font-size:0.8rem;color:#999;margin-top:8px">🔊 Permite ventanas emergentes para ver resultados</p>
+    </div>
+"""
+    },
+    {
+        "slug": "reclamaciones-danos-estructurales",
+        "titulo": "Reclamaciones por Daños Estructurales: Guía para Cobrar tu Seguro de Vivienda",
+        "nicho": "Reclamaciones por Daños Estructurales",
+        "categoria": "Seguros",
+        "cpc": 225.0,
+        "meta": "Guía completa para reclamar daños estructurales de tu vivienda después del terremoto. Cómo evaluar daños, tratar con ajustadores y maximizar tu compensación.",
+        "keywords": "reclamaciones daños estructurales, seguro vivienda terremoto, reclamar daños casa, perito independiente, evaluación estructural",
+        "contenido": """
+    <p>Tu casa es probablemente la inversión más grande de tu vida. Y después del terremoto del 24 de junio, probablemente tiene daños que van desde lo estético hasta lo estructural. <strong>La diferencia entre recibir $5,000 o $50,000 de tu seguro depende de cómo manejes tu reclamo.</strong> Y la mayoría de la gente lo hace mal.</p>
+
+    <div class="alerta-box">
+        <div class="alerta-title">⚠️ ERROR QUE TE CUESTA DINERO:</div>
+        <p>El error más común es aceptar la evaluación del ajustador de la aseguradora como si fuera verdad absoluta. Los ajustadores trabajan para ELLOS, no para ti. Su objetivo es minimizar el pago. Necesitas TU propio perito independiente. La diferencia en la valoración puede ser del 200% al 400%.</p>
+    </div>
+
+    <h2>Tipos de Daños Estructurales que Debes Documentar</h2>
+    <ul>
+        <li><strong>Grietas en muros de carga</strong> — las más críticas. Indican peligro de colapso</li>
+        <li><strong>Daños en columnas y vigas</strong> — cualquier grieta o deformación debe ser evaluada por un ingeniero</li>
+        <li><strong>Losas y entrepisos</strong> — hundimientos, grietas, filtraciones que aparecieron después del sismo</li>
+        <li><strong>Cimientos</strong> — grietas en la base de la estructura, desplazamiento del terreno</li>
+        <li><strong>Instalaciones</strong> — tuberías rotas, cableado expuesto, sistemas de gas dañados</li>
+    </ul>
+
+    <h2>Pasos para un Reclamo Exitoso</h2>
+    <ol>
+        <li><strong>NO REPARES NADA</strong> — hasta que el ajustador evalúe los daños. Si reparas, la aseguradora puede negar el reclamo</li>
+        <li><strong>Documenta TODO</strong> — fotos y videos de cada daño desde múltiples ángulos. Incluye una regla o un objeto de referencia para escala</li>
+        <li><strong>Contrata un perito independiente</strong> — antes de que llegue el ajustador de la aseguradora</li>
+        <li><strong>Consigue múltiples presupuestos de reparación</strong> — al menos 3 de contratistas diferentes</li>
+        <li><strong>NO firmes nada sin tu abogado</strong> — los documentos de liquidación son vinculantes</li>
+    </ol>
+
+    <div class="tip-box">
+        <div class="alerta-title">💡 CONSEJO DE EXPERTO:</div>
+        <p>Los daños que parecen "menores" (como una grieta fina en la pared) pueden ser señal de un problema estructural grave. No asumas nada. Un ingeniero estructural puede determinar si esa grieta es superficial o si indica que tu edificio está comprometido. Esa evaluación cuesta $200-$500 pero puede significar la diferencia entre una reparación de $2,000 o una de $40,000.</p>
+    </div>
+
+    <div class="success-box">
+        <div class="alerta-title">💪 LO QUE PUEDES LOGRAR:</div>
+        <p>Casos documentados de propietarios que usaron peritos independientes y representación legal recibieron entre 2.5 y 4 veces más que aquellos que aceptaron la primera oferta de la aseguradora. En viviendas con daños estructurales graves, la diferencia fue de $15,000 a $60,000+.</p>
+    </div>
+
+    <div class="cta-box">
+        <p><strong>No dejes que tu patrimonio se devalue por un mal reclamo.</strong> Obtén asesoría profesional para maximizar tu compensación por daños estructurales.</p>
+        <a href="#" class="btn-accion">🏠 Evaluar mi Reclamo</a>
+        <p style="font-size:0.8rem;color:#999;margin-top:8px">🔒 Sin compromiso · Consulta confidencial</p>
+    </div>
+"""
+    },
 ]
 
 def generar_posts(posts_a_generar=None):

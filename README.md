@@ -10,16 +10,28 @@
 
 Shadow Del Valle R es un ecosistema completo para la creación, gestión y publicación de contenido nicho con alto CPC. Genera páginas HTML estáticas optimizadas para SEO, con Monetag integrado, y las despliega automáticamente a Vercel.
 
+### Stack Tecnológico
+
+- **Frontend:** HTML + CSS nativo (sin frameworks, sin imágenes, <15KB por página)
+- **Backend:** Python 3.9+ (generación) + Node.js (API serverless en Vercel)
+- **IA:** OpenRouter (Google Gemini, GPT-4o-mini, etc.) para contenido variado
+- **Hosting:** Vercel (static + serverless functions, capa gratuita)
+- **Monetización:** Monetag MultiTag (popunder + push + banners)
+- **CDN:** Vercel Edge Network (global, <50ms de latencia)
+
 ### Capacidades
 
 | Componente | Descripción |
 |---|---|
-| **Generación de contenido** | 11 posts de alto CPC ($85-$220) sobre el terremoto Venezuela 2026 |
-| **Monetización** | Monetag MultiTag (popunder + smartlink) integrado en todas las páginas |
+| **Generación de contenido** | 16 posts de alto CPC ($85-$250) sobre el terremoto Venezuela 2026 |
+| **Generación con IA** | OpenRouter + FreeBuff prompts para contenido único y variado |
+| **Monetización** | Monetag MultiTag (popunder + smartlink + banners) integrado |
 | **SEO** | Schema.org (Article + BreadcrumbList + FAQ), Open Graph, Twitter Cards, sitemap |
 | **Indexación** | IndexNow (Bing/Yandex) automático + Google Search Console configurado |
-| **Analytics** | Tracking de visitas/clics con Vercel KV (o fallback en memoria) |
-| **Hosting** | Vercel (gratis), static HTML ultra-ligero |
+| **Analytics** | Tracking de visitas/clics propio (track.js + stats.js) |
+| **Anti-Spam** | Límite configurable de posts/día + rotación de contenido |
+| **Automatización** | Botón web para generar/desplegar + GitHub Actions + agente autónomo |
+| **Hosting** | Vercel (gratis), static HTML ultra-ligero (carga <0.5s) |
 
 ---
 
@@ -80,17 +92,17 @@ shadow_del_valle_r/
 ### Generar contenido
 
 ```bash
-# Generar TODOS los posts (11 posts)
+# Generar hasta 6 posts del día (respeta límite diario)
 python generate_all.py
+
+# Forzar generación de TODOS los posts (16)
+python generate_all.py --force
 
 # Centro de mando interactivo
 python shadow_del_valle_r.py
 
-# Agente autónomo (una ronda)
+# Generar con IA (si configuraste OpenRouter)
 python main_agent.py --once
-
-# Agente autónomo (loop infinito 24/7)
-python main_agent.py
 ```
 
 ### Desplegar
@@ -99,28 +111,25 @@ python main_agent.py
 # Deploy directo a Vercel
 vercel --prod --yes
 
-# Deploy con script
-python deploy.py --vercel
-
-# Pipeline completo (GitHub + Vercel)
+# Pipeline completo con script
 python deploy.py --all
 ```
 
-### Control
+### Control Unificado
 
 ```bash
-# Centro de control unificado
+# Menú interactivo (recomendado)
 python control.py
 
-# Modo interactivo
-python control.py --menu
-
-# Generar + deploy + notify en un solo comando
+# Pipeline completo: generar + deploy + notify
 python control.py --all
 
-# Ver estado
+# Ver estado del sistema
 python control.py --status
 ```
+
+**O desde el acceso directo del escritorio:**
+Haz doble clic en `Shadow_Del_Valle_R.bat`
 
 ---
 
@@ -162,11 +171,13 @@ Editar `config/settings.json`:
 ## 📊 Estado del Sitio
 
 - **URL:** https://shadow-del-valle-r.vercel.app
-- **Posts:** 11 (CPC promedio $158, top CPC $220)
-- **Monetag:** MultiTag verificado (zone 253508)
+- **Posts:** 16 (CPC promedio $179, top CPC $250)
+- **Monetag:** MultiTag verificado (zone 253508, quge5.com)
 - **Google Search Console:** ✅ Verificado + sitemap enviado
 - **IndexNow:** ✅ Activo (Bing/Yandex)
 - **Hosting:** Vercel (gratis)
+- **Carga de página:** <0.5s
+- **Peso por página:** ~12KB
 
 ---
 

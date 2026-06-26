@@ -1,88 +1,128 @@
 [
   {
-    "slug": "terremoto-caracas-188-muertos-testimonios",
-    "titulo": "Terremoto en Caracas: 188 Muertos, 1,500 Heridos — Testimonios, Rescates y Guía de Ayuda",
-    "timestamp": 1782432197.4604256,
-    "cpc": 175.0,
-    "nicho": "Terremoto Venezuela - Rescate y Ayuda",
-    "categoria": "Desastres Naturales"
+    "slug": "seguro-vida-desastres-naturales",
+    "titulo": "Seguro de Vida contra Desastres Naturales: Protege a tu Familia ante Terremotos",
+    "timestamp": 1782433353.8277173,
+    "cpc": 200.0,
+    "nicho": "Seguro de Vida por Desastres Naturales",
+    "categoria": "Seguros"
+  },
+  {
+    "slug": "reclamaciones-danos-estructurales",
+    "titulo": "Reclamaciones por Daños Estructurales: Guía para Cobrar tu Seguro de Vivienda",
+    "timestamp": 1782433353.8277173,
+    "cpc": 225.0,
+    "nicho": "Reclamaciones por Daños Estructurales",
+    "categoria": "Seguros"
+  },
+  {
+    "slug": "indemnizacion-muerte-accidental-terremoto",
+    "titulo": "Indemnización por Muerte Accidental en Terremoto: Lo que tu Familia Debe Saber",
+    "timestamp": 1782433353.8267202,
+    "cpc": 245.0,
+    "nicho": "Muerte Accidental por Terremoto — Indemnización",
+    "categoria": "Servicios Legales"
+  },
+  {
+    "slug": "estafas-post-desastre-proteccion-legal",
+    "titulo": "Estafas Post-Terremoto: Cómo Protegerte Legalmente y Recuperar tu Dinero",
+    "timestamp": 1782433353.8267202,
+    "cpc": 210.0,
+    "nicho": "Estafas Post-Desastre — Protección Legal",
+    "categoria": "Servicios Legales"
+  },
+  {
+    "slug": "abogados-lesiones-terremoto",
+    "titulo": "Abogados de Lesiones por Terremoto: Cómo Reclamar tu Indemnización y Obtener Justicia",
+    "timestamp": 1782433353.825724,
+    "cpc": 250.0,
+    "nicho": "Lesiones por Terremoto — Abogados",
+    "categoria": "Servicios Legales"
   },
   {
     "slug": "edificios-colapsados-caracas-fragilidad",
     "titulo": "¿Por Qué se Cayeron los Edificios en Caracas? La Verdad sobre la Construcción en Venezuela",
-    "timestamp": 1782432197.4604256,
+    "timestamp": 1782433353.8247275,
     "cpc": 155.0,
     "nicho": "Ingeniería y Construcción",
     "categoria": "Infraestructura"
   },
   {
-    "slug": "guia-supervivencia-terremotos",
-    "titulo": "Guía de Supervivencia para Terremotos: Preparación y Respuesta Inmediata",
-    "timestamp": 1782432197.4595263,
-    "cpc": 85.0,
-    "nicho": "Preparación para Desastres",
-    "categoria": "Seguridad"
-  },
-  {
     "slug": "doblete-sismico-venezuela-m72-m75",
     "titulo": "Doblete Sísmico en Venezuela: M7.2 + M7.5 en 1 Hora — Un Siglo de Energía Acumulada",
-    "timestamp": 1782432197.4595263,
+    "timestamp": 1782433353.8237302,
     "cpc": 195.0,
     "nicho": "Terremoto Venezuela - Causas Geológicas",
     "categoria": "Desastres Naturales"
   },
   {
+    "slug": "terremoto-caracas-188-muertos-testimonios",
+    "titulo": "Terremoto en Caracas: 188 Muertos, 1,500 Heridos — Testimonios, Rescates y Guía de Ayuda",
+    "timestamp": 1782433353.8237302,
+    "cpc": 175.0,
+    "nicho": "Terremoto Venezuela - Rescate y Ayuda",
+    "categoria": "Desastres Naturales"
+  },
+  {
     "slug": "inversiones-reconstruccion-venezuela",
     "titulo": "Inversiones en Reconstrucción: Oportunidades de Negocio Post-Terremoto Venezuela",
-    "timestamp": 1782432197.4584327,
+    "timestamp": 1782433353.822734,
     "cpc": 110.0,
     "nicho": "Inversiones",
     "categoria": "Finanzas"
   },
   {
+    "slug": "guia-supervivencia-terremotos",
+    "titulo": "Guía de Supervivencia para Terremotos: Preparación y Respuesta Inmediata",
+    "timestamp": 1782433353.822734,
+    "cpc": 85.0,
+    "nicho": "Preparación para Desastres",
+    "categoria": "Seguridad"
+  },
+  {
     "slug": "seguro-auto-riesgo-sismico",
     "titulo": "Seguro de Auto en Zonas de Desastre: Cobertura y Reclamos por Terremoto",
-    "timestamp": 1782432197.4574358,
+    "timestamp": 1782433353.821737,
     "cpc": 145.0,
     "nicho": "Seguros de Auto",
     "categoria": "Seguros"
   },
   {
-    "slug": "centros-rehabilitacion-venezuela",
-    "titulo": "Centros de Rehabilitación en Venezuela: Guía Completa para Encontrar Ayuda",
-    "timestamp": 1782432197.456321,
-    "cpc": 135.0,
-    "nicho": "Centros de Rehabilitación",
-    "categoria": "Salud"
-  },
-  {
     "slug": "ciberseguridad-crisis-venezuela",
     "titulo": "Ciberseguridad en Crisis: Cómo Proteger tus Datos Durante una Emergencia",
-    "timestamp": 1782432197.456321,
+    "timestamp": 1782433353.8207428,
     "cpc": 170.0,
     "nicho": "Ciberseguridad",
     "categoria": "Tecnología"
   },
   {
-    "slug": "abogados-accidentes-venezuela",
-    "titulo": "Abogados Especializados en Accidentes: Protege tus Derechos y Obtén la Máxima Compensación",
-    "timestamp": 1782432197.455318,
-    "cpc": 220.0,
-    "nicho": "Abogados de Accidentes",
-    "categoria": "Servicios Legales"
-  },
-  {
     "slug": "seguro-vida-adultos-mayores",
     "titulo": "Seguro de Vida para Adultos Mayores: Protege a tu Familia en 2026",
-    "timestamp": 1782432197.455318,
+    "timestamp": 1782433353.819744,
     "cpc": 165.0,
     "nicho": "Seguros de Vida",
     "categoria": "Seguros"
   },
   {
+    "slug": "centros-rehabilitacion-venezuela",
+    "titulo": "Centros de Rehabilitación en Venezuela: Guía Completa para Encontrar Ayuda",
+    "timestamp": 1782433353.819744,
+    "cpc": 135.0,
+    "nicho": "Centros de Rehabilitación",
+    "categoria": "Salud"
+  },
+  {
+    "slug": "abogados-accidentes-venezuela",
+    "titulo": "Abogados Especializados en Accidentes: Protege tus Derechos y Obtén la Máxima Compensación",
+    "timestamp": 1782433353.818747,
+    "cpc": 220.0,
+    "nicho": "Abogados de Accidentes",
+    "categoria": "Servicios Legales"
+  },
+  {
     "slug": "terremoto-venezuela-reclamaciones-seguro",
     "titulo": "Terremoto en Venezuela: Guía Completa para Reclamar tu Seguro y Obtener Compensación",
-    "timestamp": 1782432197.454312,
+    "timestamp": 1782433353.8177502,
     "cpc": 185.0,
     "nicho": "Terremoto Venezuela - Reclamaciones",
     "categoria": "Desastres Naturales"

@@ -172,6 +172,84 @@ NICHOS_DB = [
         "language": "en",
         "tags": ["ciberseguridad", "empresarial", "ransomware", "cloud", "protección"],
         "description": "Empresas buscando soluciones de ciberseguridad. Alto CPC y contratos anuales de gran valor."
+    },
+    # ═══════════════════════════════════════════════
+    # 🆕 NICHOS DE ALTO CPC (>$200) — AGREGADOS JUNIO 2026
+    # ═══════════════════════════════════════════════
+    {
+        "id": "earthquake-personal-injury",
+        "name": "Lesiones por Terremoto — Abogados",
+        "category": "Servicios Legales",
+        "cpc_avg": 250.0,
+        "cpc_min": 180.0,
+        "cpc_max": 350.0,
+        "search_volume": 6400.0,
+        "competencia": 70.0,
+        "evergreen_score": 10,
+        "intent": "transaccional",
+        "language": "ambos",
+        "tags": ["lesiones", "terremoto", "abogados", "indemnización", "compensación", "daños"],
+        "description": "Victimas de terremotos buscando representacion legal por lesiones personales. CPC altisimo por urgencia y alto valor de cada caso."
+    },
+    {
+        "id": "wrongful-death-earthquake",
+        "name": "Muerte Accidental por Terremoto — Indemnización",
+        "category": "Servicios Legales",
+        "cpc_avg": 245.0,
+        "cpc_min": 180.0,
+        "cpc_max": 320.0,
+        "search_volume": 3800.0,
+        "competencia": 65.0,
+        "evergreen_score": 10,
+        "intent": "transaccional",
+        "language": "ambos",
+        "tags": ["muerte accidental", "indemnización", "terremoto", "abogados", "compensación familiar", "wrongful death"],
+        "description": "Familias que perdieron seres queridos en el terremoto buscan compensación legal. Nicho sensible pero de altísimo CPC."
+    },
+    {
+        "id": "post-disaster-fraud-law",
+        "name": "Estafas Post-Desastre — Protección Legal",
+        "category": "Servicios Legales",
+        "cpc_avg": 210.0,
+        "cpc_min": 150.0,
+        "cpc_max": 280.0,
+        "search_volume": 4200.0,
+        "competencia": 50.0,
+        "evergreen_score": 9,
+        "intent": "transaccional",
+        "language": "ambos",
+        "tags": ["estafas", "fraude", "post-desastre", "abogados", "recuperación", "protección legal"],
+        "description": "Personas estafadas después del terremoto buscan recuperar su dinero y protección legal. Nicho con alta intención de contratación."
+    },
+    {
+        "id": "life-insurance-disaster",
+        "name": "Seguro de Vida por Desastres Naturales",
+        "category": "Seguros",
+        "cpc_avg": 200.0,
+        "cpc_min": 140.0,
+        "cpc_max": 260.0,
+        "search_volume": 7500.0,
+        "competencia": 60.0,
+        "evergreen_score": 9,
+        "intent": "comercial",
+        "language": "ambos",
+        "tags": ["seguro de vida", "desastres naturales", "protección familiar", "cobertura terremoto", "reclamación"],
+        "description": "Personas que quieren proteger a su familia ante desastres naturales. Alto volumen de búsqueda con CPC premium."
+    },
+    {
+        "id": "structural-damage-claims",
+        "name": "Reclamaciones por Daños Estructurales",
+        "category": "Seguros",
+        "cpc_avg": 225.0,
+        "cpc_min": 160.0,
+        "cpc_max": 300.0,
+        "search_volume": 5100.0,
+        "competencia": 55.0,
+        "evergreen_score": 9,
+        "intent": "transaccional",
+        "language": "ambos",
+        "tags": ["daños estructurales", "reclamaciones", "seguro vivienda", "perito", "evaluación daños", "terremoto"],
+        "description": "Propietarios de viviendas dañadas por el terremoto buscando maximizar su reclamo de seguro. Alto CPC por alta competencia entre ajustadores."
     }
 ]
 
