@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "ultima_actualizacion": 1782294921.815015,
-  "fecha_actualizacion": "2026-06-24 05:55:21",
-  "total_entries": 10,
+  "ultima_actualizacion": 1783238484.8993325,
+  "fecha_actualizacion": "2026-07-05 04:01:24",
+  "total_entries": 11,
   "entries": [
     {
       "id": "TXN-1782199269043",
@@ -155,6 +155,22 @@
       "timestamp": 1782294921.815015,
       "fecha": "2026-06-24 05:55:21",
       "fecha_simple": "2026-06-24"
+    },
+    {
+      "id": "TXN-1783238484899",
+      "tipo": "post",
+      "concepto": "Post: Todo lo que Necesitas Saber sobre abogados [2026]",
+      "monto": 24200.0,
+      "fuente": "seo_content",
+      "nicho": "Abogados de Accidentes (Personal Injury)",
+      "metadata": {
+        "cpc": 220.0,
+        "clicks_estimados_diarios": 110,
+        "ingreso_diario_proyectado": 24200.0
+      },
+      "timestamp": 1783238484.8993325,
+      "fecha": "2026-07-05 04:01:24",
+      "fecha_simple": "2026-07-05"
     }
   ]
 }
