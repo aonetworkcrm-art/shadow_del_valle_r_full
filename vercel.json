@@ -46,6 +46,14 @@
     {
       "source": "/:file.html",
       "destination": "/output/:file.html"
+    },
+    {
+      "source": "/seo-oracle",
+      "destination": "/output/seo_oracle.html"
+    },
+    {
+      "source": "/output/seo_oracle_data.json",
+      "destination": "/output/seo_oracle_data.json"
     }
   ],
   "headers": [

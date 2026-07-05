@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Oracle — Shadow Del Valle R</title>
+<meta name="description" content="Panel de inteligencia de nichos SEO con ranking FRR, proyecciones de ingresos y plan de contenido.">
+<meta property="og:title" content="SEO Oracle — Shadow Del Valle R">
+<meta property="og:description" content="FRR, Profitability, Proyecciones y Plan de Contenido para 15 nichos de alto CPC.">
+<meta name="robots" content="index, follow">
+<style>
+:root {
+    --bg: #0a0a1a; --bg2: #12122a; --bg3: #1a1a3e;
+    --text: #e0e0f0; --text2: #8888aa;
+    --accent: #6c5ce7; --accent2: #00cec9;
+    --green: #00b894; --red: #e17055; --yellow: #fdcb6e;
+    --orange: #e67e22; --blue: #0984e3;
+    --border: #2a2a4e; --card: #16163a;
+    --radius: 12px; --shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);color:var(--text);min-height:100vh
+}
+.app{display:flex;min-height:100vh}
+.sidebar{
+    width:240px;background:var(--bg2);border-right:1px solid var(--border);
+    padding:20px 0;display:flex;flex-direction:column;position:fixed;
+    top:0;left:0;height:100vh;z-index:100
+}
+.logo{
+    display:flex;align-items:center;gap:12px;
+    padding:0 20px 24px;border-bottom:1px solid var(--border);margin-bottom:16px
+}
+.logo-icon{font-size:1.5rem}
+.logo-text strong{display:block;font-size:1rem;color:var(--text)}
+.logo-text small{display:block;font-size:0.7rem;color:var(--text2)}
+nav{flex:1;padding:0 8px}
+.nav-item{
+    display:flex;align-items:center;gap:10px;padding:10px 14px;
+    color:var(--text2);text-decoration:none;border-radius:8px;
+    margin-bottom:2px;font-size:0.9rem;transition:all 0.2s;cursor:pointer
+}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--accent);color:#fff}
+.sidebar-status{
+    padding:16px 20px;border-top:1px solid var(--border);font-size:0.75rem;color:var(--text2)
+}
+.status-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.status-dot{
+    width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px
+}
+.status-dot.online{background:var(--green);box-shadow:0 0 8px var(--green)}
+.main{flex:1;margin-left:240px;padding:24px 32px;max-width:1200px}
+.section{display:none}.section.active{display:block}
+.section-header{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:24px
+}
+.section-header h1{font-size:1.5rem;font-weight:600}
+.header-actions{display:flex;align-items:center;gap:12px}
+.btn{
+    border:1px solid var(--border);background:var(--bg3);color:var(--text);
+    padding:8px 16px;border-radius:8px;cursor:pointer;font-size:0.85rem;
+    transition:all 0.2s
+}
+.btn:hover{background:var(--accent);border-color:var(--accent)}
+.btn-sm{padding:6px 12px;font-size:0.8rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
+.kpi-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;transition:all 0.3s
+}
+.kpi-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.kpi-label{font-size:0.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.kpi-value{font-size:1.8rem;font-weight:700;color:var(--accent2);margin-bottom:4px}
+.kpi-trend{font-size:0.75rem;color:var(--text2)}
+.card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:20px;margin-bottom:20px
+}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-header h3{font-size:1rem;color:var(--text);font-weight:600}
+.grid-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.table-wrapper{overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.data-table th{
+    text-align:left;padding:10px 12px;color:var(--text2);font-weight:600;
+    font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)
+}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+.data-table tr:hover td{background:var(--bg3)}
+.loading{text-align:center;padding:40px;color:var(--text2)}
+.format-bar{display:flex;align-items:center;gap:12px;padding:8px 0}
+.format-label{min-width:100px;font-size:0.85rem}
+.warning-card{
+    background:var(--card);border:1px solid var(--yellow);border-radius:var(--radius);
+    padding:20px;margin-bottom:20px;text-align:center
+}
+.warning-card .emoji{font-size:2rem;margin-bottom:8px}
+.warning-card h3{color:var(--yellow);margin-bottom:8px}
+.warning-card p{color:var(--text2);font-size:0.85rem;margin-bottom:12px}
+@media(max-width:768px){
+    .sidebar{width:60px;padding:12px 0}
+    .sidebar .logo-text,.sidebar .nav-item span:not(:first-child),.sidebar-status{display:none}
+    .nav-item{justify-content:center;padding:12px}
+    .main{margin-left:60px;padding:16px}
+    .kpi-grid{grid-template-columns:1fr 1fr}
+    .grid-2col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">🌑</span>
+            <div class="logo-text">
+                <strong>SEO Oracle</strong>
+                <small>Inteligencia de Nichos</small>
+            </div>
+        </div>
+        <nav>
+            <a class="nav-item active" data-section="overview">📊 Resumen</a>
+            <a class="nav-item" data-section="ranking-frr">🏆 Ranking FRR</a>
+            <a class="nav-item" data-section="ranking-profit">💰 Profitability</a>
+            <a class="nav-item" data-section="projection">📈 Proyección</a>
+            <a class="nav-item" data-section="plan">📋 Plan Contenido</a>
+            <a class="nav-item" data-section="stats">📐 Stats</a>
+        </nav>
+        <div style="padding:12px 20px;border-top:1px solid var(--border)">
+            <a href="https://shadow-del-valle-r-dashboard.up.railway.app/seo-oracle" target="_blank"
+               style="display:flex;align-items:center;gap:8px;color:var(--accent2);text-decoration:none;font-size:0.8rem;padding:8px 0">
+                🚀 Dashboard en vivo
+                <span style="font-size:0.65rem;color:var(--text2)">↗</span>
+            </a>
+        </div>
+        <div class="sidebar-status">
+            <div class="status-item">
+                <span class="status-dot online" id="apiStatusDot"></span>
+                <span>SEO Oracle Activo</span>
+            </div>
+            <div class="status-item">
+                <span>Nichos:</span>
+                <span id="nichesCount">15</span>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main" id="mainContent">
+
+        <!-- OVERVIEW -->
+        <section class="section active" id="section-overview">
+            <div class="section-header">
+                <h1>📊 Resumen SEO Oracle</h1>
+                <div class="header-actions">
+                    <button class="btn btn-sm" onclick="loadAllData()">🔄 Recargar</button>
+                </div>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Nichos</div>
+                    <div class="kpi-value" id="kpiTotal"><span class="loading" style="padding:0">Cargando...</span></div>
+                    <div class="kpi-trend">En base de datos</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nichos Aptos</div>
+                    <div class="kpi-value" id="kpiAptos"><span class="loading" style="padding:0">Cargando...</span></div>
+                    <div class="kpi-trend">FRR ≥ umbral</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">FRR Promedio</div>
+                    <div class="kpi-value" id="kpiFrrAvg"><span class="loading" style="padding:0">Cargando...</span></div>
+                    <div class="kpi-trend">Aptos únicamente</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nodos Trackeados</div>
+                    <div class="kpi-value" id="kpiNodes"><span class="loading" style="padding:0">Cargando...</span></div>
+                    <div class="kpi-trend">Posts en seguimiento</div>
+                </div>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <div class="card-header"><h3>🏆 Top 5 por FRR</h3></div>
+                    <div id="top5Frr"><div class="loading">Cargando...</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>💰 Top 5 por Profitability</h3></div>
+                    <div id="top5Profit"><div class="loading">Cargando...</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>📂 Nichos por Categoría</h3></div>
+                <div id="categoriesList"><div class="loading">Cargando...</div></div>
+            </div>
+        </section>
+
+        <!-- RANKING FRR -->
+        <section class="section" id="section-ranking-frr">
+            <div class="section-header">
+                <h1>🏆 Ranking por FRR</h1>
+                <div class="header-actions">
+                    <span style="font-size:0.8rem;color:var(--text2)">FRR = (CPC × Volumen) / (Competencia + 1)</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr>
+                            <th>#</th><th>Nicho</th><th>Categoría</th><th>CPC</th>
+                            <th>Volumen</th><th>Competencia</th><th>FRR</th>
+                            <th>Profit</th><th>Dif.</th><th>Estado</th>
+                        </tr></thead>
+                        <tbody id="frrBody"><tr><td colspan="10" class="loading">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- RANKING PROFITABILITY -->
+        <section class="section" id="section-ranking-profit">
+            <div class="section-header">
+                <h1>💰 Ranking por Profitability</h1>
+                <div class="header-actions">
+                    <span style="font-size:0.8rem;color:var(--text2)">Score = CPC × Demanda × Evergreen</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead><tr>
+                            <th>#</th><th>Nicho</th><th>Categoría</th><th>CPC</th>
+                            <th>Score</th><th>FRR</th><th>Evergreen</th><th>Dif.</th><th>Idioma</th>
+                        </tr></thead>
+                        <tbody id="profitBody"><tr><td colspan="9" class="loading">Cargando...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTION -->
+        <section class="section" id="section-projection">
+            <div class="section-header">
+                <h1>📈 Proyección de Ingresos</h1>
+                <div class="header-actions">
+                    <select id="projNicheSelect" onchange="showProjection()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;font-size:0.8rem">
+                        <option value="">Selecciona un nicho...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Visitantes / Mes</div>
+                    <div class="kpi-value" id="projVisitors">—</div>
+                    <div class="kpi-trend">Base: 2,000 por nodo</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Clicks / Mes</div>
+                    <div class="kpi-value" id="projClicks">—</div>
+                    <div class="kpi-trend">CTR: 2.0%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Confianza</div>
+                    <div class="kpi-value" id="projConfidence" style="font-size:1.2rem">—</div>
+                    <div class="kpi-trend">Nivel de certeza</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Proyección LOW / AVG / HIGH</h3></div>
+                <div class="grid-2col">
+                    <div class="card" style="border-left:3px solid var(--yellow)">
+                        <div style="font-size:0.75rem;color:var(--text2)">LOW (CPC mín)</div>
+                        <div style="font-size:1.5rem;font-weight:700;color:var(--yellow)" id="projMonthlyLow">$0</div>
+                        <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                        <div style="font-size:1.2rem;font-weight:600;color:var(--yellow)" id="projYearlyLow">$0</div>
+                        <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                    </div>
+                    <div class="card" style="border-left:3px solid var(--accent2)">
+                        <div style="font-size:0.75rem;color:var(--text2)">AVG (CPC prom)</div>
+                        <div style="font-size:1.5rem;font-weight:700;color:var(--accent2)" id="projMonthlyAvg">$0</div>
+                        <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                        <div style="font-size:1.2rem;font-weight:600;color:var(--accent2)" id="projYearlyAvg">$0</div>
+                        <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                    </div>
+                </div>
+                <div class="card" style="border-left:3px solid var(--green)">
+                    <div style="font-size:0.75rem;color:var(--text2)">HIGH (CPC máx)</div>
+                    <div style="font-size:1.5rem;font-weight:700;color:var(--green)" id="projMonthlyHigh">$0</div>
+                    <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                    <div style="font-size:1.2rem;font-weight:600;color:var(--green)" id="projYearlyHigh">$0</div>
+                    <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTENT PLAN -->
+        <section class="section" id="section-plan">
+            <div class="section-header">
+                <h1>📋 Plan de Contenido Multi-Nicho</h1>
+                <div class="header-actions">
+                    <select id="planSelect" onchange="showPlan()" multiple style="background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;font-size:0.8rem;min-height:40px">
+                    </select>
+                    <button class="btn btn-sm" onclick="selectTop5()">Top 5 FRR</button>
+                    <button class="btn btn-sm" onclick="selectAll()">Todos</button>
+                </div>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Nichos en Plan</div>
+                    <div class="kpi-value" id="planCount">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Visitantes / Mes</div>
+                    <div class="kpi-value" id="planVisitors">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Clicks / Mes</div>
+                    <div class="kpi-value" id="planClicks">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Confianza Prom.</div>
+                    <div class="kpi-value" id="planConfidence" style="font-size:1.2rem">—</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h3>Ingresos Totales del Plan</h3></div>
+                <div class="grid-2col">
+                    <div class="card" style="border-left:3px solid var(--yellow)">
+                        <div style="font-size:0.75rem;color:var(--text2)">MENSUAL</div>
+                        <div style="font-size:0.9rem;color:var(--text2)">LOW</div>
+                        <div style="font-size:1.3rem;font-weight:700;color:var(--yellow)" id="planMonthlyLow">$0</div>
+                        <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">AVG</div>
+                        <div style="font-size:1.8rem;font-weight:700;color:var(--accent2)" id="planMonthlyAvg">$0</div>
+                        <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">HIGH</div>
+                        <div style="font-size:1.3rem;font-weight:700;color:var(--green)" id="planMonthlyHigh">$0</div>
+                    </div>
+                    <div class="card" style="border-left:3px solid var(--accent)">
+                        <div style="font-size:0.75rem;color:var(--text2)">ANUAL</div>
+                        <div style="font-size:0.9rem;color:var(--text2)">LOW</div>
+                        <div style="font-size:1.3rem;font-weight:700;color:var(--yellow)" id="planYearlyLow">$0</div>
+                        <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">AVG</div>
+                        <div style="font-size:1.8rem;font-weight:700;color:var(--accent2)" id="planYearlyAvg">$0</div>
+                        <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">HIGH</div>
+                        <div style="font-size:1.3rem;font-weight:700;color:var(--green)" id="planYearlyHigh">$0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="section" id="section-stats">
+            <div class="section-header">
+                <h1>📐 Estadísticas SEO Oracle</h1>
+            </div>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Umbral FRR</div>
+                    <div class="kpi-value" id="statsUmbral">—</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Aptos / No Aptos</div>
+                    <div class="kpi-value" id="statsAptos">—</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Revenue Real</div>
+                    <div class="kpi-value" id="statsRevenue">$0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Evergreen (Año 5)</div>
+                    <div class="kpi-value" id="statsEvergreen">—</div>
+                </div>
+            </div>
+            <div class="grid-2col">
+                <div class="card">
+                    <div class="card-header"><h3>🐉 Categorías</h3></div>
+                    <div id="statsCategories"><div class="loading">Cargando...</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>🌿 Multiplicador Evergreen</h3></div>
+                    <div id="statsEvergreenTable"><div class="loading">Cargando...</div></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+// ─── Static data loader ───
+let DATA = null;
+
+async function loadData() {
+    try {
+        const res = await fetch('/output/seo_oracle_data.json');
+        DATA = await res.json();
+        document.getElementById('nichesCount').textContent = DATA.niches.length;
+        loadAllData();
+    } catch(e) {
+        document.querySelectorAll('.kpi-value, .loading').forEach(el => {
+            if(el.tagName !== 'SELECT' && !el.closest('.kpi-value')) {
+                if(el.classList.contains('loading')) el.textContent = '📡 Offline';
+            }
+        });
+        document.getElementById('top5Frr').innerHTML =
+            '<div class="warning-card"><div class="emoji">🔌</div><h3>Sin conexión al backend</h3>' +
+            '<p>Para el dashboard en vivo, despliega el backend Flask en Railway:</p>' +
+            '<p style="font-size:0.8rem;color:var(--accent2)">railway.app → New Project → shadow_del_valle_r_full</p></div>';
+        document.getElementById('categoriesList').innerHTML = '';
+    }
+}
+
+// ─── Navigation ───
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.dataset.section;
+        navigateTo(section);
+    });
+});
+
+function navigateTo(section) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelector(`.nav-item[data-section="${section}"]`).classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(`section-${section}`).classList.add('active');
+
+    switch(section) {
+        case 'overview': loadAllData(); break;
+        case 'ranking-frr': loadFrrRanking(); break;
+        case 'ranking-profit': loadProfitRanking(); break;
+        case 'projection': initProjection(); break;
+        case 'plan': initPlan(); break;
+        case 'stats': loadStats(); break;
+    }
+}
+
+// ─── Helpers ───
+function fmt(n) {
+    if(n===undefined||n===null) return '—';
+    if(typeof n==='number'&&n>=1000) return n.toLocaleString();
+    if(typeof n==='number') return n.toFixed(2);
+    return n;
+}
+function fmtDollar(n) {
+    if(n===undefined||n===null) return '$0';
+    return '$'+(typeof n==='number'?n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):parseFloat(n).toFixed(2));
+}
+function diffLabel(d) {
+    const m={'muy_baja':'🟢','baja':'🟢','media':'🟡','alta':'🟠','muy_alta':'🔴'};
+    return m[d]||'⚪';
+}
+function badgeConf(l) {
+    const m={'muy_alta':'🟢','alta':'🔵','media':'🟡','baja':'🔴'};
+    return m[l]||'⚪';
+}
+
+// ─── Overview ───
+function loadAllData() {
+    if(!DATA) return;
+    const s=DATA.stats;
+    document.getElementById('kpiTotal').textContent=s.total_nichos||0;
+    document.getElementById('kpiAptos').textContent=s.nichos_aptos||0;
+    document.getElementById('kpiFrrAvg').textContent=s.frr_promedio_aptos?.toFixed(0)||'—';
+    document.getElementById('kpiNodes').textContent=s.total_nodos_trackeados||0;
+
+    const t5=DATA.ranking_frr.slice(0,5);
+    document.getElementById('top5Frr').innerHTML=t5.map(r=>
+        `<div class="format-bar"><span class="format-label" style="flex:1">${r.name}</span>`+
+        `<span style="color:var(--accent2);font-weight:600">FRR ${fmt(r.frr)}</span>`+
+        `<span style="color:var(--text2);font-size:0.75rem">${fmtDollar(r.cpc_avg)} CPC</span></div>`
+    ).join('');
+
+    const t5p=DATA.ranking_profit.slice(0,5);
+    document.getElementById('top5Profit').innerHTML=t5p.map(r=>
+        `<div class="format-bar"><span class="format-label" style="flex:1">${r.name}</span>`+
+        `<span style="color:var(--accent2);font-weight:600">${fmt(r.profitability_score)}</span>`+
+        `<span style="color:var(--text2);font-size:0.75rem">${fmtDollar(r.cpc_avg)} CPC</span></div>`
+    ).join('');
+
+    if(s.categorias) {
+        document.getElementById('categoriesList').innerHTML=Object.entries(s.categorias).map(([c,d])=>
+            `<div class="format-bar"><span class="format-label" style="flex:1;font-weight:600">${c}</span>`+
+            `<span style="color:var(--text2)">${d.count} nichos</span>`+
+            `<span style="color:var(--accent2);font-weight:600;min-width:70px;text-align:right">CPC prom ${fmtDollar(d.cpc_promedio)}</span>`+
+            `<span style="color:var(--yellow);font-size:0.75rem;min-width:60px;text-align:right">FRR ${fmt(d.frr_promedio)}</span></div>`
+        ).join('');
+    }
+}
+
+// ─── FRR Ranking ───
+function loadFrrRanking() {
+    if(!DATA) return;
+    const tbody=document.getElementById('frrBody');
+    tbody.innerHTML=DATA.ranking_frr.map((r,i)=>{
+        const status=r.apto?'<span style="color:var(--green)">✅ APTO</span>':'<span style="color:var(--red)">❌</span>';
+        return `<tr><td>${i+1}</td><td style="font-weight:600">${r.name}</td>`+
+            `<td style="color:var(--text2)">${r.category}</td>`+
+            `<td style="color:var(--accent2);font-weight:600">${fmtDollar(r.cpc_avg)}</td>`+
+            `<td>${fmt(r.search_volume)}</td><td>${fmt(r.competencia)}</td>`+
+            `<td style="color:${r.apto?'var(--green)':'var(--red)'};font-weight:700">${fmt(r.frr)}</td>`+
+            `<td>${fmt(r.profitability_score)}</td>`+
+            `<td>${diffLabel(r.difficulty)} ${r.difficulty}</td><td>${status}</td></tr>`;
+    }).join('');
+}
+
+// ─── Profit Ranking ───
+function loadProfitRanking() {
+    if(!DATA) return;
+    const tbody=document.getElementById('profitBody');
+    tbody.innerHTML=DATA.ranking_profit.map((r,i)=>
+        `<tr><td>${i+1}</td><td style="font-weight:600">${r.name}</td>`+
+        `<td style="color:var(--text2)">${r.category}</td>`+
+        `<td style="color:var(--accent2);font-weight:600">${fmtDollar(r.cpc_avg)}</td>`+
+        `<td style="color:var(--green);font-weight:700">${fmt(r.profitability_score)}</td>`+
+        `<td>${fmt(r.frr)}</td><td>${r.evergreen}/10</td>`+
+        `<td>${diffLabel(r.difficulty)} ${r.difficulty}</td><td>${r.language}</td></tr>`
+    ).join('');
+}
+
+// ─── Projection ───
+function initProjection() {
+    if(!DATA) return;
+    const sel=document.getElementById('projNicheSelect');
+    if(sel.options.length<=1) {
+        DATA.niches.forEach(n=>{
+            const o=document.createElement('option');
+            o.value=n.id; o.textContent=`${n.name} (${fmtDollar(n.cpc_avg)})`;
+            sel.appendChild(o);
+        });
+    }
+}
+
+function showProjection() {
+    if(!DATA) return;
+    const id=document.getElementById('projNicheSelect').value;
+    if(!id) return;
+    const p=DATA.projections[id];
+    if(!p) return;
+    document.getElementById('projVisitors').textContent=fmt(p.monthly_visitors_total);
+    document.getElementById('projClicks').textContent=fmt(p.clicks_monthly);
+    document.getElementById('projConfidence').textContent=`${badgeConf(p.confidence)} ${p.confidence.replace('_',' ').toUpperCase()}`;
+    document.getElementById('projMonthlyLow').textContent=fmtDollar(p.monthly_revenue.low);
+    document.getElementById('projMonthlyAvg').textContent=fmtDollar(p.monthly_revenue.avg);
+    document.getElementById('projMonthlyHigh').textContent=fmtDollar(p.monthly_revenue.high);
+    document.getElementById('projYearlyLow').textContent=fmtDollar(p.yearly_revenue.low);
+    document.getElementById('projYearlyAvg').textContent=fmtDollar(p.yearly_revenue.avg);
+    document.getElementById('projYearlyHigh').textContent=fmtDollar(p.yearly_revenue.high);
+}
+
+// ─── Plan ───
+function initPlan() {
+    if(!DATA) return;
+    const sel=document.getElementById('planSelect');
+    if(sel.options.length===0) {
+        DATA.niches.forEach(n=>{
+            const o=document.createElement('option');
+            o.value=n.id; o.textContent=`${n.name} (${fmtDollar(n.cpc_avg)})`;
+            sel.appendChild(o);
+        });
+    }
+}
+
+function selectTop5() {
+    const top=DATA.ranking_frr.slice(0,5).map(r=>r.id);
+    const sel=document.getElementById('planSelect');
+    Array.from(sel.options).forEach(o=>o.selected=top.includes(o.value));
+    showPlan();
+}
+
+function selectAll() {
+    const sel=document.getElementById('planSelect');
+    Array.from(sel.options).forEach(o=>o.selected=true);
+    showPlan();
+}
+
+function showPlan() {
+    if(!DATA) return;
+    const sel=document.getElementById('planSelect');
+    const selected=Array.from(sel.options).filter(o=>o.selected).map(o=>o.value);
+    if(!selected.length){document.getElementById('planCount').textContent='0';return}
+
+    // Calculate from projection data for selected niches
+    let total={visitors:0,clicks:0,low:0,avg:0,high:0,monthlyLow:0,monthlyAvg:0,monthlyHigh:0,yearlyLow:0,yearlyAvg:0,yearlyHigh:0};
+    let confidences=[];
+    selected.forEach(id=>{
+        const p=DATA.projections[id];
+        if(!p) return;
+        total.monthlyLow+=p.monthly_revenue.low;
+        total.monthlyAvg+=p.monthly_revenue.avg;
+        total.monthlyHigh+=p.monthly_revenue.high;
+        total.yearlyLow+=p.yearly_revenue.low;
+        total.yearlyAvg+=p.yearly_revenue.avg;
+        total.yearlyHigh+=p.yearly_revenue.high;
+        total.visitors+=p.monthly_visitors_total;
+        total.clicks+=p.clicks_monthly;
+        confidences.push(p.confidence);
+    });
+
+    document.getElementById('planCount').textContent=selected.length;
+    document.getElementById('planVisitors').textContent=fmt(total.visitors);
+    document.getElementById('planClicks').textContent=fmt(total.clicks);
+    const confAvg=confidences.includes('muy_alta')?'MUY_ALTA':confidences.includes('alta')?'ALTA':confidences.includes('media')?'MEDIA':'BAJA';
+    document.getElementById('planConfidence').textContent=confAvg;
+
+    document.getElementById('planMonthlyLow').textContent=fmtDollar(total.monthlyLow);
+    document.getElementById('planMonthlyAvg').textContent=fmtDollar(total.monthlyAvg);
+    document.getElementById('planMonthlyHigh').textContent=fmtDollar(total.monthlyHigh);
+    document.getElementById('planYearlyLow').textContent=fmtDollar(total.yearlyLow);
+    document.getElementById('planYearlyAvg').textContent=fmtDollar(total.yearlyAvg);
+    document.getElementById('planYearlyHigh').textContent=fmtDollar(total.yearlyHigh);
+}
+
+// ─── Stats ───
+function loadStats() {
+    if(!DATA) return;
+    const s=DATA.stats;
+    document.getElementById('statsUmbral').textContent=s.umbral_frr||'—';
+    document.getElementById('statsAptos').textContent=`${s.nichos_aptos||0} / ${s.nichos_no_aptos||0}`;
+    document.getElementById('statsRevenue').textContent=fmtDollar(s.revenue_real_acumulado);
+    document.getElementById('statsEvergreen').textContent=`${s.evergreen_5yr||'—'}x`;
+
+    if(s.categorias) {
+        document.getElementById('statsCategories').innerHTML=Object.entries(s.categorias).map(([c,d])=>
+            `<div class="format-bar"><span style="flex:1;font-weight:600">${c}</span>`+
+            `<span style="color:var(--text2)">${d.count} nichos</span>`+
+            `<span style="color:var(--accent2);min-width:70px;text-align:right">${fmtDollar(d.cpc_promedio)}</span>`+
+            `<span style="color:var(--yellow);font-size:0.75rem;min-width:50px;text-align:right">FRR ${fmt(d.frr_promedio)}</span></div>`
+        ).join('');
+    }
+
+    const years=[1,2,3,5,10];
+    document.getElementById('statsEvergreenTable').innerHTML=years.map(y=>{
+        const mult=(0.9**y*(y-1)+1).toFixed(2);
+        return `<div class="format-bar"><span style="flex:1">Año ${y}</span>`+
+            `<span style="color:var(--accent2);font-weight:600">${mult}x</span></div>`;
+    }).join('');
+}
+
+// ─── Init ───
+document.addEventListener('DOMContentLoaded', loadData);
+</script>
+</body>
+</html>
