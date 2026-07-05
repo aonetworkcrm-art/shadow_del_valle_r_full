@@ -51,7 +51,7 @@
     "agente_activo": true,
     "intervalo_generacion_horas": 4.0,
     "max_posts_por_dia": 6,
-    "estrategia": "rotating",
+    "estrategia": "hybrid",
     "hora_inicio": "06:00",
     "hora_fin": "23:00"
   },
