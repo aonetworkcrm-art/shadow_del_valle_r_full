@@ -52,7 +52,7 @@
       "destination": "/output/seo_oracle.html"
     },
     {
-      "source": "/output/seo_oracle_data.json",
+      "source": "/seo-oracle/data",
       "destination": "/output/seo_oracle_data.json"
     }
   ],
