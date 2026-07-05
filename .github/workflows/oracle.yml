@@ -1,0 +1,89 @@
+# 🌍 Shadow Del Valle R — Oráculo Sísmico (Cron Job)
+# Ejecuta el oráculo cada 15 minutos para monitorear:
+#   - Actividad sísmica en RD, Venezuela, Caribe y Global
+#   - Envía alertas WhatsApp/Telegram si hay eventos nuevos
+#   - Guarda estado en KV para el dashboard
+#
+# También se puede disparar manualmente desde GitHub Actions UI.
+
+name: 🌍 Oráculo Sísmico
+
+on:
+  schedule:
+    # Cada 15 minutos — monitoreo en tiempo real
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Modo de escaneo'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full
+          - notify
+
+permissions:
+  contents: read
+
+jobs:
+  oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 🌍 Ejecutar escaneo sísmico
+        id: scan
+        working-directory: shadow_del_valle_r
+        run: |
+          echo "🌍 ORÁCULO SÍSMICO — Escaneo automático"
+          echo "📅 $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo ""
+          
+          OUTPUT=$(python core/oraculo.py --once 2>&1)
+          echo "$OUTPUT"
+          
+          # Extraer número de eventos nuevos
+          NUEVOS=$(echo "$OUTPUT" | grep -oP '(\d+) nuevo(s)? evento(s)?' | head -1 | grep -oP '\d+' || echo "0")
+          echo "nuevos=$NUEVOS" >> $GITHUB_OUTPUT
+          
+          # Extraer si hay alertas de magnitud >= 5.0
+          ALERTAS=$(echo "$OUTPUT" | grep -oP 'M[5-9]\.\d' | head -5 || echo "")
+          if [ -n "$ALERTAS" ]; then
+            echo "⚠️ ALERTAS DETECTADAS:"
+            echo "$ALERTAS"
+            echo "alertas=true" >> $GITHUB_OUTPUT
+          else
+            echo "alertas=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          PYTHONUNBUFFERED: 1
+
+      - name: ⚡ Notificar a IndexNow si hay nuevos eventos
+        if: steps.scan.outputs.nuevos != '0'
+        run: |
+          echo "📡 Nuevos eventos detectados. Notificando buscadores..."
+          curl -s -o /dev/null -w "%{http_code}" "https://shadow-del-valle-r.vercel.app/api/notify?action=all" || true
+
+      - name: 📋 Resumen
+        run: |
+          NUEVOS="${{ steps.scan.outputs.nuevos }}"
+          ALERTAS="${{ steps.scan.outputs.alertas }}"
+          echo ""
+          echo "╔═══════════════════════════════════════════╗"
+          echo "║  🌍 ORÁCULO SÍSMICO                      ║"
+          echo "║  Escaneo completado                      ║"
+          echo "╚═══════════════════════════════════════════╝"
+          echo "  📅 $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "  🆕 Eventos nuevos: $NUEVOS"
+          if [ "$ALERTAS" = "true" ]; then
+            echo "  ⚠️  ALERTAS SÍSMICAS ACTIVAS"
+          else
+            echo "  ✅ Sin alertas críticas"
+          fi

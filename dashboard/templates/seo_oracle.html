@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Oracle — Shadow Del Valle R</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🌑</span>
+                <div class="logo-text">
+                    <strong>SEO Oracle</strong>
+                    <small>Inteligencia de Nichos</small>
+                </div>
+            </div>
+
+            <nav>
+                <a href="#" class="nav-item active" data-section="overview">
+                    <span>📊</span> Resumen
+                </a>
+                <a href="#" class="nav-item" data-section="ranking-frr">
+                    <span>🏆</span> Ranking FRR
+                </a>
+                <a href="#" class="nav-item" data-section="ranking-profit">
+                    <span>💰</span> Profitability
+                </a>
+                <a href="#" class="nav-item" data-section="projection">
+                    <span>📈</span> Proyección
+                </a>
+                <a href="#" class="nav-item" data-section="plan">
+                    <span>📋</span> Plan Contenido
+                </a>
+                <a href="#" class="nav-item" data-section="stats">
+                    <span>📐</span> Stats
+                </a>
+            </nav>
+
+            <div class="sidebar-status">
+                <div class="status-item">
+                    <span class="status-dot online" id="apiStatusDot"></span>
+                    <span id="apiStatusText">SEO Oracle Activo</span>
+                </div>
+                <div class="status-item">
+                    <span>Nichos:</span>
+                    <span id="nichesCount">15</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main" id="mainContent">
+
+            <!-- OVERVIEW -->
+            <section class="section active" id="section-overview">
+                <div class="section-header">
+                    <h1>📊 Resumen SEO Oracle</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-sm" onclick="loadAllData()">🔄 Cargar</button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Nichos</div>
+                        <div class="kpi-value" id="kpiTotal">—</div>
+                        <div class="kpi-trend">En base de datos</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Nichos Aptos</div>
+                        <div class="kpi-value" id="kpiAptos">—</div>
+                        <div class="kpi-trend">FRR ≥ umbral</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">FRR Promedio</div>
+                        <div class="kpi-value" id="kpiFrrAvg">—</div>
+                        <div class="kpi-trend">Aptos únicamente</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Nodos Trackeados</div>
+                        <div class="kpi-value" id="kpiNodes">0</div>
+                        <div class="kpi-trend">Posts en seguimiento</div>
+                    </div>
+                </div>
+
+                <!-- Top 5 por cada ranking -->
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card-header"><h3>🏆 Top 5 por FRR</h3></div>
+                        <div id="top5Frr"><div class="loading">Cargando...</div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>💰 Top 5 por Profitability</h3></div>
+                        <div id="top5Profit"><div class="loading">Cargando...</div></div>
+                    </div>
+                </div>
+
+                <!-- Categorías -->
+                <div class="card">
+                    <div class="card-header"><h3>📂 Nichos por Categoría</h3></div>
+                    <div id="categoriesList"><div class="loading">Cargando...</div></div>
+                </div>
+            </section>
+
+            <!-- RANKING FRR -->
+            <section class="section" id="section-ranking-frr">
+                <div class="section-header">
+                    <h1>🏆 Ranking por FRR</h1>
+                    <div class="header-actions">
+                        <span style="font-size:0.8rem;color:var(--text2)">FRR = (CPC × Volumen) / (Competencia + 1)</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="frrTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nicho</th>
+                                    <th>Categoría</th>
+                                    <th>CPC</th>
+                                    <th>Volumen</th>
+                                    <th>Competencia</th>
+                                    <th>FRR</th>
+                                    <th>Profit</th>
+                                    <th>Dif.</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="frrBody">
+                                <tr><td colspan="10" class="loading">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RANKING PROFITABILITY -->
+            <section class="section" id="section-ranking-profit">
+                <div class="section-header">
+                    <h1>💰 Ranking por Profitability</h1>
+                    <div class="header-actions">
+                        <span style="font-size:0.8rem;color:var(--text2)">Score = CPC × Demanda × Evergreen</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="profitTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nicho</th>
+                                    <th>Categoría</th>
+                                    <th>CPC</th>
+                                    <th>Score</th>
+                                    <th>FRR</th>
+                                    <th>Evergreen</th>
+                                    <th>Dif.</th>
+                                    <th>Idioma</th>
+                                </tr>
+                            </thead>
+                            <tbody id="profitBody">
+                                <tr><td colspan="9" class="loading">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECTION -->
+            <section class="section" id="section-projection">
+                <div class="section-header">
+                    <h1>📈 Proyección de Ingresos</h1>
+                    <div class="header-actions">
+                        <select id="projNicheSelect" onchange="loadProjection()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;font-size:0.8rem">
+                            <option value="">Selecciona un nicho...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="kpi-grid" id="projectionCards">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Visitantes / Mes</div>
+                        <div class="kpi-value" id="projVisitors">—</div>
+                        <div class="kpi-trend">Base: 2,000 visitantes por nodo</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Clicks / Mes</div>
+                        <div class="kpi-value" id="projClicks">—</div>
+                        <div class="kpi-trend">CTR: 2.0%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Confianza</div>
+                        <div class="kpi-value" id="projConfidence" style="font-size:1.2rem">—</div>
+                        <div class="kpi-trend">Nivel de certeza</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3>Proyección LOW / AVG / HIGH</h3></div>
+                    <div class="grid-2col">
+                        <div class="card" style="border-left:3px solid var(--yellow)">
+                            <div style="font-size:0.75rem;color:var(--text2)">LOW (CPC mín)</div>
+                            <div style="font-size:1.5rem;font-weight:700;color:var(--yellow)" id="projMonthlyLow">$0</div>
+                            <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                            <div style="font-size:1.2rem;font-weight:600;color:var(--yellow)" id="projYearlyLow">$0</div>
+                            <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                        </div>
+                        <div class="card" style="border-left:3px solid var(--accent2)">
+                            <div style="font-size:0.75rem;color:var(--text2)">AVG (CPC prom)</div>
+                            <div style="font-size:1.5rem;font-weight:700;color:var(--accent2)" id="projMonthlyAvg">$0</div>
+                            <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                            <div style="font-size:1.2rem;font-weight:600;color:var(--accent2)" id="projYearlyAvg">$0</div>
+                            <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                        </div>
+                    </div>
+                    <div class="card" style="border-left:3px solid var(--green)">
+                        <div style="font-size:0.75rem;color:var(--text2)">HIGH (CPC máx)</div>
+                        <div style="font-size:1.5rem;font-weight:700;color:var(--green)" id="projMonthlyHigh">$0</div>
+                        <div style="font-size:0.8rem;color:var(--text2)">por mes</div>
+                        <div style="font-size:1.2rem;font-weight:600;color:var(--green)" id="projYearlyHigh">$0</div>
+                        <div style="font-size:0.75rem;color:var(--text2)">por año</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTENT PLAN -->
+            <section class="section" id="section-plan">
+                <div class="section-header">
+                    <h1>📋 Plan de Contenido Multi-Nicho</h1>
+                    <div class="header-actions">
+                        <select id="planSelect" onchange="loadPlan()" multiple style="background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;font-size:0.8rem;min-height:40px">
+                        </select>
+                        <button class="btn btn-sm" onclick="selectTop5()">Top 5 FRR</button>
+                        <button class="btn btn-sm" onclick="selectAll()">Todos</button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Nichos en Plan</div>
+                        <div class="kpi-value" id="planCount">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Visitantes / Mes</div>
+                        <div class="kpi-value" id="planVisitors">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Clicks / Mes</div>
+                        <div class="kpi-value" id="planClicks">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Confianza Prom.</div>
+                        <div class="kpi-value" id="planConfidence" style="font-size:1.2rem">—</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3>Ingresos Totales del Plan</h3></div>
+                    <div class="grid-2col">
+                        <div class="card" style="border-left:3px solid var(--yellow)">
+                            <div style="font-size:0.75rem;color:var(--text2)">MENSUAL</div>
+                            <div style="font-size:0.9rem;color:var(--text2)">LOW</div>
+                            <div style="font-size:1.3rem;font-weight:700;color:var(--yellow)" id="planMonthlyLow">$0</div>
+                            <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">AVG</div>
+                            <div style="font-size:1.8rem;font-weight:700;color:var(--accent2)" id="planMonthlyAvg">$0</div>
+                            <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">HIGH</div>
+                            <div style="font-size:1.3rem;font-weight:700;color:var(--green)" id="planMonthlyHigh">$0</div>
+                        </div>
+                        <div class="card" style="border-left:3px solid var(--accent)">
+                            <div style="font-size:0.75rem;color:var(--text2)">ANUAL</div>
+                            <div style="font-size:0.9rem;color:var(--text2)">LOW</div>
+                            <div style="font-size:1.3rem;font-weight:700;color:var(--yellow)" id="planYearlyLow">$0</div>
+                            <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">AVG</div>
+                            <div style="font-size:1.8rem;font-weight:700;color:var(--accent2)" id="planYearlyAvg">$0</div>
+                            <div style="font-size:0.9rem;color:var(--text2);margin-top:8px">HIGH</div>
+                            <div style="font-size:1.3rem;font-weight:700;color:var(--green)" id="planYearlyHigh">$0</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATS -->
+            <section class="section" id="section-stats">
+                <div class="section-header">
+                    <h1>📐 Estadísticas SEO Oracle</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-sm" onclick="exportReport()">💾 Exportar JSON</button>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Umbral FRR</div>
+                        <div class="kpi-value" id="statsUmbral">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Aptos / No Aptos</div>
+                        <div class="kpi-value" id="statsAptos">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Revenue Real</div>
+                        <div class="kpi-value" id="statsRevenue">$0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Evergreen (Año 5)</div>
+                        <div class="kpi-value" id="statsEvergreen">—</div>
+                    </div>
+                </div>
+
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card-header"><h3>🐉 Categorías</h3></div>
+                        <div id="statsCategories"><div class="loading">Cargando...</div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>🌿 Multiplicador Evergreen</h3></div>
+                        <div id="statsEvergreenTable"><div class="loading">Cargando...</div></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="/static/seo_oracle.js"></script>
+</body>
+</html>

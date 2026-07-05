@@ -35,3 +35,5 @@ output/ledger/
 
 # Old vercel backup
 vercel.json.old
+.vercel
+.env*

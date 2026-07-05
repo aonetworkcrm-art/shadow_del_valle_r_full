@@ -20,7 +20,7 @@ OUTPUT_DIR = "output/posts"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # 🌐 Dominio activo (cambiar cuando tengas dominio personalizado)
-SITE_DOMAIN = "shadow-del-valle-r.pages.dev"
+SITE_DOMAIN = "shadow-del-valle-r.vercel.app"
 
 STATE_FILE = "output/.generation_state.json"
 CONFIG_FILE = "config/settings.json"

@@ -1,0 +1,183 @@
+{
+  "eventos_conocidos": [
+    "pr2026177000",
+    "20260626_0000151",
+    "20260626_0000042",
+    "20260626_0000192",
+    "20260626_0000155",
+    "20260626_0000158"
+  ],
+  "escaneos_totales": 7,
+  "eventos_detectados": 6,
+  "notificaciones_enviadas": 0,
+  "ultimo_escaneo": 1782497329.4107044,
+  "ultima_fecha": "2026-06-26 14:08:54",
+  "ultima_propagacion": {
+    "total_eventos_analizados": 5,
+    "total_clusters": 4,
+    "total_vectores": 1,
+    "clusters": [
+      {
+        "centro_lat": 5.3561,
+        "centro_lon": 125.1283,
+        "eventos": [
+          {
+            "id": "20260626_0000151",
+            "magnitud": 6.5,
+            "lugar": "Desconocido",
+            "lat": 5.3561,
+            "lon": 125.1283,
+            "profundidad_km": -53.9,
+            "tiempo": "2026-06-26 11:34:42 UTC",
+            "tiempo_timestamp": 1782473682860,
+            "url": "",
+            "detalle_url": "",
+            "severidad": "GRAVE",
+            "tsunami": false,
+            "sig": 0,
+            "tipo": "earthquake",
+            "mag_type": "",
+            "nst": 0,
+            "gap": 0,
+            "rms": 0
+          }
+        ],
+        "magnitud_maxima": 6.5,
+        "tiempo_inicio": 1782473682860,
+        "tiempo_fin": 1782473682860,
+        "duracion_horas": 0,
+        "area_km2": 0,
+        "tipo": "swarm"
+      },
+      {
+        "centro_lat": 35.587199999999996,
+        "centro_lon": 139.73395,
+        "eventos": [
+          {
+            "id": "20260626_0000042",
+            "magnitud": 5.8,
+            "lugar": "Desconocido",
+            "lat": 35.6761,
+            "lon": 140.4834,
+            "profundidad_km": -48.5,
+            "tiempo": "2026-06-26 03:46:36 UTC",
+            "tiempo_timestamp": 1782445596760,
+            "url": "",
+            "detalle_url": "",
+            "severidad": "ALERTA",
+            "tsunami": false,
+            "sig": 0,
+            "tipo": "earthquake",
+            "mag_type": "",
+            "nst": 0,
+            "gap": 0,
+            "rms": 0
+          },
+          {
+            "id": "20260626_0000192",
+            "magnitud": 5.7,
+            "lugar": "Desconocido",
+            "lat": 35.4983,
+            "lon": 138.9845,
+            "profundidad_km": -12.1,
+            "tiempo": "2026-06-26 13:28:56 UTC",
+            "tiempo_timestamp": 1782480536580,
+            "url": "",
+            "detalle_url": "",
+            "severidad": "ALERTA",
+            "tsunami": false,
+            "sig": 0,
+            "tipo": "earthquake",
+            "mag_type": "",
+            "nst": 0,
+            "gap": 0,
+            "rms": 0
+          }
+        ],
+        "magnitud_maxima": 5.8,
+        "tiempo_inicio": 1782445596760,
+        "tiempo_fin": 1782480536580,
+        "duracion_horas": 9.705505555555556,
+        "area_km2": 14736,
+        "tipo": "doble"
+      },
+      {
+        "centro_lat": 30.4026,
+        "centro_lon": 69.6743,
+        "eventos": [
+          {
+            "id": "20260626_0000155",
+            "magnitud": 5.2,
+            "lugar": "Desconocido",
+            "lat": 30.4026,
+            "lon": 69.6743,
+            "profundidad_km": -10.0,
+            "tiempo": "2026-06-26 11:48:47 UTC",
+            "tiempo_timestamp": 1782474527460,
+            "url": "",
+            "detalle_url": "",
+            "severidad": "ALERTA",
+            "tsunami": false,
+            "sig": 0,
+            "tipo": "earthquake",
+            "mag_type": "",
+            "nst": 0,
+            "gap": 0,
+            "rms": 0
+          }
+        ],
+        "magnitud_maxima": 5.2,
+        "tiempo_inicio": 1782474527460,
+        "tiempo_fin": 1782474527460,
+        "duracion_horas": 0,
+        "area_km2": 0,
+        "tipo": "swarm"
+      }
+    ],
+    "vectores": [
+      {
+        "desde": {
+          "lat": 35.6761,
+          "lon": 140.4834,
+          "lugar": "Desconocido"
+        },
+        "hasta": {
+          "lat": 35.4983,
+          "lon": 138.9845,
+          "lugar": "Desconocido"
+        },
+        "distancia_km": 137.0,
+        "direccion_grados": 262.1,
+        "direccion_nombre": "W",
+        "delta_magnitud": -0.1,
+        "duracion_horas": 9.71,
+        "velocidad_kmh": 14.1,
+        "magnitud_desde": 5.8,
+        "magnitud_hasta": 5.7
+      }
+    ],
+    "direccion_general": {
+      "activa": true,
+      "direccion_promedio": 262.1,
+      "direccion_nombre": "W",
+      "distancia_total_km": 137.0,
+      "delta_magnitud_promedio": -0.1,
+      "tendencia_magnitud": "ESTABLE \u27a1\ufe0f",
+      "total_vectores_analizados": 1,
+      "descripcion": "Propagaci\u00f3n hacia el W (137 km recorridos en 1 movimiento(s))"
+    },
+    "prediccion": {
+      "lat_predicho": 35.3197,
+      "lon_predicho": 137.4888,
+      "distancia_estimada_km": 137.0,
+      "direccion": "W",
+      "direccion_grados": 262.1,
+      "ventana_horas": 9.7,
+      "confianza": "MEDIA",
+      "basado_en_vectores": 1,
+      "desde_ultimo_evento": "Desconocido",
+      "descripcion": "Pr\u00f3ximo evento probable: ~137 km al W desde Desconocido (en ~9.7h)"
+    },
+    "timestamp_analisis": "2026-06-26T14:08:54.749175"
+  }
+}

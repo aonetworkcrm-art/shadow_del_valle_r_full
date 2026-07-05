@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════════
+# Render Blueprint — Shadow Del Valle R Monetag Dashboard
+# ═══════════════════════════════════════════════════════════════════
+# Deploy:
+#   1. Sube el proyecto a GitHub
+#   2. En Render: Dashboard > Blueprint > Connect repo
+#   3. Render detecta este archivo y configura el servicio
+# ═══════════════════════════════════════════════════════════════════
+
+services:
+  # ─── Dashboard Web Flask ────────────────────────────────────────
+  - type: web
+    name: shadow-del-valle-r-dashboard
+    env: python
+    region: oregon  # o: frankfurt (EU), singapore (Asia)
+    plan: free      # o: starter ($7/mes), professional ($20/mes)
+    
+    # ── Build & Start ──
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn dashboard.api:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120 --access-logfile - --error-logfile -
+    
+    # ── Health Check ──
+    healthCheckPath: /health
+    
+    # ── Variables de Entorno ──
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: MONETAG_API_TOKEN
+        sync: false  # ⚠️  Configurar manualmente en Render Dashboard
+      - key: WA_PHONE
+        sync: false  # Opcional: WhatsApp phone
+      - key: WA_APIKEY
+        sync: false  # Opcional: WhatsApp API key
+      - key: PORT
+        value: 10000
+    
+    # ── Auto-Deploy ──
+    autoDeploy: true
+    branch: main
+    
+    # ── Cron: Reporte diario (opcional) ──
+    # Para activar, descomenta y configura:
+    # - type: cron
+    #   name: daily-monetag-report
+    #   schedule: "0 9 * * *"  # Todos los días a las 9 AM
+    #   command: python -c "
+    #     import sys, os;
+    #     sys.path.insert(0, '.');
+    #     from control import action_monetag_report;
+    #     token = os.environ.get('MONETAG_API_TOKEN', '');
+    #     action_monetag_report(token, 'config/settings.json', '.')
+    #   "

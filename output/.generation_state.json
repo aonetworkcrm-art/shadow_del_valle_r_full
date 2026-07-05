@@ -1,13 +1,19 @@
 {
-  "date": "2026-06-25",
-  "count_today": 0,
-  "last_index": 6,
+  "date": "2026-06-26",
+  "count_today": 6,
+  "last_index": 12,
   "generated_slugs": [
     "terremoto-venezuela-reclamaciones-seguro",
     "abogados-accidentes-venezuela",
     "seguro-vida-adultos-mayores",
     "centros-rehabilitacion-venezuela",
     "ciberseguridad-crisis-venezuela",
-    "seguro-auto-riesgo-sismico"
+    "seguro-auto-riesgo-sismico",
+    "inversiones-reconstruccion-venezuela",
+    "guia-supervivencia-terremotos",
+    "doblete-sismico-venezuela-m72-m75",
+    "terremoto-caracas-188-muertos-testimonios",
+    "edificios-colapsados-caracas-fragilidad",
+    "abogados-lesiones-terremoto"
   ]
 }

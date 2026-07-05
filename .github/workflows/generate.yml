@@ -1,8 +1,18 @@
-# 🌑 Shadow Del Valle R — Auto Generate & Deploy
+# 🌑 Shadow Del Valle R — Auto Generate & Deploy (FULL v1.0)
 # Triggered by: /api/generate endpoint OR manual dispatch
 # Actions: all | generate | deploy | notify
+#
+# Secrets requeridos en GitHub:
+#   GITHUB_PAT          — Token con permisos repo + workflow (para push exitoso)
+#   VERCEL_TOKEN        — Token de Vercel para deploy automatico
+#
+# Nota: Si GITHUB_PAT no esta configurado, se usa GITHUB_TOKEN (default)
+# con permisos contents:write. El push funciona pero no triggera otros workflows.
+#
+# Estrategia: Single job con pasos condicionales (sin depends entre jobs).
+# Cada paso solo se ejecuta si su accion coincide con la solicitada.
 
-name: Generate & Deploy
+name: 🌑 Generate & Deploy
 
 on:
   repository_dispatch:
@@ -10,75 +20,149 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Acción a ejecutar (all|generate|deploy|notify)'
+        description: 'Accion a ejecutar'
         required: false
         default: 'all'
+        type: choice
+        options:
+          - all
+          - generate
+          - deploy
+          - notify
+
+permissions:
+  contents: write
+
+env:
+  ACTION: ${{ github.event.client_payload.action || github.event.inputs.action || 'all' }}
+  SHOULD_GENERATE: ${{ (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'generate' || github.event.inputs.action == 'all' || github.event.inputs.action == 'generate') }}
+  SHOULD_DEPLOY: ${{ (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'deploy' || github.event.inputs.action == 'all' || github.event.inputs.action == 'deploy') }}
+  SHOULD_NOTIFY: ${{ (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'notify' || github.event.inputs.action == 'all' || github.event.inputs.action == 'notify') }}
 
 jobs:
-  generate:
-    if: ${{ github.event.client_payload.action == 'all' || github.event.client_payload.action == 'generate' || github.event_name == 'workflow_dispatch' }}
+  pipeline:
     runs-on: ubuntu-latest
+
     steps:
+
+      # ═══════════════════════════════════════════════
+      # CHECKOUT — Siempre se ejecuta
+      # ═══════════════════════════════════════════════
       - name: 📥 Checkout repo
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_PAT || secrets.GITHUB_TOKEN }}
 
-      - name: 🐍 Setup Python
+      # ═══════════════════════════════════════════════
+      # GENERATE — Solo si action == all | generate
+      # ═══════════════════════════════════════════════
+      - name: 🐍 Setup Python 3.11
+        if: env.SHOULD_GENERATE == 'true'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: shadow_del_valle_r/requirements.txt
 
-      - name: 📦 Install Python deps
+      - name: 📦 Install Python dependencies
+        if: env.SHOULD_GENERATE == 'true'
+        working-directory: shadow_del_valle_r
         run: |
-          cd shadow_del_valle_r
-          pip install -r requirements.txt
+          pip install --quiet -r requirements.txt 2>&1 || echo "⚠️ Solo dependencias stdlib disponibles"
 
-      - name: 🏗️ Generate all posts
+      - name: 🏗️ Generate all posts (FORCE mode)
+        if: env.SHOULD_GENERATE == 'true'
+        id: generate
+        working-directory: shadow_del_valle_r
         run: |
-          cd shadow_del_valle_r
-          python generate_all.py
+          echo "🏗️ Generando todos los posts con --force..."
+          python generate_all.py --force
+          echo "✅ Generacion completada"
         env:
           PYTHONUNBUFFERED: 1
 
-      - name: 📤 Commit and push generated files
+      - name: 📤 Commit & push generated files
+        if: env.SHOULD_GENERATE == 'true'
         run: |
           cd shadow_del_valle_r
-          git config user.name "Shadow Bot"
+          git config user.name "Shadow Del Valle R [Bot]"
           git config user.email "bot@shadowdelvalle.com"
-          git add -A
-          git diff --staged --quiet || git commit -m "🌑 Auto-generate posts [$(date +'%Y-%m-%d %H:%M')]"
-          git push
 
-  deploy:
-    if: ${{ always() && (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'deploy' || github.event_name == 'workflow_dispatch') }}
-    needs: [generate]
-    runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout repo
-        uses: actions/checkout@v4
+          git add output/posts/ output/posts.json output/sitemap.xml output/robots.txt output/.generation_state.json
+          git add output/ledger/ -A 2>/dev/null || true
 
-      - name: 🔧 Setup Node
+          if git diff --staged --quiet; then
+            echo "📭 No hay cambios nuevos para commit"
+          else
+            git commit -m "🌑 Auto-generate posts [$(date +'%Y-%m-%d %H:%M UTC')]"
+            git push
+            echo "✅ Push exitoso"
+          fi
+
+      # ═══════════════════════════════════════════════
+      # DEPLOY — Solo si action == all | deploy
+      # ═══════════════════════════════════════════════
+      - name: 🔧 Setup Node 20
+        if: env.SHOULD_DEPLOY == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: shadow_del_valle_r/package.json
 
-      - name: 📦 Install deps
-        run: |
-          cd shadow_del_valle_r
-          npm install
+      - name: 📦 Install npm dependencies
+        if: env.SHOULD_DEPLOY == 'true'
+        working-directory: shadow_del_valle_r
+        run: npm install --production 2>&1
 
       - name: ▲ Deploy to Vercel
+        if: env.SHOULD_DEPLOY == 'true'
+        working-directory: shadow_del_valle_r
         run: |
-          cd shadow_del_valle_r
-          npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+          if [ -n "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "▲ Desplegando a Vercel..."
+            npx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }} 2>&1
+            echo "✅ Deploy a Vercel completado"
+          else
+            echo "⚠️ VERCEL_TOKEN no configurado en GitHub Secrets"
+            echo "   Para configurarlo:"
+            echo "   1. Ve a: https://vercel.com/account/tokens"
+            echo "   2. Crea un token"
+            echo "   3. Agregalo como VERCEL_TOKEN en GitHub Secrets"
+            echo "   =====> O simplemente conecta Vercel al repo (auto-deploy) <====="
+          fi
 
-  notify:
-    if: ${{ always() && (github.event.client_payload.action == 'all' || github.event.client_payload.action == 'notify' || github.event_name == 'workflow_dispatch') }}
-    needs: [deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⚡ IndexNow notification
+      # ═══════════════════════════════════════════════
+      # NOTIFY — Solo si action == all | notify
+      # ═══════════════════════════════════════════════
+      - name: ⚡ Notificar IndexNow + Google + Bing
+        if: env.SHOULD_NOTIFY == 'true'
         run: |
-          curl -s "https://shadow-del-valle-r.vercel.app/api/notify?action=all" | echo "📋 IndexNow result: $(cat)"
+          echo "📡 Enviando URLs a IndexNow..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://shadow-del-valle-r.vercel.app/api/notify?action=all")
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ IndexNow: URLs enviadas exitosamente"
+          else
+            echo "⚠️ IndexNow: HTTP $HTTP_CODE"
+          fi
+
+          echo ""
+          echo "📡 Pings a buscadores..."
+          curl -s "https://www.google.com/ping?sitemap=https://shadow-del-valle-r.vercel.app/sitemap.xml" > /dev/null \
+            && echo "✅ Google: ping enviado" || echo "⚠️ Google: ping fallo"
+          curl -s "https://www.bing.com/ping?sitemap=https://shadow-del-valle-r.vercel.app/sitemap.xml" > /dev/null \
+            && echo "✅ Bing: ping enviado" || echo "⚠️ Bing: ping fallo"
+
+      # ═══════════════════════════════════════════════
+      # RESUMEN FINAL
+      # ═══════════════════════════════════════════════
+      - name: 📋 Resumen de la ejecucion
+        run: |
+          echo ""
+          echo "╔═══════════════════════════════════════════╗"
+          echo "║  🌑 SHADOW DEL VALLE R                   ║"
+          echo "║  Pipeline completado exitosamente        ║"
+          echo "╚═══════════════════════════════════════════╝"
+          echo ""
+          echo "  📅 $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "  🏁 Accion: ${{ env.ACTION }}"

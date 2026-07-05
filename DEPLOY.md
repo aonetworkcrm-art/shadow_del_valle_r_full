@@ -271,5 +271,185 @@ Haz push a GitHub después de generar nuevos posts. Vercel redeployea automátic
 
 ---
 
+## 🚂 DEPLOY DEL DASHBOARD MONETAG (Flask + Gunicorn)
+
+> **Despliega el panel de revenue en vivo con métricas de Monetag, alertas y optimización.**
+> *Render (gratis) · Railway (gratis) · Docker · Local*
+
+---
+
+### 📋 Requisitos
+
+- ✅ Cuenta en **GitHub** (gratis) → https://github.com/signup
+- ✅ Cuenta en **Render** (gratis) → https://render.com/register  
+  *o* Cuenta en **Railway** (gratis) → https://railway.app/login
+- ✅ **MONETAG_API_TOKEN** → https://publisher.monerator.com → API → Bearer Token
+- ✅ Proyecto subido a GitHub (desde PASO 4)
+
+---
+
+### 🏗️  Opción A: Render (recomendado, gratis)
+
+Render despliega automáticamente usando el archivo `render.yaml` (Blueprint).
+
+#### PASO 1: Conectar el repositorio
+
+1. Ve a https://dashboard.render.com/blueprint
+2. Haz clic en **"New Blueprint Instance"**
+3. Selecciona tu repositorio `shadow-del-valle-r`
+4. Render detectará `render.yaml` automáticamente
+
+#### PASO 2: Configurar variables de entorno
+
+Render detectará las variables marcadas como `sync: false` en `render.yaml`.
+En el Dashboard de Render, ve a tu servicio:
+```
+Dashboard → shadow-del-valle-r-dashboard → Environment → + Add Environment Variable
+```
+
+Agrega **como mínimo**:
+
+| Variable | Valor |
+|----------|-------|
+| `MONETAG_API_TOKEN` | `tu_token_de_monetag` |
+
+Opcionales:
+| Variable | Valor |
+|----------|-------|
+| `WA_PHONE` | `+1809XXXXXXX` |
+| `WA_APIKEY` | `tu_apikey_callmebot` |
+
+#### PASO 3: Desplegar
+
+Render iniciará el deploy automáticamente.
+
+```
+✅ Build: pip install -r requirements.txt
+✅ Start: gunicorn dashboard.api:app --bind 0.0.0.0:$PORT
+✅ Health: GET /health → 200 OK
+```
+
+📊 **Dashboard en vivo:** `https://shadow-del-valle-r-dashboard.onrender.com`
+🔍 **Health check:** `https://shadow-del-valle-r-dashboard.onrender.com/health`
+
+---
+
+### 🚂  Opción B: Railway (gratis)
+
+Railway despliega usando el archivo `railway.json`.
+
+#### PASO 1: Conectar el repositorio
+
+1. Ve a https://railway.app/new
+2. Haz clic en **"Deploy from GitHub repo"**
+3. Selecciona tu repositorio `shadow-del-valle-r`
+4. Railway detectará `railway.json` automáticamente
+
+#### PASO 2: Configurar variables de entorno
+
+```
+Railway Dashboard → Variables → + New Variable
+```
+
+Agrega **como mínimo**:
+
+| Variable | Valor |
+|----------|-------|
+| `MONETAG_API_TOKEN` | `tu_token_de_monetag` |
+| `PORT` | `5000` |
+
+#### PASO 3: Desplegar
+
+Railway iniciará el build y deploy automáticamente.
+
+```
+✅ Build: Nixpacks + pip install
+✅ Start: gunicorn dashboard.api:app --bind 0.0.0.0:$PORT
+✅ Health: GET /health → 200 OK
+```
+
+📊 **Dashboard en vivo:** `https://shadow-del-valle-r-dashboard.up.railway.app`
+🔍 **Health check:** `https://shadow-del-valle-r-dashboard.up.railway.app/health`
+
+---
+
+### 🐳  Opción C: Docker (cualquier hosting)
+
+Si prefieres Docker, la imagen se construye con `Dockerfile`.
+
+```bash
+# Build
+cd shadow_del_valle_r
+docker build -t shadow-dashboard -f Dockerfile .
+
+# Run local
+MONETAG_API_TOKEN="tu_token" docker run -p 5000:5000 -e MONETAG_API_TOKEN shadow-dashboard
+
+# O usando el script
+./deploy-dashboard.sh --docker
+```
+
+**Usa esta imagen en:**
+- Google Cloud Run
+- AWS ECS / Fargate
+- Azure Container Apps
+- DigitalOcean App Platform
+- Cualquier VPS con Docker
+
+---
+
+### 📊  Verificar que funciona
+
+Una vez desplegado, visita:
+
+```
+https://TU-SERVICIO.onrender.com      # Dashboard web
+https://TU-SERVICIO.onrender.com/health  # Health check (JSON)
+```
+
+**Health check exitoso:**
+```json
+{"status": "ok", "app": "Shadow Del Valle R — Monetag Dashboard", "version": "2.0.0"}
+```
+
+El dashboard mostrará:
+- 📊 KPIs de revenue, RPM, impresiones
+- 📈 Gráfico de revenue diario (Chart.js)
+- 🎯 Tabla de rendimiento por zonas
+- 🌍 Tabla de rendimiento por país
+- 🔔 Alertas inteligentes del sistema
+- 🧠 Centro de optimización de formatos
+
+---
+
+### 🔧  Solución de Problemas
+
+**Error: `ModuleNotFoundError: No module named 'flask'`**
+```
+Asegúrate de que requirements.txt tenga flask>=3.0.0 y gunicorn>=21.2.0
+```
+
+**Error: `gunicorn: command not found`**
+```
+Agrega gunicorn a requirements.txt: gunicorn>=21.2.0
+```
+
+**Error: 404 en /health**
+```
+Verifica que el healthcheckPath en render.yaml/railway.json apunte a /health
+```
+
+**Dashboard carga pero no muestra datos**
+```
+Verifica MONETAG_API_TOKEN en las variables de entorno de la plataforma
+```
+
+**El servidor no arranca por timeout**
+```
+Aumenta el timeout en gunicorn: --timeout 180
+```
+
+---
+
 **¿Listo para clonar para otro proyecto?**  
 Solo copia la carpeta, cambia los nichos en `core/radar.py`, las plantillas en `config/templates_copy.json`, y repite el deploy. Listo en 10 minutos.

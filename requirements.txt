@@ -3,12 +3,16 @@
 # Sistema AaaS de Arbitraje de Tráfico
 # compatible con Python 3.9+
 
-# Core — sin dependencias externas pesadas
-# El sistema corre con librería estándar de Python
-# No requiere FastAPI, no requiere base de datos
+# Dashboard web Flask
+flask>=3.0.0
+gunicorn>=21.2.0
+# flask-cors>=4.0.0  # Descomentar si necesitas CORS en producción
+
+# Core — librería estándar
+# El sistema corre mayormente con librería estándar de Python
 
 # Opcional: Para usar OpenRouter (generación de contenido con IA)
-# pip install openai>=1.60.0
+# openai>=1.60.0
 
 # Opcional: Para deploy automático a Vercel
 # npm install -g vercel

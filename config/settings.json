@@ -28,7 +28,7 @@
     "incluir_article_schema": true,
     "incluir_open_graph": true,
     "incluir_twitter_card": true,
-    "dominio": "shadow-del-valle-r.pages.dev"
+    "dominio": "shadow-del-valle-r.vercel.app"
   },
   "monetag": {
     "site_id": "253508",
@@ -36,6 +36,16 @@
     "delay_carga_ms": 2000,
     "posicion_anuncio": "despues_3er_parrafo",
     "formato": "popunder_smartlink"
+  },
+  "monetag_api": {
+    "api_token": "",
+    "habilitado": false,
+    "sync_interval_minutos": 5,
+    "auto_optimizar": true,
+    "optimization_interval_horas": 1,
+    "alertas_habilitadas": true,
+    "rpm_threshold": 0.50,
+    "revenue_drop_threshold": 0.30
   },
   "scheduler": {
     "agente_activo": true,
@@ -52,14 +62,17 @@
     "temperatura": 0.7
   },
   "github": {
-    "repo": "",
+    "repo": "aonetworkcrm-art/shadow_del_valle_r_full",
     "branch": "main",
-    "auto_push": false
+    "auto_push": true,
+    "pat_instructions": "Configurar GITHUB_PAT en Vercel Environment Variables para activar el boton del dashboard"
   },
   "vercel": {
-    "auto_deploy": false,
-    "dominio": "shadow-del-valle-r.pages.dev",
-    "framework": "static"
+    "auto_deploy": true,
+    "dominio": "shadow-del-valle-r.vercel.app",
+    "framework": "static",
+    "project_id": "",
+    "org_id": ""
   },
   "telegram": {
     "bot_token": "",
@@ -72,6 +85,21 @@
     "moneda": "USD",
     "auto_respaldo": true,
     "intervalo_respaldo_horas": 6.0
+  },
+  "oraculo": {
+    "habilitado": true,
+    "intervalo_minutos": 5,
+    "magnitud_minima": 2.5,
+    "regiones_activas": ["republica_dominicana", "venezuela", "caribe", "global"],
+    "alerta_whatsapp_desde_magnitud": 4.0,
+    "ultimo_escaneo": ""
+  },
+  "whatsapp": {
+    "habilitado": true,
+    "phone": "18297561828",
+    "apikey": "9558552",
+    "api_url": "https://api.callmebot.com/whatsapp.php",
+    "instrucciones": "CallMeBot activado. Alertas sismicas via WhatsApp activas."
   },
   "logging": {
     "nivel": "INFO",

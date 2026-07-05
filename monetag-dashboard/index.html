@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetag Revenue Dashboard — Shadow Del Valle R</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <span class="logo-icon">🌑</span>
+                <div class="logo-text">
+                    <strong>Revenue</strong>
+                    <small>Monetag Dashboard</small>
+                </div>
+            </div>
+            
+            <nav>
+                <a href="#" class="nav-item active" data-section="overview">
+                    <span>📊</span> Resumen
+                </a>
+                <a href="#" class="nav-item" data-section="details">
+                    <span>📈</span> Detalle Diario
+                </a>
+                <a href="#" class="nav-item" data-section="zones">
+                    <span>🎯</span> Zonas
+                </a>
+                <a href="#" class="nav-item" data-section="geo">
+                    <span>🌍</span> Geografía
+                </a>
+                <a href="#" class="nav-item" data-section="alerts">
+                    <span>🔔</span> Alertas
+                    <span class="badge-alert" id="alertBadge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-section="optimize">
+                    <span>🧠</span> Optimizar
+                </a>
+            </nav>
+
+            <div class="sidebar-status">
+                <div class="status-item">
+                    <span class="status-dot" id="apiStatusDot"></span>
+                    <span id="apiStatusText">Conectando...</span>
+                </div>
+                <div class="status-item">
+                    <span>Última sync:</span>
+                    <span id="lastSync">—</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="main" id="mainContent">
+            <!-- OVERVIEW -->
+            <section class="section active" id="section-overview">
+                <div class="section-header">
+                    <h1>📊 Resumen de Revenue</h1>
+                    <div class="header-actions">
+                        <button class="btn btn-sm" onclick="refreshData()">🔄 Actualizar</button>
+                        <span class="auto-refresh" id="autoRefreshLabel">Auto 30s</span>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Revenue (7 días)</div>
+                        <div class="kpi-value" id="kpiRevenue">$0.00</div>
+                        <div class="kpi-trend" id="kpiRevenueTrend">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">RPM Promedio</div>
+                        <div class="kpi-value" id="kpiRpm">$0.00</div>
+                        <div class="kpi-trend" id="kpiRpmTrend">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Avg Diario</div>
+                        <div class="kpi-value" id="kpiDaily">$0.00</div>
+                        <div class="kpi-trend" id="kpiDailyTrend">—</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Proy. Mensual</div>
+                        <div class="kpi-value" id="kpiMonthly">$0.00</div>
+                        <div class="kpi-trend" id="kpiMonthlyTrend">📈</div>
+                    </div>
+                </div>
+
+                <!-- Revenue Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Revenue Diario (30 días)</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bottom grid -->
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card-header"><h3>Top Zonas</h3></div>
+                        <div id="topZonesList" class="list-skeleton">
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>Top Países</h3></div>
+                        <div id="topCountriesList" class="list-skeleton">
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                            <div class="skeleton-line"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DETAILS -->
+            <section class="section" id="section-details">
+                <div class="section-header">
+                    <h1>📈 Detalle Diario</h1>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Revenue por Día</h3>
+                        <div class="table-controls">
+                            <select id="detailDays" onchange="loadDetails()">
+                                <option value="7">7 días</option>
+                                <option value="14">14 días</option>
+                                <option value="30" selected>30 días</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table" id="detailTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Revenue</th>
+                                    <th>Impresiones</th>
+                                    <th>Clicks</th>
+                                    <th>RPM</th>
+                                    <th>Tendencia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailBody">
+                                <tr><td colspan="6" class="loading">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ZONES -->
+            <section class="section" id="section-zones">
+                <div class="section-header">
+                    <h1>🎯 Rendimiento por Zona</h1>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="zonesTable">
+                            <thead>
+                                <tr>
+                                    <th>Zona</th>
+                                    <th>Revenue</th>
+                                    <th>%</th>
+                                    <th>RPM</th>
+                                    <th>Impresiones</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="zonesBody">
+                                <tr><td colspan="6" class="loading">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GEO -->
+            <section class="section" id="section-geo">
+                <div class="section-header">
+                    <h1>🌍 Rendimiento por País</h1>
+                </div>
+                <div class="card">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="geoTable">
+                            <thead>
+                                <tr>
+                                    <th>País</th>
+                                    <th>Revenue</th>
+                                    <th>RPM</th>
+                                    <th>CTR</th>
+                                    <th>Impresiones</th>
+                                    <th>Tier</th>
+                                </tr>
+                            </thead>
+                            <tbody id="geoBody">
+                                <tr><td colspan="6" class="loading">Cargando...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ALERTS -->
+            <section class="section" id="section-alerts">
+                <div class="section-header">
+                    <h1>🔔 Alertas Inteligentes</h1>
+                    <button class="btn btn-sm" onclick="ackAlerts()">✅ Marcar leídas</button>
+                </div>
+                <div class="card">
+                    <div id="alertsList">
+                        <div class="loading">No hay alertas</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OPTIMIZE -->
+            <section class="section" id="section-optimize">
+                <div class="section-header">
+                    <h1>🧠 Centro de Optimización</h1>
+                    <button class="btn btn-primary" onclick="runOptimization()">🚀 Ejecutar Optimización</button>
+                </div>
+
+                <div class="grid-2col">
+                    <div class="card">
+                        <div class="card-header"><h3>Análisis de Formatos</h3></div>
+                        <div id="formatAnalysis">
+                            <div class="loading">Ejecuta optimización para ver análisis</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>Recomendaciones</h3></div>
+                        <div id="recommendationsList">
+                            <div class="loading">Ejecuta optimización para ver recomendaciones</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3>Configuración Monetag</h3></div>
+                    <div id="monetagConfig">
+                        <div class="loading">Cargando configuración...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

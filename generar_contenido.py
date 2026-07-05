@@ -8,7 +8,7 @@ contenido único, variado y optimizado para cada nicho.
 
 Flujo:
     1. FreeBuff Bridge genera un prompt estructurado para el nicho
-    2. OpenRouter genera contenido único basado en el prompt
+    2. OpenRouter genera contenido único basado en el prompt (con fallback chain)
     3. Se parsea la respuesta JSON (title, content, faqs)
     4. Si OpenRouter no está disponible, usa template de respaldo
 
@@ -23,8 +23,8 @@ import os
 import re
 import sys
 import time
-from datetime import datetime
 from typing import Dict, List, Optional
+from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -32,30 +32,46 @@ from core.freebuff_bridge import FreeBuffBridge
 from api_openrouter import OpenRouterClient
 
 
-# ─── System prompt experto para generación de contenido ───
-SYSTEM_PROMPT_COPY = """Eres un redactor SEO con 10 años de experiencia. Tu especialidad es el copywriting persuasivo que convierte.
+# ─── System prompt experto SEO — Proyecto Infinito + Shadow Del Valle R ───
+SYSTEM_PROMPT_COPY = """Eres un redactor SEO experto con 10 años de experiencia. Tu especialidad es el copywriting persuasivo que convierte visitantes en leads.
 
-REGLAS DE ORO:
+## REGLAS DE ORO:
 1. NUNCA empieces con "Si estás buscando..." o "En el mundo actual..." — eso mata el CTR.
-2. Usa párrafos cortos (< 3 líneas). La gente escanea, no lee.
-3. Incluye una alerta visual (<div class="alerta-box">) con datos impactantes.
-4. Incluye un consejo exclusivo (<div class="tip-box">) que nadie más da.
-5. Termina con un CTA claro (<div class="cta-box">) con <a class="btn-accion">.
-6. Las FAQs deben responder objeciones reales, no preguntas genéricas.
-7. Título: máx 70 caracteres, incluye keyword + año.
-8. Meta description: máx 160 caracteres, optimizada para CTR.
-9. Usa <strong> para palabras clave, <ul>/<ol> para listas.
+2. Primer párrafo: hook que pare el dedo. Una pregunta incómoda, una estadística que duela, una historia corta que el lector sienta propia.
+3. Párrafos cortos (< 3 líneas). La gente escanea, no lee.
+4. Tono: directo, honesto, sin rodeos. Como un amigo que te da la real. No corporativo, no robótico.
+5. Incluye vocabulario relevante del nicho para demostrar autoridad.
+6. Datos concretos > opiniones. Números, estadísticas, hechos.
 
-Tono: Directo, honesto, sin rodeos. Como un amigo que te da la real.
-No seas corporativo. No seas robótico. Sé humano.
+## ESTRUCTURA DEL CONTENIDO (síguela al pie de la letra):
+1. **HOOK** — Primer párrafo que engancha. Problema real que el lector reconoce al instante.
+2. **PROBLEMA** — Describe el dolor exacto. Haz que diga "ESO MISMO ME PASÓ A MÍ".
+3. **ALERTA** — <div class="alerta-box"> con datos impactantes o información crítica.
+4. **SOLUCIÓN** — 2-3 párrafos de información útil. Pasos concretos, opciones reales.
+5. **TIP** — <div class="tip-box"> con un consejo exclusivo que nadie más da.
+6. **CIERRE** — Resumen y CTA claro.
 
-RESPONDE EXACTAMENTE EN ESTE FORMATO JSON:
+## ELEMENTOS HTML REQUERIDOS:
+- <strong> para palabras clave
+- <ul> o <ol> para listas de pasos/items
+- <div class="alerta-box"> para información crítica (obligatorio)
+- <div class="tip-box"> para consejos exclusivos (obligatorio)
+- <div class="cta-box"> con <a class="btn-accion"> al final (obligatorio)
+
+## REQUISITOS TÉCNICOS:
+- Título: máx 70 caracteres, incluye keyword principal + año
+- Meta description: máx 160 caracteres, optimizada para CTR
+- 3 FAQs que respondan objeciones reales, no preguntas genéricas
+- Schema-ready: contenido estructurado y semántico
+
+RESPONDE EXACTAMENTE EN ESTE FORMATO JSON (sin markdown, sin texto adicional):
 {
-  "title": "Título SEO aquí",
-  "meta_description": "Meta description aquí",
+  "title": "Título SEO aquí (max 70 chars)",
+  "meta_description": "Meta description aquí (max 160 chars)",
   "content": "HTML completo del contenido aquí",
   "faqs": [
-    {"question": "Pregunta?", "answer": "Respuesta detallada"}
+    {"question": "Pregunta real?",
+     "answer": "Respuesta detallada que derriba una objeción"}
   ]
 }"""
 
@@ -63,7 +79,7 @@ RESPONDE EXACTAMENTE EN ESTE FORMATO JSON:
 class ContentGenerator:
     """
     Generador de contenido que usa IA real (OpenRouter) con
-    respaldo a templates cuando no hay conexión o API key.
+    fallback chain de modelos y respaldo a templates.
     """
     
     def __init__(self):
@@ -76,13 +92,21 @@ class ContentGenerator:
         """Verifica si la IA está disponible."""
         return self.openrouter.is_configured
     
-    def generate_for_niche(self, nicho: Dict) -> Dict:
+    @property
+    def transport(self) -> str:
+        """Transporte activo de OpenRouter."""
+        return self.openrouter.transport
+    
+    def generate_for_niche(self,
+                          nicho: Dict,
+                          preferred_model: Optional[str] = None) -> Dict:
         """
         Genera contenido para un nicho usando OpenRouter + FreeBuff.
         
         Args:
             nicho: Dict con datos del nicho (de NICHOS_DB o Radar)
                 Requiere: id, name, category, cpc_avg, tags, language
+            preferred_model: Modelo preferido para esta generación
         
         Returns:
             Dict con: titulo, contenido_html, meta_desc, faqs, slug, etc.
@@ -95,6 +119,9 @@ class ContentGenerator:
         language = nicho.get("language", "es")
         
         print(f"  🎯 Generando contenido para: {nicho_name}")
+        if preferred_model:
+            print(f"     🤖 Modelo preferido: {preferred_model}")
+        print(f"     🚚 Transporte: {self.transport}")
         
         # 1. Construir prompt vía FreeBuff Bridge
         prompt_data = self.bridge.generar_prompt_post(
@@ -107,8 +134,8 @@ class ContentGenerator:
         )
         prompt = prompt_data["prompt"]
         
-        # 2. Intentar con OpenRouter (IA real)
-        resultado = self._try_openrouter(prompt, nicho, prompt_data)
+        # 2. Intentar con OpenRouter (IA real) con fallback chain
+        resultado = self._try_openrouter(prompt, nicho, prompt_data, preferred_model)
         if resultado:
             return resultado
         
@@ -123,47 +150,52 @@ class ContentGenerator:
         })
         return resultado
     
-    def _try_openrouter(self, prompt: str, nicho: Dict, prompt_data: Dict) -> Optional[Dict]:
+    def _try_openrouter(self,
+                       prompt: str,
+                       nicho: Dict,
+                       prompt_data: Dict,
+                       preferred_model: Optional[str] = None) -> Optional[Dict]:
         """
-        Intenta generar contenido con OpenRouter.
+        Intenta generar contenido con OpenRouter (fallback chain automático).
         Retorna None si falla (para usar fallback).
         """
         if not self.openrouter.is_configured:
             print(f"     ⚠️ OpenRouter no configurado (sin API key)")
             return None
         
-        # 3 intentos máximo
-        for attempt in range(3):
-            try:
-                if attempt > 0:
-                    print(f"     🔄 Reintento {attempt + 1}/3...")
-                    time.sleep(2)
+        try:
+            response = self.openrouter.generate_json(
+                prompt=prompt,
+                system_prompt=SYSTEM_PROMPT_COPY,
+                temperature=0.7,
+                preferred_model=preferred_model
+            )
+            
+            if response and self._validate_response(response):
+                resultado = self._build_result(response, nicho, prompt_data)
+                model_used = self.openrouter.last_model_used or "unknown"
                 
-                response = self.openrouter.generate_json(
-                    prompt=prompt,
-                    system_prompt=SYSTEM_PROMPT_COPY,
-                    temperature=0.7 + (attempt * 0.1)
-                )
+                self.history.append({
+                    "nicho": nicho.get("name", ""),
+                    "source": "openrouter",
+                    "model": model_used,
+                    "transport": self.transport,
+                    "tokens": self.openrouter.total_tokens_used,
+                    "cost": self.openrouter.total_cost,
+                    "timestamp": time.time(),
+                    "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                })
                 
-                if response and self._validate_response(response):
-                    resultado = self._build_result(response, nicho, prompt_data)
-                    self.history.append({
-                        "nicho": nicho.get("name", ""),
-                        "source": "openrouter",
-                        "tokens": self.openrouter.total_tokens_used,
-                        "cost": self.openrouter.total_cost,
-                        "timestamp": time.time(),
-                        "fecha": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    })
-                    print(f"     ✅ Contenido generado con OpenRouter")
-                    print(f"     💰 Costo: ${self.openrouter.total_cost:.6f}")
-                    return resultado
+                print(f"     ✅ Contenido generado con {model_used}")
+                print(f"     🚚 Transporte: {self.transport}")
+                print(f"     💰 Costo: ${self.openrouter.total_cost:.6f}")
+                return resultado
+            
+            error = self.openrouter.last_error or "Respuesta inválida"
+            print(f"     ⚠️ OpenRouter falló: {error[:120]}")
                 
-                error = self.openrouter.last_error or "Respuesta inválida"
-                print(f"     ⚠️ Intento {attempt + 1} falló: {error[:80]}")
-                
-            except Exception as e:
-                print(f"     ⚠️ Intento {attempt + 1} error: {str(e)[:80]}")
+        except Exception as e:
+            print(f"     ⚠️ Error OpenRouter: {str(e)[:120]}")
         
         return None
     
@@ -176,7 +208,7 @@ class ContentGenerator:
             return False
         if not isinstance(data.get("faqs"), list) or len(data["faqs"]) < 1:
             return False
-        if len(data["title"]) > 120:  # Título muy largo
+        if len(data["title"]) > 120:  # Título muy largo, truncar
             data["title"] = data["title"][:117] + "..."
         return True
     
@@ -200,7 +232,9 @@ class ContentGenerator:
             "cpc": prompt_data["cpc"],
             "keywords": ", ".join(prompt_data.get("keywords", [])),
             "slug": self._slugify(titulo),
-            "source": "openrouter"
+            "source": "openrouter",
+            "model": self.openrouter.last_model_used or "unknown",
+            "transport": self.transport,
         }
     
     def _ensure_html_elements(self, html: str, nicho: Dict) -> str:
@@ -216,6 +250,14 @@ class ContentGenerator:
         <p>La informacion que sigue puede marcar la diferencia en tu caso. No es exageracion — son datos verificados que la mayoria de la gente ignora hasta que es demasiado tarde.</p>
     </div>"""
             html = html.replace("</h2>", "</h2>" + alerta, 1) if "</h2>" in html else html + alerta
+        
+        if '<div class="tip-box"' not in html:
+            tip = f"""
+    <div class="tip-box">
+        <div class="alerta-title">💡 CONSEJO PRO:</div>
+        <p>La diferencia entre los que logran resultados y los que no, no es la suerte — es la informacion correcta aplicada en el momento correcto.</p>
+    </div>"""
+            html = html.replace("</h2>", "</h2>" + tip, 1) if "</h2>" in html else html + tip
         
         if '<div class="cta-box"' not in html:
             cta = f"""
@@ -325,7 +367,9 @@ class ContentGenerator:
             "cpc": cpc,
             "keywords": ", ".join(tags),
             "slug": self._slugify(titulo),
-            "source": "template"
+            "source": "template",
+            "model": "template",
+            "transport": "template",
         }
     
     def _slugify(self, text: str) -> str:
@@ -350,11 +394,18 @@ class ContentGenerator:
         ai_count = sum(1 for h in self.history if h["source"] == "openrouter")
         template_count = total - ai_count
         
+        ai_stats = {}
+        if self.openrouter.is_configured:
+            ai_stats = self.openrouter.get_usage_stats()
+        
         return {
             "total_generados": total,
             "con_ia": ai_count,
             "con_template": template_count,
             "openrouter_configurado": self.is_ai_available,
+            "transporte": self.transport,
+            "ultimo_modelo": self.openrouter.last_model_used,
+            "stats_openrouter": ai_stats,
             "ultimos": self.history[-5:] if self.history else []
         }
 
@@ -364,11 +415,15 @@ if __name__ == "__main__":
     generator = ContentGenerator()
     
     print("=" * 60)
-    print("  🎯 SHADOW DEL VALLE R — GENERADOR DE CONTENIDO")
+    print("  🎯 SHADOW DEL VALLE R — GENERADOR DE CONTENIDO v2")
+    print("  🤖 OpenRouter IA + Fallback Chain + Templates")
     print("=" * 60)
     
     if generator.is_ai_available:
         print(f"  ✅ OpenRouter configurado — contenido REAL con IA")
+        print(f"  🚚 Transporte: {generator.transport}")
+        print(f"  🤖 Modelo: {generator.openrouter.model}")
+        print(f"  🔄 Fallback: {generator.openrouter.fallback_model}")
     else:
         print(f"  ⚠️  OpenRouter NO configurado — usando templates")
         print(f"  Para activar IA, configura api_key en config/settings.json")
@@ -376,21 +431,30 @@ if __name__ == "__main__":
     print()
     
     # Demo con un nicho
-    from core.radar import NICHOS_DB
-    nicho = NICHOS_DB[0]  # Abogados de Accidentes
-    
-    print(f"  Demo con: {nicho['name']} (CPC: ${nicho['cpc_avg']:.0f})")
-    print()
-    
-    resultado = generator.generate_for_niche(nicho)
-    
-    print(f"\n  📝 Titulo: {resultado['titulo'][:70]}")
-    print(f"  🔍 Fuente: {resultado['source']}")
-    print(f"  📏 Contenido: {len(resultado['contenido_html'])} chars")
-    print(f"  ❓ FAQs: {len(resultado['faqs'])}")
-    print(f"  🔗 Slug: {resultado['slug']}")
-    
-    stats = generator.get_stats()
-    print(f"\n  📊 Stats: {stats['total_generados']} generados ({stats['con_ia']} IA, {stats['con_template']} template)")
+    try:
+        from core.radar import NICHOS_DB
+        nicho = NICHOS_DB[0]  # Abogados de Accidentes
+        
+        print(f"  Demo con: {nicho['name']} (CPC: ${nicho['cpc_avg']:.0f})")
+        print()
+        
+        resultado = generator.generate_for_niche(nicho)
+        
+        print(f"\n  📝 Titulo: {resultado['titulo'][:70]}")
+        print(f"  🔍 Fuente: {resultado['source']}")
+        print(f"  🤖 Modelo: {resultado.get('model', 'N/A')}")
+        print(f"  🚚 Transporte: {resultado.get('transport', 'N/A')}")
+        print(f"  📏 Contenido: {len(resultado['contenido_html'])} chars")
+        print(f"  ❓ FAQs: {len(resultado['faqs'])}")
+        print(f"  🔗 Slug: {resultado['slug']}")
+        
+        stats = generator.get_stats()
+        print(f"\n  📊 Stats: {stats['total_generados']} generados ({stats['con_ia']} IA, {stats['con_template']} template)")
+        if stats.get('stats_openrouter'):
+            ors = stats['stats_openrouter']
+            print(f"     ⚡ Llamadas: {ors.get('llamadas_totales', 0)} | Tokens: {ors.get('tokens_consumidos', 0)}")
+            print(f"     💰 Costo: ${ors.get('costo_total_usd', 0):.6f}")
+    except ImportError:
+        print("  ℹ️ Ejecuta el demo desde la carpeta shadow_del_valle_r/")
     
     print(f"\n{'=' * 60}")

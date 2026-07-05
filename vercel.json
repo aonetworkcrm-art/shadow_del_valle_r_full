@@ -20,6 +20,10 @@
       "destination": "/output/posts.json"
     },
     {
+      "source": "/api/oraculo",
+      "destination": "/api/oraculo.js"
+    },
+    {
       "source": "/api/notify",
       "destination": "/api/notify.js"
     },

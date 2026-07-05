@@ -36,6 +36,16 @@ from core.deployer import Deployer
 from core.ledger import Ledger
 from generar_contenido import ContentGenerator
 
+# 🌑 Monetag Revenue Optimization Module
+try:
+    from monetag.api_client import MonetagAPI
+    from monetag.revenue_tracker import RevenueTracker
+    from monetag.optimizer import MonetagOptimizer
+    from monetag.alert_engine import AlertEngine
+    MONETAG_AVAILABLE = True
+except ImportError:
+    MONETAG_AVAILABLE = False
+
 
 # ─── Colores para consola ───
 class Colors:
@@ -107,6 +117,15 @@ class ShadowDelValleAgent:
         self.ledger = Ledger()
         self.content_generator = ContentGenerator()
         
+        # 🌑 Monetag Revenue Optimization (si está configurado)
+        self.monetag_api: Optional[MonetagAPI] = None
+        self.monetag_tracker: Optional[RevenueTracker] = None
+        self.monetag_optimizer: Optional[MonetagOptimizer] = None
+        self.monetag_alerts: Optional[AlertEngine] = None
+        self._init_monetag()
+        self._init_signals()
+        self._log(f"🚀 {self.name} v{self.version} iniciado")
+        
         # Config del scheduler
         scheduler = self.config.get("scheduler", {})
         self.agente_activo = scheduler.get("agente_activo", True)
@@ -117,12 +136,32 @@ class ShadowDelValleAgent:
         # Nichos ya procesados (para estrategia rotativa)
         self.nichos_procesados: List[str] = []
         
+    def _init_monetag(self):
+        """Inicializa módulos de Monetag si están disponibles y configurados."""
+        if not MONETAG_AVAILABLE:
+            return
+        
+        monetag_cfg = self.config.get("monetag_api", {})
+        token = monetag_cfg.get("api_token", os.environ.get("MONETAG_API_TOKEN", ""))
+        self._monetag_cfg = monetag_cfg  # Guardar para uso posterior
+        
+        if token:
+            try:
+                self.monetag_api = MonetagAPI(api_token=token)
+                self.monetag_tracker = RevenueTracker(api=self.monetag_api, ledger=self.ledger)
+                self.monetag_optimizer = MonetagOptimizer(api=self.monetag_api, tracker=self.monetag_tracker)
+                self.monetag_alerts = AlertEngine(api=self.monetag_api, tracker=self.monetag_tracker)
+                self._log("🌑 Monetag Revenue Optimization activado")
+            except Exception as e:
+                self._log_warning(f"Monetag no disponible: {e}")
+        else:
+            self._log_warning("Monetag: Sin API token. Configura MONETAG_API_TOKEN")
+    
+    def _init_signals(self):
         # Signal handlers para detención limpia
         signal.signal(signal.SIGINT, self._signal_handler)
         if hasattr(signal, "SIGTERM"):
             signal.signal(signal.SIGTERM, self._signal_handler)
-        
-        self._log(f"🚀 {self.name} v{self.version} iniciado")
     
     def _load_config(self) -> Dict:
         """Carga configuración desde settings.json."""
@@ -182,7 +221,14 @@ class ShadowDelValleAgent:
         return True
     
     def _seleccionar_nicho(self) -> Optional[Dict]:
-        """Selecciona el siguiente nicho según la estrategia."""
+        """Selecciona el siguiente nicho según la estrategia.
+        
+        Estrategias disponibles:
+          - "rotating" (default): rota entre nichos aptos sin repetir
+          - "highest-cpc": elige el de CPC más alto
+          - "random": elige aleatoriamente
+          - "hybrid": combina FRR(40%) + Profitability(40%) + Confidence(20%)
+        """
         # Obtener nichos aptos ordenados por FRR
         mejores = self.radar.get_mejores_nichos(top_n=10)
         nichos_aptos = [r.nicho for r in mejores if r.apto]
@@ -198,6 +244,55 @@ class ShadowDelValleAgent:
         elif self.estrategia == "random":
             import random
             return random.choice(nichos_aptos)
+        
+        elif self.estrategia == "hybrid":
+            # Estrategia híbrida: FRR(40%) + Profitability(40%) + Confidence(20%)
+            # Calcular todos los scores en UNA sola pasada (sin escaneos repetidos)
+            conf_map = {"muy_alta": 5, "alta": 4, "media": 3, "baja": 2, "muy_baja": 1}
+            frr_vals, profit_vals, enriched_map = [], [], {}
+            
+            for n in nichos_aptos:
+                e = self.radar.get_niche(n["id"])
+                if e:
+                    enriched_map[n["id"]] = e
+                    frr_vals.append(e.calcular_frr())
+                    profit_vals.append(float(e.profitability_score))
+            
+            max_frr = max(frr_vals) if frr_vals else 1
+            max_profit = max(profit_vals) if profit_vals else 1
+            
+            nichos_con_score = []
+            for n in nichos_aptos:
+                e = enriched_map.get(n["id"])
+                if not e:
+                    continue
+                frr_norm = e.calcular_frr() / max_frr
+                profit_norm = float(e.profitability_score) / max_profit
+                conf_norm = conf_map.get(self.radar.get_confidence(e).value, 3) / 5.0
+                score = (frr_norm * 0.4) + (profit_norm * 0.4) + (conf_norm * 0.2)
+                nichos_con_score.append((n, round(score, 4)))
+            
+            nichos_con_score.sort(key=lambda x: x[1], reverse=True)
+            
+            # Aplicar rotación: preferir no procesados
+            no_procesados = [
+                (n, s) for n, s in nichos_con_score
+                if n["id"] not in self.nichos_procesados
+            ]
+            if not no_procesados:
+                self.nichos_procesados = []
+                no_procesados = nichos_con_score
+            
+            seleccionado = no_procesados[0][0]
+            hybrid_score = no_procesados[0][1]
+            self.nichos_procesados.append(seleccionado["id"])
+            
+            enriched = enriched_map.get(seleccionado["id"])
+            profit_score = float(enriched.profitability_score) if enriched else 0
+            conf = self.radar.get_confidence(enriched).value if enriched else "N/A"
+            self._log_success(f"🧠 Hybrid Score: {hybrid_score:.4f} | Profit: {profit_score:,.0f} | Conf: {conf}")
+            
+            return seleccionado
         
         else:  # "rotating" (default)
             # Evitar repetir nichos
@@ -235,6 +330,7 @@ class ShadowDelValleAgent:
             slug = resultado["slug"]
             keywords = resultado.get("keywords", ", ".join(nicho.get("tags", [])))
             cpc = resultado.get("cpc", nicho.get("cpc_avg", 0))
+            fuente = resultado.get("source", "template")
             
             # 3. Construir el HTML con el Refinery
             html = self.refinery.convertir_a_html(
@@ -272,7 +368,16 @@ class ShadowDelValleAgent:
                 "frr": self.radar.frr_por_nicho(nicho["id"]) or 0
             })
             
-            # 7. Actualizar contadores
+            # 7. 🆕 Registrar nodo en SEO Oracle para tracking de revenue
+            self.radar.register_node(
+                niche_id=nicho["id"],
+                title=titulo,
+                slug=slug,
+                target_keywords=keywords.split(", ") if isinstance(keywords, str) else keywords,
+                source=fuente
+            )
+            
+            # 8. Actualizar contadores
             state.total_posts_generated += 1
             state.rounds_completed += 1
             state.last_round_time = time.time()
@@ -280,7 +385,6 @@ class ShadowDelValleAgent:
             # Estadísticas del post
             tamano_kb = round(len(html.encode('utf-8')) / 1024, 2)
             frr = self.radar.frr_por_nicho(nicho["id"])
-            fuente = resultado.get("source", "template")
             
             self._log_success(f"Post generado: {c(titulo[:50], Colors.GREEN)}")
             self._log_success(f"  📁 {ruta} ({tamano_kb} KB)  🧠 Fuente: {fuente}")
@@ -337,7 +441,33 @@ class ShadowDelValleAgent:
         exito = self._generar_post(nicho)
         
         if exito:
-            # 4. Mostrar dashboard financiero
+            # 4. Monetag: Sincronizar revenue y ejecutar alertas
+            if self.monetag_api and self.monetag_api.is_configured():
+                self._log("💰 Sincronizando revenue de Monetag...")
+                if self.monetag_tracker:
+                    sync_result = self.monetag_tracker.sync_now()
+                    if sync_result.get("summary"):
+                        rev = sync_result["summary"]
+                        print(f"     Revenue (7d): ${rev.get('total_revenue', 0):.2f} | "
+                              f"RPM: ${rev.get('avg_rpm', 0):.2f} | "
+                              f"Proy. mensual: ${rev.get('projected_monthly', 0):.2f}")
+                
+                # Ejecutar alertas y optimización
+                if self.monetag_alerts:
+                    alerts = self.monetag_alerts.run_checks()
+                    if alerts:
+                        for a in alerts:
+                            print(f"     {a.get('title', 'Alerta')}: {a.get('message', '')}")
+                
+                m_cfg = self._monetag_cfg or {}
+                if self.monetag_optimizer and m_cfg.get("auto_optimizar", True):
+                    opt = self.monetag_optimizer.run_optimization_cycle()
+                    if opt.get("recommendations"):
+                        print(f"     {c('🧠 Recomendaciones:', Colors.MAGENTA)}")
+                        for rec in opt["recommendations"][:3]:
+                            print(f"       • {rec}")
+                
+                # 5. Mostrar dashboard financiero
             print()
             self.ledger.mostrar_dashboard()
     
@@ -413,6 +543,16 @@ class ShadowDelValleAgent:
         print(f"  {c('Intervalo:', Colors.YELLOW)} {self.intervalo_horas}h")
         print(f"  {c('Estrategia:', Colors.YELLOW)} {self.estrategia}")
         print(f"  {c('Max posts/día:', Colors.YELLOW)} {self.max_posts_por_dia}")
+        
+        # 🌑 Estado de Monetag
+        if self.monetag_api:
+            monetag_ok = self.monetag_api.is_configured()
+            print(f"\n  {c('💰 MONETAG:', Colors.YELLOW, bold=True)} {c('✅ ACTIVO' if monetag_ok else '❌ INACTIVO', Colors.GREEN if monetag_ok else Colors.RED)}")
+            if monetag_ok and self.monetag_tracker:
+                rev = self.monetag_tracker.get_current_revenue()
+                if rev.get("success"):
+                    print(f"     Revenue (7d): ${rev['total_revenue']:.2f}")
+                    print(f"     RPM: ${rev['avg_rpm']:.2f} | Proy. mensual: ${rev['projected_monthly']:.2f}")
         
         # Mostrar dashboard financiero
         self.ledger.mostrar_dashboard()
